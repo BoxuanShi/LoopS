@@ -1,0 +1,3 @@
+FCContract;
+
+FCContract = FeynCalc`Contract;
