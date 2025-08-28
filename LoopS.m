@@ -170,7 +170,8 @@ Get["OneLoopExamples.m"];
 (*self-consistence check*)
 If[$OperatingSystem==="Windows",
 
-    Print[Style["Warning: PV reduction with OPITeR is not supported on Windows in LoopS, which may result in slower performance. Please use Linux or macOS for optimal performance.", FontColor->Red]]
+    Print[Style["Warning: PV reduction with OPITeR is not supported on Windows in LoopS, which may result in slower performance. Please use Linux or macOS for optimal performance.", FontColor->Red]];
+    SetOptions[GeneratePV, "UseOPITeR" -> False]
     ,
 
     If[GeneratePVOPITeR[{},{}]=== $Failed, 
