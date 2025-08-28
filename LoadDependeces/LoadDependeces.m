@@ -10,8 +10,10 @@ ParallelNeedS[context_, filepath_String] := Module[{},
   Parallelize;
   If[FileExistsQ[filepath],
    Parallel`Protected`AddInitCode[
-    Parallel`Client`HoldCompound[Needs[context, filepath]]],
-   ParallelNeedS[context]
+    Parallel`Client`HoldCompound[
+      Block[{Print=(#&)}, Needs[context, filepath]]
+      ]],
+   ParallelNeeds[context]
    ]
   ]
 
@@ -36,5 +38,5 @@ If[FIREInstalledQ, Get[$FIREInstallPath]];
 
 
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];
-ParallelNeedS["MultivariateApart`", $MultivariateApartInstallPath]
+ParallelNeedS["MultivariateApart`", $MultivariateApartInstallPath];
 If[FIREInstalledQ, ParallelNeedS["FIRE`", $FIREInstallPath]];
