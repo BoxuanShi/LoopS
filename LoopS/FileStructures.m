@@ -3,7 +3,7 @@ FileStructures;
 ClearAll[ProcessPath, PVPath, FIREWorkPath, LoopSWorkDirectory]
 LoopSWorkDirectory := 
   LoopSWorkDirectory = 
-   ExpandFileName[NotebookDirectoryS[]] <> "LoopS/Processes/";
+   PathName@FileNameJoin[{ExpandFileName[NotebookDirectoryS[]], "LoopS","Processes"}];
 
 ProcessPath[process_String] := FileNameJoin[{LoopSWorkDirectory, process}]
 
