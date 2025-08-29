@@ -3,7 +3,7 @@ MatchMIs;
 ClearAll[MatchMIs];
 Options[MatchMIs] := 
   CreateOptions[{"SimplifyMatchMIs" -> (CollectFlat[#, {\[Epsilon], _G | _Log \
-| _PolyLog | _HPL}, Simplify, Simplify] &)}, {matchFI, TableS}];
+| _PolyLog | _HPL}, SimplifyS, SimplifyS] &)}, {matchFI, TableS}];
 MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, 
   process_String : "CurrentProcess", opt : OptionsPattern[]] := 
  MatchMIs[MIs, MIformlist, MIsollist, loops, family, 
@@ -26,5 +26,5 @@ MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List,
     "Simplifying MIs result by option \"SimplifyMatchMIs\".", 
     Evaluate@opttable];
   
-  Dispatch@Thread[MIs -> Msols]
+  Thread[MIs -> Msols]
   ]

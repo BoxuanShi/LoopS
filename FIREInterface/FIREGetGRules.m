@@ -42,5 +42,6 @@ FIREGetGRules[Fslist_List, loops_List, family_List, extmomsind_List,
     "FIREGetGRules: Simplifying with option \"SimplifyFunction\".", 
     Evaluate@opttable];
   
-  Monitor[Dispatch[tp4], "Dispatching..."]
+  (*Monitor[Dispatch[tp4], "Dispatching..."]*)
+  tp4
   ]
