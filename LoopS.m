@@ -129,8 +129,8 @@ Get["SymanzikOrder.m"];
 Get["SymanzikIndepentVars.m"];
 Get["sameFIQ.m"];
 Get["matchFI.m"];
-Get["MFrelease.m"];
 Get["MatchMIs.m"];
+Get["MFrelease.m"];
 Get["loopSymmetryNoPS.m"];
 ]
 
