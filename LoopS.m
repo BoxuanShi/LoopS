@@ -23,25 +23,25 @@ Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black
 
 
 (*ProcessDefine*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"ProcessDefine"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"ProcessDefine"}]];
 Get["ProcessDefineLoad.m"];
 (*BasicS*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"BasicS"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"BasicS"}]];
 Get["BasicSLoad.m"];
 (*PVReduction*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"PVReduction"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"PVReduction"}]];
 Get["PVReductionLoad.m"];
 (*TensorReduction*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"TensorReduction"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"TensorReduction"}]];
 Get["TensorReductionLoad.m"];
 (*FeynmanIntegralsClassification*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"FeynmanIntegralsClassification"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"FeynmanIntegralsClassification"}]];
 Get["FeynmanIntegralsClassificationLoad.m"];
 (*EquivalentIntegrals*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"EquivalentIntegrals"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"EquivalentIntegrals"}]];
 Get["EquivalentIntegralsLoad.m"];
 (*FIREInterface*)
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]];
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]];
 Get["FIREInterfaceLoad.m"];
 (*AMFlowInterface*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"AMFlowInterface"}]];
