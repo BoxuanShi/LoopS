@@ -12,6 +12,7 @@ Get["LoadDependeces.m"];
 Print["################### LoopS: Dependences Loaded ##################"];
 
 
+(*LoopSInformation*)
 Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
 Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
 Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
