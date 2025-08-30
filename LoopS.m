@@ -5,9 +5,10 @@ $LoopSVersion="2025-08-28";
 $LoopSInstallPath = DirectoryName[$InputFileName];
 
 
-(*load-dependences*)
+(*LoadDependeces*)
 Print["################## LoopS: Loading Dependences ##################"];
-Get[FileNameJoin[{$LoopSInstallPath,"LoadDependeces","LoadDependeces.m"}]];
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoadDependeces"}]];
+Get["LoadDependeces.m"];
 Print["################### LoopS: Dependences Loaded ##################"];
 
 
