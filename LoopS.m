@@ -22,7 +22,7 @@ Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black
 ]
 
 
-(*LoopS*)
+(*ProcessDefine*)
 $Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"ProcessDefine"}]];
 Get["ProcessDefineLoad.m"];
 (*BasicS*)
