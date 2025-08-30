@@ -23,7 +23,7 @@ Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black
 
 
 (*LoopS*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"LoopS"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoopS"}]];
 Get["LoopS.m"];
 Get["CreateProcess.m"];
 Get["ClearProcess.m"];
@@ -32,11 +32,10 @@ Get["SetProcessDirectory.m"];
 Get["FileStructures.m"];
 Get["PrepareParallel.m"];
 Get["PreparePV.m"];
-]
 
 
 (*General*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"General"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"General"}]];
 Get["DownValuesArguments.m"];
 Get["ParallelLoad.m"];
 Get["MMABugFix.m"];
@@ -73,20 +72,18 @@ Get["OptRestrict.m"];
 Get["TogetherExpand.m"];
 Get["PathName.m"];
 Get["DropZeroByNumerics.m"];
-]
 
 
 (*PVReduction*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"PVReduction"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"PVReduction"}]];
 Get["GeneratePV.m"];
 Get["GeneratePVOPITeR.m"];
 Get["GeneratePVMMA.m"];
 Get["PVRules.m"];
-]
 
 
 (*TensorReduction*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"TensorReduction"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"TensorReduction"}]];
 Get["FCContract.m"];
 Get["FCES.m"];
 Get["ToSFADBugFix.m"];
@@ -99,11 +96,10 @@ Get["AbbreviateOperators.m"];
 Get["NumeratorToSPD.m"];
 Get["PermutationRulesFromSets.m"];
 Get["CanonicalOperatorRules.m"];
-]
 
 
 (*FeynmanIntegralsClassification*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"FeynmanIntegralsClassification"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"FeynmanIntegralsClassification"}]];
 Get["zeroSectorQ.m"];
 Get["ApartFFS.m"];
 Get["DenoTransform.m"];
@@ -116,11 +112,10 @@ Get["FindnumRules.m"];
 Get["ReduceSPDToG.m"];
 Get["DenominatorToG.m"];
 Get["AmplitudeReduce.m"];
-]
 
 
 (*EquivalentIntegrals*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"EquivalentIntegrals"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"EquivalentIntegrals"}]];
 Get["CanonicalLoops.m"];
 Get["propsToLS.m"];
 Get["LSsubsets.m"];
@@ -132,11 +127,10 @@ Get["matchFI.m"];
 Get["MatchMIs.m"];
 Get["MFrelease.m"];
 Get["loopSymmetryNoPS.m"];
-]
 
 
 (*FIREInterface*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]},
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]];
 Get["FIRETemplate.m"];
 Get["FIREEvaluate.m"];
 Get["FIREPrepareStart.m"];
@@ -153,19 +147,16 @@ Get["PossibleIntForDEInSector.m"];
 Get["FindCompleteGList.m"];
 Get["GenerateEiknolFamilies.m"];
 Get["FindRulesComplete.m"];
-]
 
 
 (*AMFlowInterface*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"AMFlowInterface"}]},
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"AMFlowInterface"}]];
 Get["AMFlowInterface.m"];
-]
 
 
 (*MasterIntegralResults*)
-Block[{$Path=FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]},
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]];
 Get["OneLoopExamples.m"];
-]
 
 
 (*self-consistence check*)
