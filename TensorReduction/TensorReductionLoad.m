@@ -1,0 +1,13 @@
+$Path = Union@Append[$Path, DirectoryName[$InputFileName]];
+Get["FCContract.m"];
+Get["FCES.m"];
+Get["ToSFADBugFix.m"];
+Get["PVReduction.m"];
+Get["SeparateFAD.m"];
+Get["ExpandDirac.m"];
+Get["IndexFunctions.m"];
+Get["OperatorCollect.m"];
+Get["AbbreviateOperators.m"];
+Get["NumeratorToSPD.m"];
+Get["PermutationRulesFromSets.m"];
+Get["CanonicalOperatorRules.m"];

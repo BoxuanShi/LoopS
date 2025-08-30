@@ -1,0 +1,17 @@
+$Path = Union@Append[$Path, DirectoryName[$InputFileName]];
+Get["FIRETemplate.m"];
+Get["FIREEvaluate.m"];
+Get["FIREPrepareStart.m"];
+Get["FIREPrepareStartMMA.m"];
+Get["FIRELoadStart.m"];
+Get["FIRELoadTable.m"];
+Get["FIREGetGRules.m"];
+Get["FIREReductionMMA.m"];
+Get["FIREPrepareCXX.m"];
+Get["FIRERunCXX.m"];
+Get["FIREReductionCXX.m"];
+Get["tosectors.m"];
+Get["PossibleIntForDEInSector.m"];
+Get["FindCompleteGList.m"];
+Get["GenerateEiknolFamilies.m"];
+Get["FindRulesComplete.m"];

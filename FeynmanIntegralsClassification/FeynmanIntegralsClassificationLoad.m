@@ -1,0 +1,13 @@
+$Path = Union@Append[$Path, DirectoryName[$InputFileName]];
+Get["zeroSectorQ.m"];
+Get["ApartFFS.m"];
+Get["DenoTransform.m"];
+Get["SPDToFAD.m"];
+Get["GetFeynInt.m"];
+Get["FamilyClassify.m"];
+Get["FindfamilyG.m"];
+Get["ReplaceSymmetryG.m"];
+Get["FindnumRules.m"];
+Get["ReduceSPDToG.m"];
+Get["DenominatorToG.m"];
+Get["AmplitudeReduce.m"];

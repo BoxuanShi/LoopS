@@ -1,0 +1,12 @@
+$Path = Union@Append[$Path, DirectoryName[$InputFileName]];
+Get["CanonicalLoops.m"];
+Get["propsToLS.m"];
+Get["LSsubsets.m"];
+Get["SymanzikPolynomials.m"];
+Get["SymanzikOrder.m"];
+Get["SymanzikIndepentVars.m"];
+Get["sameFIQ.m"];
+Get["matchFI.m"];
+Get["MatchMIs.m"];
+Get["MFrelease.m"];
+Get["loopSymmetryNoPS.m"];
