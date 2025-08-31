@@ -51,15 +51,11 @@ $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResul
 Get["MasterIntegralResultsLoad.m"];
 
 
+(*Unusual bug fix*)
+LoopSWorkDirectory;
+
+
 (*self-consistence check*)
-
-(* Print[$FrontEnd];
-Print[NotebookDirectoryS[]];
-Print[$InputFileName];
-Print[NotebookDirectory[]];
-Print[LoopSWorkDirectory];
-Print[$OPITeRWorkPath]; *)
-
 If[$OperatingSystem==="Windows",
 
     Print[Style["Warning: PV reduction with OPITeR is not supported on Windows in LoopS, which may result in slower performance. Please use Linux or macOS for optimal performance.", FontColor->Red]];
@@ -69,7 +65,3 @@ If[$OperatingSystem==="Windows",
     If[GeneratePVOPITeR[{},{}]=== $Failed, 
     Print[Style["GeneratePVOPITeR test failed! Please verify that OPITeR and FORM are correctly installed.", FontColor->Red]]];
 ];
-
-
-(*Unusual bug fix*)
-LoopSWorkDirectory;
