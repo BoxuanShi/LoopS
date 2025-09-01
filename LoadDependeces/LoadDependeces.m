@@ -40,3 +40,7 @@ If[FIREInstalledQ, Get[$FIREInstallPath]];
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];
 ParallelNeedS["MultivariateApart`", $MultivariateApartInstallPath];
 If[FIREInstalledQ, ParallelNeedS["FIRE`", $FIREInstallPath]];
+
+
+(*check FeynCalc version*)
+If[!OrderedQ[{ToExpression@StringSplit["10.1.0", "."], ToExpression@StringSplit[$FeynCalcVersion, "."]}], Print[Style["It is recommended to use FeynCalc version 10.1.0 or higher, as lower versions may cause unknown bugs.", FontColor->Red]]];
