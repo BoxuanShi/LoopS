@@ -4,7 +4,8 @@ ClearAll[FindRulesComplete]
 FindRulesComplete::usage = 
   "FindRulesComplete return the minimal MIs only when the masters in every \
 families have been found completely...";
-Options[FindRulesComplete] := CreateOptions[{}, {findrules2}]
+Options[FindRulesComplete] := DeleteCases[CreateOptions[{}, {findrules2}], 
+ x_ /; x[[1]] === "LinearPropagatorQ", {1}];
 FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
