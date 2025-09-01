@@ -34,7 +34,7 @@ FIREReductionMMA[Fslist_List, loops_List, family_List, extmomsind_List,
   opt3 = FilterOptions[{opt}, FIREGetGRules];
   tp1 = Monitor[
     FIREGetGRules[Fslist, loops, family, extmomsind, kinematics, 
-     Evaluate@opt3], "FIREGetGRules..."];
+     Evaluate@opt3, "FIREReductionVerbose" -> False], "FIREGetGRules..."];
   
   tp1
   ]

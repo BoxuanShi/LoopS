@@ -55,6 +55,10 @@ Get["MasterIntegralResultsLoad.m"];
 LoopSWorkDirectory;
 
 
+(*Generate LoopS directory*)
+CreateDirectoryS[FileNameJoin[{NotebookDirectoryS[],"LoopS","Processes"}]];
+
+
 (*self-consistence check*)
 If[$OperatingSystem==="Windows",
 

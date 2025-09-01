@@ -1,7 +1,7 @@
 AbbreviateOperators;
 
 ClearAll[AbbreviateOperators];
-Options[AbbreviateOperators] := CreateOptions[{}, {AbbreviatePolynomials}]
+Options[AbbreviateOperators] := CreateOptions[{"AbbreviatePolynomialsName" -> OPs}, {AbbreviatePolynomials}]
 AbbreviateOperators[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  AbbreviatePolynomials[expr, OperatorPattern, Evaluate@opt, 
-  "AbbreviatePolynomialsName" -> OPs]
+  "AbbreviatePolynomialsName" -> OptionValue["AbbreviatePolynomialsName"]]
