@@ -20,6 +20,8 @@ MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List,
     matchFI[props[[i]], MIformlist, loops, kinematics, Evaluate@opt1], {i, 
      Length@props}, "MatchFI...", Evaluate@opttable];
   
+  If[MIsollist === {}, Return[Thread[MIs -> MFs]]];
+
   Msols = MFrelease[MFs, MIsollist];
   Msols = 
    TableS[Msols[[i]] // OptionValue["SimplifyMatchMIs"], {i, Length@Msols}, 
