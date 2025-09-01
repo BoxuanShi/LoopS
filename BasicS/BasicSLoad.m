@@ -35,4 +35,4 @@ Get["OptRestrict.m"];
 Get["TogetherExpand.m"];
 Get["PathName.m"];
 Get["DropZeroByNumerics.m"];
-Get["AbbreviateNonFree.m"];
+Get["AbbreviateFactor.m"];
