@@ -29,7 +29,7 @@ GetFeynInt[amp_, loops_List, moms_List, kinematics_List] :=
   patt = x_FAD | x_SFAD /; 
     Or @@ Table[! FreeQ[x, loops[[i]]], {i, Length@loops}];
   
-  tp0 = amp // FeynAmpDenominatorSplit // FCES // PolynomialCollect[#, patt] &;
+  tp0 = amp // PolynomialCollect[#, patt] & // FeynAmpDenominatorSplit // FCES // PolynomialCollect[#, patt] &;
   tp0 = If[! FreeQ[tp0, SFAD], tp0 // ToSFAD, tp0];
   tp0 = tp0 // FeynAmpDenominatorCombine // FCES // Flatten // Union;
   
