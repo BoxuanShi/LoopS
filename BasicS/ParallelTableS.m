@@ -30,7 +30,7 @@ SetAttributes[ParallelEvaluateS, HoldFirst]
 ClearAll[ParallelTableS]
 ParallelTableS::usage = "1. Block Monitor=(#&).
 2. Method->(\"ItemsPerEvaluation\"->1).";
-Options[ParallelTableS] := CreateOptions[{}, {ParallelTable, PrepareParallel}];
+Options[ParallelTableS] := CreateOptions[{Method -> ("ItemsPerEvaluation" -> 1)}, {ParallelTable, PrepareParallel}];
 ParallelTableS[expr_, rg__List, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   Module[{kernelnumber, mode, Nkernel, tp1, opt1},
   If[$KernelCount == 0, 
@@ -39,7 +39,7 @@ ParallelTableS[expr_, rg__List, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   tp1 = ParallelTable[
     Block[{Monitor = (# &)}, expr]
     , rg, Evaluate@FilterOptions[{opt}, ParallelTable], 
-    Method -> ("ItemsPerEvaluation" -> 1)];
+    Method -> OptionValue[Method]];
   If[mode == 0, CloseKernels[]];
   tp1
   ]
