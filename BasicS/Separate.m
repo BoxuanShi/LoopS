@@ -19,12 +19,12 @@ Separate0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
 
 Options[Separate1] := CreateOptions[{}, {SeparatePoly}];
 Separate1[expr_, patt_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
-  Module[{x, vars}, vars = getS[{expr}, patt];
+  Module[{vars}, vars = getS[{expr}, patt];
   SeparatePoly[expr, vars, 
    Evaluate@FilterOptions[{opt}, SeparatePoly]]]
 
 Separate1[expr_, patt0_List, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{i, coe, patt, tp1, tp2, dvQ, matchQ},
+  OptRestrict[opt] := Module[{coe, patt},
   {coe, patt} = Separate[expr, Alternatives @@ patt0];
   patt = (ListS[#, {}, Times] &) /@ patt;
   patt = (Table[
