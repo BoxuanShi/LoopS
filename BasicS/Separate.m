@@ -1,6 +1,6 @@
 Separate;
 
-ClearAll[Separate, Separate0, Separate1, SeparatePoly];
+ClearAll[Separate, Separate0, Separate1, SeparatePoly, SeparatePoly0];
 SeparateHead;
 SeparateDropOne;
 Separate::usage = 
@@ -35,9 +35,17 @@ Separate1[expr_, patt0_List, opt : OptionsPattern[]] /;
   patt = Transpose@patt;
   OptionValue["SeparateHead"] @@ {coe, Sequence @@ patt}]
 
-Options[SeparatePoly] = {"SeparateHead" -> List, "SeparateDropOne"->False};
+Options[SeparatePoly] = {"SeparateHead" -> List, 
+   "SeparateDropOne" -> False};
 SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{sa, ar, ltop, tp1},
+  OptRestrict[opt] := SeparatePoly0[expr, "vars" -> vars, Evaluate@opt]
+
+Options[SeparatePoly0] := 
+  CreateOptions[{"vars" -> "vars"}, {SeparatePoly}];
+SetAttributes[SeparatePoly0, Listable];
+SeparatePoly0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
+ Module[{vars, sa, ar, ltop, tp1},
+  vars = OptionValue["vars"];
   If[expr === 0, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
   If[vars === {}, 
    Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]];
@@ -46,7 +54,6 @@ SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] /;
   ltop[list_] := Times @@ (vars[[#]] & /@ list);
   tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
   tp1 = SortBy[tp1, Last];
-  If[sa[[1]] =!= 0 && !OptionValue["SeparateDropOne"], 
-  PrependTo[tp1, {sa[[1]], 1}],
-  Nothing];
+  If[sa[[1]] =!= 0 && ! OptionValue["SeparateDropOne"], 
+   PrependTo[tp1, {sa[[1]], 1}], Nothing];
   OptionValue["SeparateHead"] @@ Transpose[tp1]]
