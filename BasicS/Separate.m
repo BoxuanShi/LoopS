@@ -2,6 +2,7 @@ Separate;
 
 ClearAll[Separate, Separate0, Separate1, SeparatePoly];
 SeparateHead;
+SeparateDropOne;
 Separate::usage = 
   "1. Separate[expr, patt] separate polynomials consitituted by patt.
 2. Option SeparateHead replace the default head List.
@@ -34,7 +35,7 @@ Separate1[expr_, patt0_List, opt : OptionsPattern[]] /;
   patt = Transpose@patt;
   OptionValue["SeparateHead"] @@ {coe, Sequence @@ patt}]
 
-Options[SeparatePoly] = {"SeparateHead" -> List};
+Options[SeparatePoly] = {"SeparateHead" -> List, "SeparateDropOne"->False};
 SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := Module[{sa, ar, ltop, tp1},
   If[expr === 0, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
@@ -45,5 +46,7 @@ SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] /;
   ltop[list_] := Times @@ (vars[[#]] & /@ list);
   tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
   tp1 = SortBy[tp1, Last];
-  If[sa[[1]] === 0, Nothing, PrependTo[tp1, {sa[[1]], 1}]];
+  If[sa[[1]] =!= 0 && !OptionValue["SeparateDropOne"], 
+  PrependTo[tp1, {sa[[1]], 1}],
+  Nothing];
   OptionValue["SeparateHead"] @@ Transpose[tp1]]
