@@ -18,7 +18,7 @@ LoopS = <|
 
 SimplifyS = If[ToString[SimplifyS] === "SimplifyS", Factor, SimplifyS];
 
-DiracPattern = _Dot | _Spinor | _GAD | _GSD | _DiracTrace;
+DiracPattern = _DiracTrace| _Dot | _Spinor | _GAD | _GSD;
 OperatorPattern = 
   If[ToString@OperatorPattern === "OperatorPattern", DiracPattern, 
    OperatorPattern];
