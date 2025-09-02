@@ -5,7 +5,7 @@ DropZeroByNumerics[expr0_, patt_] := DropZeroByNumerics[expr0, expr0, patt]
 DropZeroByNumerics[expr0_, expr_, patt_] := 
  Module[{tp1, tpGs1, tpvars, func1, tpGs2, tpGs3, tpGs4, tpRules2},
   tp1 = expr // Separate[#, patt] &;
-  tpGs1 = tp1[[2]] // getS[#, patt] &;
+  tpGs1 = expr // getS[#, patt] &;
   If[tpGs1 =!= {} && tpGs1 =!= tp1[[2]], 
    Print["DropZeroByNumerics: Wrong input form."]; Abort[]];
   tpvars = tp1[[1]] // Variables;
