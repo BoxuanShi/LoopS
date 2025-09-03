@@ -52,14 +52,14 @@ NumeratorToSPD[expr_, indices_List,
    tp1 = tp1 // RefineSpinor;
 
   (*1. first step simplification*)
-   tp2 = tp1 // 
+   tp1 = tp1 // 
       CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify] & // 
      ExpandDirac(*//TimingS*);
 
-   tp1 = tp1 // 
+   tp2 = tp1 // 
      CollectS[#, _FAD | _SFAD, # &, 
        FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &;
-       
+
        , "NumeratorToSPD: Preprocessing..."];
    
   (*have to collect FVD, MTD here, otherwise, 
