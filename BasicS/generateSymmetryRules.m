@@ -22,7 +22,10 @@ GenerateSymmetryRules[generators_, symbollist_] :=
          symbollist[[PermutationReplace[Range@Length@symbollist, tp2[[i]]]]]},
          Length@Dimensions@symbollist] // Flatten // Union
      , {i, Length@tp2}];
-   {tp3, tp4}];
+     
+   <|"Rules" -> tp3, "InvRules" -> tp4|>
+   
+   ];
 
 (*example, we used this rule in pion EMFF*)
 
