@@ -87,7 +87,7 @@ index."];
     TableS[
      If[zeroSectorQ[tp1[[i]] // GToProps[#, family, List] &, loops, 
        kinematics], Nothing, tp1[[i]]]
-     , {i, Length@tp1}, Evaluate@opttable]
+     , {i, Length@tp1}, Method->Automatic, Evaluate@opttable]
     , tp1];
   
   Join[topsec0, tp2] // DeleteDuplicates

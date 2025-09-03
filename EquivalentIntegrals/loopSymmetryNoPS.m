@@ -181,13 +181,16 @@ branchClassify[props_,loopmoms_,extmoms_,opt:OptionsPattern[]]/;OptRestrict[opt]
 
 (*** Find all loop bases from symanzik polynomial of loop-internal momenta matrix. 
 	Each basis is a possible choice of {l1, l2, ...}***)
-loopBasis[cycedgmat_]:=Module[
-	{symanzik1,x,res},
-	symanzik1=(MMATranspose@cycedgmat . DiagonalMatrix[Array[x,Length@cycedgmat]] . cycedgmat)//Det//Expand;
-	res=If[Head@symanzik1===Plus,List@@symanzik1,List@symanzik1];
-	res=(If[Head@#===Times,List@@#,List@#]&)/@res;
-	res/.x->Identity
-];
+loopBasis[cycedgmat_] := Module[{symanzik1, x, y, res},
+  symanzik1 = 
+   Expand[Det[
+     MMATranspose[cycedgmat] . 
+      DiagonalMatrix[Array[x, Length[cycedgmat]]] . cycedgmat]]; 
+  res = If[Head[symanzik1] === Plus, List @@ symanzik1, {symanzik1}]; 
+  res = (If[Head[#1] === Times, List @@ #1, {#1}] &) /@ res;
+  (*res=DeleteCases[#,y_/;NumberQ[y],{2}]&@res;*)
+  res = DeleteCases[#, y_ /; NumberQ[y[[1]]], {1}] &@res;
+  res /. x -> Identity]
 
 (*** the transformation for a single choice of loop basis ***)
 lbTransform[cycextedg_,loopbasis0_]:=Module[
