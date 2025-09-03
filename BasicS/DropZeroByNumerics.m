@@ -31,7 +31,7 @@ patt."]; Abort[]];
   poly3 = Complement[poly1, poly2];
   
   polyv = Transpose@tp1 // Select[#, MemberQ[poly3, #[[2]]] &] &;
-  polyv = polyv // Simplify;
+  polyv = polyv // TogetherExpand;
   polyv = Select[polyv, #[[1]] === 0 &][[All, 2]];
   polyv = Join[polyv, Complement[poly1, tp1[[2]]]];
   
