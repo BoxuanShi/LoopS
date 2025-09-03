@@ -1,11 +1,11 @@
-generateSymmetryRules;
+GenerateSymmetryRules;
 
 (*generate symmetry transformation rules for permutation group generators \
 {(1,2),(3,4),(1,3)(2,4)...}, the second arguement is the corresponding \
 variables of "1, 2, 3, 4..."*)
 
-ClearAll[generateSymmetryRules]
-generateSymmetryRules[generators_, symbollist_] := 
+ClearAll[GenerateSymmetryRules]
+GenerateSymmetryRules[generators_, symbollist_] := 
   Module[{i, j, num, tp1, tp2, tp3, tp4},
    tp1 = PermutationProduct /@ 
      GroupElements[PermutationGroup[Cycles /@ generators]];
@@ -26,5 +26,5 @@ generateSymmetryRules[generators_, symbollist_] :=
 
 (*example, we used this rule in pion EMFF*)
 
-(*generateSymmetryRules[{{{1,2}},{{3,4}},{{1,3},{2,4}}},{{x1,p1},{x2,p2},{y1,\
+(*GenerateSymmetryRules[{{{1,2}},{{3,4}},{{1,3},{2,4}}},{{x1,p1},{x2,p2},{y1,\
 p3},{y2,p4}}]*)

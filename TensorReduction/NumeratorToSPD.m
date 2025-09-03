@@ -112,7 +112,7 @@ simplify, we will include them after pv reduction, Dot[___]*
   
   If[OptionValue["OperatorCollect"] == True,
    tp3 = FixedPoint[
-     PolynomialCollect[indicesOrder[#, itc++; indices2, {}], DiracPattern] &,
+     PolynomialCollect[indicesOrder[#, itc++; indices2, {}], OperatorPattern] &,
      tp3,
      maxit];
    Return[tp3]
