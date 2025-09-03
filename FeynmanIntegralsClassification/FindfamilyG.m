@@ -4,11 +4,11 @@ ClearAll[FindfamilyG]
 Options[FindfamilyG] := 
   CreateOptions[{"FindfamilyGDefault" -> Hold[Abort[]], "FGMode" -> "GSearch",
      "Symmetry" -> <|"Rules" -> {{}}, "InvRules" -> {{}}|>}, {CanonicalLoops}];
-FindfamilyG[props0_List, familyLS_List, loops_List, 
+FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
  FindfamilyG[props0, familyLS, loops, ToExpression[process], Evaluate@opt]
-FindfamilyG[props0_List, familyLS_List, loops_List, process_Association, 
+FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List, process_Association, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
  FindfamilyG[props0, familyLS, loops, process["moms"], process["kinematics"], 
   Evaluate@opt]
