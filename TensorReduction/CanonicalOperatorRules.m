@@ -66,9 +66,9 @@ CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch,
   
   (*reduce generated redundant operators*)
   tp3 = TableS[
-    NumeratorToSPD[tp2[[i]], indices, operatorRules2, loopmoms, moms, 
+    NumeratorToSPD[tp2[[i]], indices, Dispatch@operatorRules2, loopmoms, moms, 
      extmomsind, purePV, optnum], {i, Length@tp2}, Evaluate@opttable];
   
   (*return*)
-  Dispatch@Union@Thread[tp2 -> tp3]
+  Union@Thread[tp2 -> tp3]
   ]
