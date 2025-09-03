@@ -47,5 +47,5 @@ GenerateFamilyLS[family_List, loops_List, moms_List, kinematics_List,
   tp1 = TableS[
     LSsubsets[family[[i]], loops, moms, kinematics], {i, 
      Length@family}, Evaluate@FilterOptions[{opt}, TableS]];
-  tp1 = tp1 // Transpose;
-  {family, tp1[[2]]}]
+  (* tp1 = tp1 // Transpose; *)
+  {family, tp1}]
