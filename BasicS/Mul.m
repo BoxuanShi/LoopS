@@ -21,6 +21,6 @@ SetAttributes[Mul0, Listable]
 
 ParallelLoad["$ApartTemporaryDirectory"] := Module[{},
   ClearAll[$ApartTemporaryDirectory];
-  $ApartTemporaryDirectory := "TempMul/" <> "mul" <> ToString[$KernelID]
+  $ApartTemporaryDirectory := "tempmul/" <> "mul" <> ToString[$KernelID]
   ]
 ParallelLoad["$ApartTemporaryDirectory"]

@@ -3,7 +3,7 @@ FileStructures;
 ClearAll[ProcessPath, PVPath, FIREWorkPath, LoopSWorkDirectory]
 LoopSWorkDirectory := 
   LoopSWorkDirectory = 
-   PathName@FileNameJoin[{ExpandFileName[NotebookDirectoryS[]], "LoopS","Processes"}];
+   PathName@FileNameJoin[{ExpandFileName[NotebookDirectoryS[]], "LoopSFile","Processes"}];
 
 ProcessPath[process_String] := FileNameJoin[{LoopSWorkDirectory, process}]
 
@@ -15,4 +15,4 @@ FIREFamilyName[loops_List] := Module[{str},
   "family" <> str <> "LO"]
 
 $OPITeRWorkPath := 
- FileNameJoin[{ParentDirectory@LoopSWorkDirectory, "tempOPITeR"}]
+ FileNameJoin[{ParentDirectory@LoopSWorkDirectory, "tempopiter"}]
