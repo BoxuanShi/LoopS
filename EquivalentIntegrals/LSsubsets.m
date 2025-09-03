@@ -12,7 +12,7 @@ LSsubsets[propslist_List, loops_List, process_Association,
  LSsubsets[propslist, loops, process["moms"], process["kinematics"], opt]
 LSsubsets[propslist_List, loops_List, moms_List, kinematics_List, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, rg0, rg, sym, tp0, tp1, tp1x, tp2, tp3, tp4, opttable, optLS},
+ Module[{i, a, rg0, rg, sym, tp0, tp1, tp1x, tp2, tp3, tp4, opttable, optLS},
   rg0 = OptionValue["LSsubsetsRange"];
   rg = {If[rg0 == 1, Length@loops, rg0], Length@propslist};
   
@@ -23,7 +23,7 @@ LSsubsets[propslist_List, loops_List, moms_List, kinematics_List,
   opttable = FilterOptions[{opt}, TableS];
   optLS = FilterOptions[{opt}, CanonicalLoops];
   tp3 = Block[{Monitor = (# &)}, 
-    TableS[CanonicalLoops[tp2[[i]], loops, moms, kinematics, 
+    TableS[CanonicalLoops[tp2[[i]], loops, moms, kinematics, Method -> Automatic, 
       Evaluate@optLS], {i, Length@tp2}, Evaluate@opttable]];
   tp4 = GatherBy[tp3, #[[1]] &][[All, 1]];
   
@@ -33,15 +33,19 @@ LSsubsets[propslist_List, loops_List, moms_List, kinematics_List,
 
 ClearAll[GenerateFamilyLS]
 Options[GenerateFamilyLS] := CreateOptions[{}, {LSsubsets, TableS}];
-GenerateFamilyLS[family_List, loops_List, moms_List, spdrules_List, 
+GenerateFamilyLS[family_List, loops_List, 
+  CurrentProcess_String : "CurrentProcess", opt : OptionsPattern[]] :=
+  GenerateFamilyLS[family, loops, ToExpression@CurrentProcess, 
+  Evaluate@opt]
+GenerateFamilyLS[family_List, loops_List, CurrentProcess_Association, 
+  opt : OptionsPattern[]] := 
+ GenerateFamilyLS[family, loops, CurrentProcess["moms"], 
+  CurrentProcess["kinematics"], Evaluate@opt]
+GenerateFamilyLS[family_List, loops_List, moms_List, kinematics_List, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{i, tp1, tp2, tp3, opttable},
-  opttable = FilterOptions[{opt}, TableS];
-  
   tp1 = TableS[
-    LSsubsets[family[[i]], loops, moms, spdrules], {i, Length@family}, 
-    Evaluate@opttable];
+    LSsubsets[family[[i]], loops, moms, kinematics], {i, 
+     Length@family}, Evaluate@FilterOptions[{opt}, TableS]];
   tp1 = tp1 // Transpose;
-  
-  {family, tp1[[2]]}
-  ]
+  {family, tp1[[2]]}]
