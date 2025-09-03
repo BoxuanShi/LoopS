@@ -97,7 +97,7 @@ simplify, we will include them after pv reduction, Dot[___]*
      indices1x /. "dummyindices" -> Sequence @@ dummyind];
    
    (*may be faster for simple case...*)
-   tp3 = tp3 // CollectS[#, DiracPattern, # &, RenameDummyInd] &;
+   tp3 = tp3 // CollectS[#, OperatorPattern, # &, RenameDummyInd] &;
    
    , "NumeratorToSPD: Canonicalizing indices..."];
   
@@ -162,7 +162,7 @@ simplify, we will include them after pv reduction, Dot[___]*
      AbbreviatePolynomials[tp3, OperatorPattern, 
       "AbbreviatePolynomialsName" -> OptionValue["OperatorName"], 
       "AbbreviatePolynomialsHead" -> OptionValue["OperatorHead"]];
-   , {"NumeratorToSPD: Abbreivating spinors..."}];
+   , {"NumeratorToSPD: Abbreivating operators..."}];
   
   (*tpx10=tp3;*)
   (*make the further simplification more easier if we add this OperatorHead*)

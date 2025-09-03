@@ -46,5 +46,5 @@ indicesOrder0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
     dot -> Dot;(*fix a bug when mutiple Dot[__] rules conflict...*)
   tp3 = tp3 // CollectS[#, DiracPattern | _MTD | _FVD, # &, DiracSimplify] &(*//
     FCES*)// DiracTraceExpand(*//TimingS*);
-  tp3 // CollectS[#, DiracPattern, # &, RenameDummyInd[#] /. operatorRules &] &
+  tp3 // CollectS[#, OperatorPattern, # &, RenameDummyInd[#] /. operatorRules &] &
   ]
