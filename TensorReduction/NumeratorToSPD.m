@@ -41,22 +41,27 @@ NumeratorToSPD[expr_, indices_List,
   patt = _Dot | _DiracTrace | (x : PVPatt /; ! 
        FreeQ[x, Alternatives @@ loopmoms])(*PVPatt*);
   (*{_Dot|_DiracTrace}~Join~(List@@PVPatt)*)
+  
   (*0. to fix a bug FCI@FAD[l + x p] -> Momentum[x p,D], 
   ExpandMomentum can restore Momentum[x p,D] -> x Momentum[p,D]*)
+
   Monitor[
    tp1 = FCES@expr /. 
       Dispatch@{SPD[a_, b_] :> ExpandMomentum[SPD[a, b], moms], 
         FVD[a_, b_] :> ExpandMomentum[FVD[a, b], moms]} // FCES;
    tp1 = tp1 // RefineSpinor;
-   tp1 = tp1 // 
-     CollectS[#, _FAD | _SFAD, # &, 
-       FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &;
-   
-   (*1. first step simplification*)
+
+  (*1. first step simplification*)
    tp2 = tp1 // 
       CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify] & // 
      ExpandDirac(*//TimingS*);
-   , "NumeratorToSPD: Preprocessing..."];
+
+   tp1 = tp1 // 
+     CollectS[#, _FAD | _SFAD, # &, 
+       FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &;
+       
+       , "NumeratorToSPD: Preprocessing..."];
+   
   (*have to collect FVD, MTD here, otherwise, 
   many terms with open index appear...*)
   (*tpt2=tp2;*)(*we do not include form _FVD|_MTD in the first time dirac \
