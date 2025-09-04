@@ -20,5 +20,5 @@ GatherAmplitudes[amp_List] := Module[{tp1, tp2, tp3, tp4, tp5, tp6},
    tp6[[i, All, 2]] = 
     tp6[[i, All, 2]]*If[tp5[[i, 1]] === 0, 0, 1/tp5[[i, 1]]] // 
      Factor, {i, Length@tp4}];
-  {tp5, tp6}
+  {Dot @@@ tp5, tp6}
   ]
