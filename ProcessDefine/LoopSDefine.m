@@ -13,12 +13,15 @@ LoopS = <|
    "SimplifyS" :> SimplifyS,
    "DiracPattern" :> DiracPattern,
    "OperatorPattern" :> OperatorPattern,
+   "AmplitudePattern" :> AmplitudePattern,
    "LoopSParallelKernels" :> LoopSParallelKernels
    |>;
 
 SimplifyS = If[ToString[SimplifyS] === "SimplifyS", Factor, SimplifyS];
 
-DiracPattern = _DiracTrace | _Dot | _Spinor | _GAD | _GSD;
+DiracPattern =  _Dot | _DiracTrace | _Spinor | _GAD | _GSD;
 OperatorPattern = 
   If[ToString@OperatorPattern === "OperatorPattern", DiracPattern, 
    OperatorPattern];
+
+AmplitudePattern = _Dot | _DiracTrace | _Spinor | _GAD | _GSD | _FVD | _MTD | _FAD | _SPD;
