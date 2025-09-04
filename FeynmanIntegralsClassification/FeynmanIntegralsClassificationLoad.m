@@ -11,3 +11,4 @@ Get["FindnumRules.m"];
 Get["ReduceSPDToG.m"];
 Get["DenominatorToG.m"];
 Get["AmplitudeReduce.m"];
+Get["GatherAmplitudes.m"];
