@@ -1,8 +1,10 @@
 LSsubsets;
+LSsubsetsSortQ;
 
 ClearAll[LSsubsets]
+LSsubsets::usage = "1. Option \"LSsubsetsSortQ\" (default True) sorts the output subsets. Switch if off to obtain old version result.";
 Options[LSsubsets] := 
-  CreateOptions[{"Parallelization" -> False, "LSsubsetsRange" -> 1}, {TableS, 
+  CreateOptions[{"LSsubsetsRange" -> 1, "LSsubsetsSortQ" -> True}, {TableS, 
     CanonicalLoops}];
 LSsubsets[propslist_List, loops_List, process_String : "CurrentProcess", 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
@@ -27,7 +29,7 @@ LSsubsets[propslist_List, loops_List, moms_List, kinematics_List,
       Evaluate@optLS], {i, Length@tp2}, Evaluate@opttable]];
 
   tp4 = GatherBy[tp3, #[[1]] &];
-  tp4 = Sort /@ tp4;
+  If[OptionValue["LSsubsetsSortQ"], tp4 = Sort /@ tp4];
   tp4 = tp4[[All,1]];
   
   tp4
