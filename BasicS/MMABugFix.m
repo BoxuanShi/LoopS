@@ -1,5 +1,5 @@
 MMABugFix;
-
+(*no clear here*)
 ParallelLoad["OffSolvesavrs"] := Off[Solve::svars];
 ParallelLoad["OffSolvesavrs"];
 
@@ -17,3 +17,7 @@ ClearAll[UnionS]
 UnionS[list_List, list2__List] := Union[list, list2]
 UnionS[list_List, test_ : SameQ] := 
  list // DeleteDuplicates[#, test] & // Sort
+
+ 
+ClearAll[FactorAll];
+FactorAll[expr_] := MapAll[Factor, expr]
