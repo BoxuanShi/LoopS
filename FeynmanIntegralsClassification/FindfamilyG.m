@@ -1,21 +1,20 @@
 FindfamilyG;
+Symmetry;
+SymmetryFirstQ;
 
-ClearAll[FindfamilyG]
-Options[FindfamilyG] := 
-  CreateOptions[{"FindfamilyGDefault" -> Hold[Abort[]], "FGMode" -> "GSearch",
-     "Symmetry" -> <|"Rules" -> {{}}, "InvRules" -> {{}}|>}, {CanonicalLoops}];
-FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List, 
-   process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := 
- FindfamilyG[props0, familyLS, loops, ToExpression[process], Evaluate@opt]
+ClearAll[FindfamilyG];
+Options[FindfamilyG] := CreateOptions[{"Symmetry" -> <|"Rules" -> {{}}, "InvRules" -> {{}}|>, "SymmetryFirstQ" -> True, "FindfamilyGDefault" -> Hold[Abort[]], "FGMode" -> "GSearch"}, {CanonicalLoops}];
+
+FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := FindfamilyG[props0, familyLS, loops, ToExpression[process], Evaluate@opt]
+
 FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List, process_Association, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
  FindfamilyG[props0, familyLS, loops, process["moms"], process["kinematics"], 
   Evaluate@opt]
 FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List,
     moms_List, kinematics_List, opt : OptionsPattern[]] /; OptRestrict[opt] :=
-  Module[{i, default, sym, symQ, symnum, tpfamily, lx, ln, tp1, tp2, tp3, tp4,
-    tp5, tpR1, tpR1x, tpR2, tpR3, propsSTD, ct, props, sign1, sign3, optLS},
+  Module[{a, sym, symQ, symnum, tpfamily, tp1, tp2, tp2x, tp3, tpR1, tpR2, tpR3, propsSTD, ct, props, sign3},
+
   sym = OptionValue["Symmetry"];
   symQ = (sym =!= <|"Rules" -> {{}}, "InvRules" -> {{}}|>);
   
@@ -26,17 +25,35 @@ FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List,
   
   props = FADToProps[props0, List];
   
-  optLS = FilterOptions[{opt}, CanonicalLoops];
-  For[symnum = 1, symnum <= Length@sym["Rules"], symnum++,
-   tp1 = props /. sym["Rules"][[symnum]] // 
-      propsToLS[#, loops, kinematics] & // 
-     CanonicalLoops[#, loops, moms, kinematics, Evaluate@optLS] &;
-   tp2 = FirstPosition[familyLS[[2]], 
-     a_List /; TrueQ@Expand[a[[1]][[All, 1 ;; 3]] == tp1[[1]][[All, 1 ;; 3]]],
-      False, {2}];
-   If[tp2 =!= False, Break[]]
-   ];
-  
+
+  If[OptionValue["SymmetryFirstQ"],
+
+    For[symnum = 1, symnum <= Length@sym["Rules"], symnum++,
+
+    tp1 = props /. sym["Rules"][[symnum]] // 
+        propsToLS[#, loops, kinematics] & // 
+      CanonicalLoops[#, loops, moms, kinematics, Evaluate @ FilterOptions[{opt}, CanonicalLoops]] &;
+    tp2 = FirstPosition[familyLS[[2]], 
+      a_List /; TrueQ@Expand[a[[1]][[All, 1 ;; 3]] == tp1[[1]][[All, 1 ;; 3]]],
+        False, {2}];
+        
+    If[tp2 =!= False, Break[]]
+    ];
+    ,
+
+    tp2x = TableS[
+    tp1 = props /. sym["Rules"][[symnum]] // propsToLS[#, loops, kinematics] & // 
+    CanonicalLoops[#, loops, moms, kinematics, Evaluate @ FilterOptions[{opt}, CanonicalLoops]] &;
+    FirstPosition[familyLS[[2]], a_List /; TrueQ @ Expand[a[[1]][[All, 1 ;; 3]] == tp1[[1]][[All, 1 ;; 3]]], False, {2}]
+    , {symnum, Length @ sym["Rules"]}];
+
+    tp2 = Select[tp2x, # =!= False &];
+    tp2 = If[tp2 === {}, False, SortBy[tp2, {#[[1]], -#[[2]]} &][[1]]];
+    symnum = FirstPosition[tp2x, tp2][[1]];
+    
+    ];
+
+
   If[tp2 === False, Print["family is not complete -> ", props]; 
    ReleaseHold@OptionValue["FindfamilyGDefault"]];
   If[OptionValue["FGMode"] === "familySearch", Return["Exist"]];

@@ -12,7 +12,7 @@ LSsubsets[propslist_List, loops_List, process_Association,
  LSsubsets[propslist, loops, process["moms"], process["kinematics"], opt]
 LSsubsets[propslist_List, loops_List, moms_List, kinematics_List, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, a, rg0, rg, sym, tp0, tp1, tp1x, tp2, tp3, tp4, opttable, optLS},
+ Module[{i, a, rg0, rg, tp1, tp1x, tp2, tp3, tp4, opttable, optLS},
   rg0 = OptionValue["LSsubsetsRange"];
   rg = {If[rg0 == 1, Length@loops, rg0], Length@propslist};
   
@@ -25,7 +25,10 @@ LSsubsets[propslist_List, loops_List, moms_List, kinematics_List,
   tp3 = Block[{Monitor = (# &)}, 
     TableS[CanonicalLoops[tp2[[i]], loops, moms, kinematics, Method -> Automatic, 
       Evaluate@optLS], {i, Length@tp2}, Evaluate@opttable]];
-  tp4 = GatherBy[tp3, #[[1]] &][[All, 1]];
+
+  tp4 = GatherBy[tp3, #[[1]] &];
+  tp4 = Sort /@ tp4;
+  tp4 = tp4[[All,1]];
   
   tp4
   ]
