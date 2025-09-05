@@ -86,8 +86,7 @@ OPITeRImport[filename_String, extRules_, loopsRules_, indexRules_] :=
   tp2 = tp2 // 
     StringReplace[#, {"ext" -> ToString@ext, "rat" -> ToString@rat, 
        "deno" -> ToString@deno, "loop" -> ToString@loop}] &;
-  tp2 = tp2 // StringReplace[#, extRules] & // 
-     StringReplace[#, loopsRules] & // StringReplace[#, indexRules] &;
+  tp2 = tp2 // StringReplace[#, Join[extRules, loopsRules, indexRules]] &;
   
   tp3 = ToExpression@tp2;
   tp3 = tp3 /. Dispatch@{_ext -> 1, ext -> 1, _loop -> 1, loop -> 1};
