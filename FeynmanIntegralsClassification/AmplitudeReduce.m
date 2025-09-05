@@ -4,7 +4,7 @@ ClearAll[AmplitudeReduce]
 Options[AmplitudeReduce] := 
   CreateOptions[{"AmplitudeReduceForm" -> "Expression", 
     "PowerCounting" -> (# &), "AmplitudeReduceSimplify" -> (# &), 
-    "DropZeroByNumerics" -> True}, {NumeratorToSPD, DenominatorToG}];
+    "DropZeroByNumerics" -> True}, {NumeratorReduction, DenominatorToG}];
 AmplitudeReduce[amp_, loops_List : {}, familyLS_List : {{}, {}}, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
@@ -33,8 +33,8 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List,
   (*separate Numerators and loop integrals*)
   {tpNumlist, tpDenolist} = SeparateFAD[amp, loops, moms];
   
-  (*NumeratorToSPD*)
-  optnum = FilterOptions[{opt}, NumeratorToSPD];
+  (*NumeratorReduction*)
+  optnum = FilterOptions[{opt}, NumeratorReduction];
   
   (*option PowerCounting*)
   PowerCounting = OptionValue["PowerCounting"];
@@ -46,13 +46,13 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List,
     TableS[
      tp1 = tpNumlist[[i]] // PowerCounting0 // PowerCounting;
      tp1 = 
-      tp1 // NumeratorToSPD[#, indices, operatorRules, loopmoms, moms, 
-         extmomsind, purePV, "NumeratorToSPDForm" -> "ExpressionRules", 
-         "OperatorHead" -> OPERAT, "NumeratorToSPDDispatch" -> False, 
+      tp1 // NumeratorReduction[#, indices, operatorRules, loopmoms, moms, 
+         extmomsind, purePV, "NumeratorReductionForm" -> "ExpressionRules", 
+         "OperatorHead" -> OPERAT, "NumeratorReductionDispatch" -> False, 
          Evaluate@optnum] &;
      tp1 = tp1 // PowerCounting,
      {i, Length@tpNumlist}, 
-     "reducing numerator structures with NumeratorToSPD...", Evaluate@opttable]
+     "reducing numerator structures with NumeratorReduction...", Evaluate@opttable]
     ](*//TimingS*);
   
   (*option OperatorCollect*)

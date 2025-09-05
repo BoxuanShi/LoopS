@@ -1,32 +1,32 @@
-NumeratorToSPD;
+NumeratorReduction;
 
-ClearAll[NumeratorToSPD];
+ClearAll[NumeratorReduction];
 Protect[LorInd];
 Protect[OPs];
-NumeratorToSPD::index = "The complete index should be -> `1`.";
-NumeratorToSPD::maxit = 
+NumeratorReduction::index = "The complete index should be -> `1`.";
+NumeratorReduction::maxit = 
   "The max iteration `1` reached, the Lorentz indices may be not uniquely \
 ordered.";
-NumeratorToSPD::spinor = 
+NumeratorReduction::spinor = 
   "Spinor still exist, the operatorRules is not complete. The outputs are \
 still correct.";
 
-Options[NumeratorToSPD] := 
+Options[NumeratorReduction] := 
   CreateOptions[{"OperatorCollect" -> False, "OperatorReplace" -> True, 
     "PVPatt" -> Automatic, "MaxIt" -> 10, 
-    "NumeratorToSPDSimplify" :> SimplifyS, 
-    "NumeratorToSPDForm" -> "Expression", "NumeratorToSPDDispatch" -> True, 
+    "NumeratorReductionSimplify" :> SimplifyS, 
+    "NumeratorReductionForm" -> "Expression", "NumeratorReductionDispatch" -> True, 
     "OperatorName" -> OPs, "OperatorHead" -> (# &)}, {CollectS}];
 
-NumeratorToSPD[expr_, process_String : "CurrentProcess", 
+NumeratorReduction[expr_, process_String : "CurrentProcess", 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- NumeratorToSPD[expr, ToExpression[process], opt]
-NumeratorToSPD[expr_, process_Association, opt : OptionsPattern[]] /; 
+ NumeratorReduction[expr, ToExpression[process], opt]
+NumeratorReduction[expr_, process_Association, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
- NumeratorToSPD[expr, process["indices"], process["operatorRules"], 
+ NumeratorReduction[expr, process["indices"], process["operatorRules"], 
   process["loopmoms"], process["moms"], process["extmomsind"], 
   process["purePV"], opt]
-NumeratorToSPD[expr_, indices_List, 
+NumeratorReduction[expr_, indices_List, 
    operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, 
    extmomsind_List, purePV_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop,
@@ -60,7 +60,7 @@ NumeratorToSPD[expr_, indices_List,
      CollectS[#, _FAD | _SFAD, # &, 
        FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &;
 
-       , "NumeratorToSPD: Preprocessing..."];
+       , "NumeratorReduction: Preprocessing..."];
    
   (*have to collect FVD, MTD here, otherwise, 
   many terms with open index appear...*)
@@ -79,7 +79,7 @@ simplify, we will include them after pv reduction, Dot[___]*
          DotExpand // # /. DiracTrace -> TR & // 
        PVReduce[#, loopmoms, purePV] &, {i, Length@tp2}] // FCES(*,
    "tp3 1"]*);
-   , "NumeratorToSPD: PV reducing..."];
+   , "NumeratorReduction: PV reducing..."];
   
   
   (*4. contract the indices from the PV reduction*)
@@ -87,7 +87,7 @@ simplify, we will include them after pv reduction, Dot[___]*
    tp3 = Total[tp3] // 
        CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify] & // FCES(*//
     TimingS*);
-   , "NumeratorToSPD: Contracting the indices from the PV reduction..."];
+   , "NumeratorReduction: Contracting the indices from the PV reduction..."];
   
   
   (*5. canonical index*)
@@ -104,14 +104,14 @@ simplify, we will include them after pv reduction, Dot[___]*
    (*may be faster for simple case...*)
    tp3 = tp3 // CollectS[#, OperatorPattern, # &, RenameDummyInd] &;
    
-   , "NumeratorToSPD: Canonicalizing indices..."];
+   , "NumeratorReduction: Canonicalizing indices..."];
   
   (*6. replaced by operators*)
   
   If[
    indices =!= {} && ! 
      SubsetQ[indices, Complement[getfullindices[tp3], dummyind]],
-   Message[NumeratorToSPD::index, Complement[getfullindices[tp3], dummyind]]
+   Message[NumeratorReduction::index, Complement[getfullindices[tp3], dummyind]]
    ];
   
   
@@ -146,15 +146,15 @@ simplify, we will include them after pv reduction, Dot[___]*
       tp4 = tp3; tp3 = indicesOrder[tp3, indices2, operatorRules]](*//
      TimingS*);
      ];
-   , {"NumeratorToSPD: Indices ordering... ", itc}];
+   , {"NumeratorReduction: Indices ordering... ", itc}];
   
   (*Print[itc];*)
   
   If[itc >= maxit, 
-   Message[NumeratorToSPD::maxit,(*maxit*)
+   Message[NumeratorReduction::maxit,(*maxit*)
     ToString[itc] <> " of " <> ToString[maxit]]];
   If[! FreeQ[tp3, Spinor] && operatorRules =!= {} && 
-    OptionValue["OperatorReplace"] == True, Message[NumeratorToSPD::spinor]];
+    OptionValue["OperatorReplace"] == True, Message[NumeratorReduction::spinor]];
   
   (*tp3=tp3/.Dispatch[x:_SPD/;FreeQ[x,Alternatives@@loopmoms]:>spd@@
   x];*)(*to fix a bug when SPD[p1,
@@ -167,24 +167,24 @@ simplify, we will include them after pv reduction, Dot[___]*
      AbbreviatePolynomials[tp3, OperatorPattern, 
       "AbbreviatePolynomialsName" -> OptionValue["OperatorName"], 
       "AbbreviatePolynomialsHead" -> OptionValue["OperatorHead"]];
-   , {"NumeratorToSPD: Abbreivating operators..."}];
+   , {"NumeratorReduction: Abbreivating operators..."}];
   
   (*tpx10=tp3;*)
   (*make the further simplification more easier if we add this OperatorHead*)
   tp3 = Monitor[
     CollectS[tp3, x : _SPD /; ! FreeQ[x, Alternatives @@ loopmoms], 
-     OptionValue["NumeratorToSPDSimplify"]],
-    "NumeratorToSPD: Simplifying with the option \
-\"NumeratorToSPDSimplify\"..."](*//TimingS*);
+     OptionValue["NumeratorReductionSimplify"]],
+    "NumeratorReduction: Simplifying with the option \
+\"NumeratorReductionSimplify\"..."](*//TimingS*);
   (*although in the next step, we only concern about the SPD -> 
   deno to obtain scalar integrals, 
   we can still retain these structure for easier simplification...*)
   
   (*tp3=tp3/.Dispatch[spd->SPD];*)
   
-  Switch[OptionValue["NumeratorToSPDForm"],
+  Switch[OptionValue["NumeratorReductionForm"],
    "ExpressionRules", {tp3, 
-    If[OptionValue["NumeratorToSPDDispatch"], Dispatch@tp4, tp4]},
+    If[OptionValue["NumeratorReductionDispatch"], Dispatch@tp4, tp4]},
    _, tp3 /. Dispatch@tp4
    ]
   

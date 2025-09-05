@@ -10,7 +10,7 @@ getdummyindices2[expr_] := Module[{tp1, tp2},
 
 ClearAll[CanonicalOperatorRules]
 Options[CanonicalOperatorRules] := 
-  CreateOptions[{"Parallelization" -> False}, {NumeratorToSPD, TableS}];
+  CreateOptions[{"Parallelization" -> False}, {NumeratorReduction, TableS}];
 CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
@@ -31,11 +31,11 @@ CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch,
   
   (*options*)
   opttable = FilterOptions[{opt}, TableS];
-  optnum = FilterOptions[{opt}, NumeratorToSPD];
+  optnum = FilterOptions[{opt}, NumeratorReduction];
   
   (*reduce input operators to canonical operators with head OPERAT*)
   tp1x = TableS[
-    NumeratorToSPD[operatorRules0[[i, 1]], indices, {}, loopmoms, moms, 
+    NumeratorReduction[operatorRules0[[i, 1]], indices, {}, loopmoms, moms, 
      extmomsind, purePV, "OperatorReplace" -> False, "OperatorHead" -> OPERAT,
       optnum], {i, Length@operatorRules0}, Evaluate@opttable];
   
@@ -66,7 +66,7 @@ CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch,
   
   (*reduce generated redundant operators*)
   tp3 = TableS[
-    NumeratorToSPD[tp2[[i]], indices, Dispatch@operatorRules2, loopmoms, moms, 
+    NumeratorReduction[tp2[[i]], indices, Dispatch@operatorRules2, loopmoms, moms, 
      extmomsind, purePV, optnum], {i, Length@tp2}, Evaluate@opttable];
   
   (*return*)
