@@ -70,5 +70,5 @@ CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch,
      extmomsind, purePV, optnum], {i, Length@tp2}, Evaluate@opttable];
   
   (*return*)
-  Union@Thread[(Verbatim/@tp2) -> tp3]
+  Union@Thread[tp2 -> tp3]
   ]

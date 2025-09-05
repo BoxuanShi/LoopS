@@ -1,2 +1,0 @@
-1. AtomizeRules have considered the case of Dot[___] variables.
-2. 

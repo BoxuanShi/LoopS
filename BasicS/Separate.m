@@ -48,7 +48,10 @@ SeparatePoly0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   vars = OptionValue["vars"];
   If[expr === 0, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
   If[vars === {}, 
-   Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]];
+    If[OptionValue["SeparateDropOne"], 
+     Return[OptionValue["SeparateHead"] @@ {{}, {}}],
+     Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]]
+  ];
   sa = CoefficientArrays[expr, vars];
   ar = (ArrayRules /@ sa[[2 ;; -1]])[[All, 1 ;; -2]] // Flatten;
   ltop[list_] := Times @@ (vars[[#]] & /@ list);

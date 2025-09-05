@@ -41,15 +41,18 @@ FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List,
     ];
     ,
 
+    tp1 = TableS[
+    props /. sym["Rules"][[symnum]] // propsToLS[#, loops, kinematics] & // 
+    CanonicalLoops[#, loops, moms, kinematics, Evaluate @ FilterOptions[{opt}, CanonicalLoops]] &
+    , {symnum, Length @ sym["Rules"]}];
     tp2x = TableS[
-    tp1 = props /. sym["Rules"][[symnum]] // propsToLS[#, loops, kinematics] & // 
-    CanonicalLoops[#, loops, moms, kinematics, Evaluate @ FilterOptions[{opt}, CanonicalLoops]] &;
-    FirstPosition[familyLS[[2]], a_List /; TrueQ @ Expand[a[[1]][[All, 1 ;; 3]] == tp1[[1]][[All, 1 ;; 3]]], False, {2}]
+    FirstPosition[familyLS[[2]], a_List /; TrueQ @ Expand[a[[1]][[All, 1 ;; 3]] == tp1[[symnum]][[1]][[All, 1 ;; 3]]], False, {2}]
     , {symnum, Length @ sym["Rules"]}];
 
     tp2 = Select[tp2x, # =!= False &];
     tp2 = If[tp2 === {}, False, SortBy[tp2, {#[[1]], -#[[2]]} &][[1]]];
     symnum = FirstPosition[tp2x, tp2][[1]];
+    tp1 = tp1[[symnum]]
     
     ];
 
