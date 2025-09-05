@@ -37,14 +37,16 @@ SetAttributes[indicesOrder0, Listable]
 Options[indicesOrder0] = {"indices" -> "indices", 
    "operatorRules" -> "operatorRules"};
 indicesOrder0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{tp1, tp2, tp3, dot, indices, operatorRules},
+ Module[{tp1, tp2, tp3, dot, rules, indices, operatorRules},
   {indices, operatorRules} = {OptionValue["indices"], 
     OptionValue["operatorRules"]};
   tp1 = expr // getS[#, _Dot(*DiracPattern*)] &;
   tp2 = DiracOrder[#, indices] & /@ tp1 // FCES;
-  tp3 = (expr /. Dot -> dot) /. (Thread[tp1 -> tp2] /. Dot -> dot) /. 
-    dot -> Dot;(*fix a bug when mutiple Dot[__] rules conflict...*)
+  
+  rules = Thread[tp1 -> tp2];
+  tp3 = expr /. x:_Dot :> Replace[x, rules];
+
   tp3 = tp3 // CollectS[#, DiracPattern | _MTD | _FVD, # &, DiracSimplify] &(*//
     FCES*)// DiracTraceExpand(*//TimingS*);
-  tp3 // CollectS[#, OperatorPattern, # &, RenameDummyInd[#] /. operatorRules &] &
+  tp3 // CollectS[#, OperatorPattern, # &, Replace[RenameDummyInd[#], operatorRules] &] &
   ]

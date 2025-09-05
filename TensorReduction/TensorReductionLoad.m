@@ -11,3 +11,8 @@ Get["AbbreviateOperators.m"];
 Get["NumeratorToSPD.m"];
 Get["PermutationRulesFromSets.m"];
 Get["CanonicalOperatorRules.m"];
+
+Get["GeneratePV.m"];
+Get["GeneratePVOPITeR.m"];
+Get["GeneratePVMMA.m"];
+Get["PVRules.m"];

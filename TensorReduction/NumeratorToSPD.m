@@ -27,11 +27,12 @@ NumeratorToSPD[expr_, process_Association, opt : OptionsPattern[]] /;
   process["loopmoms"], process["moms"], process["extmomsind"], 
   process["purePV"], opt]
 NumeratorToSPD[expr_, indices_List, 
-   operatorRules_List | operatorRules_Dispatch, loopmoms_List, moms_List, 
+   operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, 
    extmomsind_List, purePV_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{PVPatt, num, num2, dummyind, indicesfull, indices1x, indices2, di, 
-   di0, permu, patt, tp1, tp2, tp3, tp4, tp5, \[Delta]\[Delta], i, x, optloop,
-    maxit = OptionValue["MaxIt"], itc = 0, TestFunction, hs, oplist},
+ Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop,
+    maxit = OptionValue["MaxIt"], itc = 0, TestFunction, operatorRules},
+  
+  operatorRules = If[Head[operatorRules0] === Dispatch, operatorRules0, Dispatch@operatorRules0];
   
   PVPatt = If[OptionValue["PVPatt"] == Automatic,
     (GSD[_] | 
@@ -40,7 +41,6 @@ NumeratorToSPD[expr_, indices_List,
     OptionValue["PVPatt"]];
   patt = _Dot | _DiracTrace | (x : PVPatt /; ! 
        FreeQ[x, Alternatives @@ loopmoms])(*PVPatt*);
-  (*{_Dot|_DiracTrace}~Join~(List@@PVPatt)*)
   
   (*0. to fix a bug FCI@FAD[l + x p] -> Momentum[x p,D], 
   ExpandMomentum can restore Momentum[x p,D] -> x Momentum[p,D]*)
@@ -136,7 +136,7 @@ simplify, we will include them after pv reduction, Dot[___]*
      ,
      
      TestFunction = (FreeQ[#, Spinor | DiracTrace] &);
-     tp3 = tp3 /. operatorRules;
+     tp3 = tp3 // CollectS[#, OperatorPattern, # &, Replace[#, operatorRules]& ] &;
      For[num = 1,
       num <= maxit && ! 
         TestFunction[
