@@ -59,7 +59,7 @@ FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List, loops_List,
 
   If[tp2 === False, Print["family is not complete -> ", props]; 
    ReleaseHold@OptionValue["FindfamilyGDefault"]];
-  If[OptionValue["FGMode"] === "familySearch", Return["Exist"]];
+  If[OptionValue["FGMode"] === "FamilySearch", Return[True]];
   
   tpR1 = tp1[[2, 1]];
   tpR2 = inverseRule[familyLS[[2]][[Sequence @@ tp2]][[2, 1]], loops];
