@@ -1,4 +1,23 @@
+SeriesPoly;
 SeriesPower;
+
+ClearAll[SeriesPoly, SeriesPoly0];
+SeriesPoly[expr_, {x_, x0_, ord_Integer}] := Module[{expr2, se},
+  expr2 = expr /. x -> x + x0;
+  se = SeriesPoly0[expr2, {x, ord}];
+  se /. x -> x - x0
+  ]
+SeriesPoly0[expr_, {x_, ord_Integer}] := 
+ Module[{tp1, tp2, rules, nonNeQ, name},
+  nonNeQ = ord >= 0;
+  tp1 = AbbreviateDeno[expr, "AbbreviateDenoName" -> name];
+  rules = 
+   Thread[tp1[[2, All, 1]] -> (tp1[[2, All, 2]] // 
+       SeriesS[#, {x, 0, ord}] &)];
+  tp2 = If[nonNeQ, tp1[[1]] /. Dispatch@rules, 
+    tp1[[1]] /. x -> 0 /. Dispatch@rules];
+  SeriesPower[tp2, {x, ord}]
+  ]
 
 ClearAll[SeriesPower, SeriesPower0]
 SeriesPower[expr_, \[Lambda]__List] := 

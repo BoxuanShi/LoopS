@@ -16,7 +16,7 @@ Get["CoefficientS.m"];
 Get["CountS.m"];
 Get["texRational.m"];
 Get["SeriesS.m"];
-Get["SeriesPower.m"];
+Get["SeriesPoly.m"];
 Get["AbbreviateVariables.m"];
 Get["AbbreviateDeno.m"];
 Get["AbbreviatePolynomials.m"];
