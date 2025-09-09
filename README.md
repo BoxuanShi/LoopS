@@ -4,11 +4,13 @@ This package includes the following third-party modules or interfaces:
 
 - **FIRE**
 - **MultivariateApart**
-- **OPITeR**
+- **OPITeR** (included as a Git submodule)
 
 All these modules are licensed under GPL-v3.
 
 Additionally, some functions are copied and modified from the CalcLoop package, which is licensed under the MIT License.
+
+**Note:** Direct downloads may not include OPITeR. Mathematica will display a prompt on first load, and following the instructions will install it.
 
 ## License Statement
 
