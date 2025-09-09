@@ -36,4 +36,4 @@ patt."]; Abort[]];
   polyv = Join[polyv, Complement[poly1, tp1[[2]]]];
   
   tpRules2 = Dispatch@Thread[polyv -> 0];
-  expr0  /. x_patt :> Replace[x, tpRules2]]
+  expr0  /. x:patt :> Replace[x, tpRules2]]
