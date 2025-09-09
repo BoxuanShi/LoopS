@@ -30,15 +30,11 @@ FIREInstalledQ = If[! FileExistsQ[$FIREInstallPath],
 
 
 If[! FileExistsQ[$OPITeRInstallPath], 
-  If[! FileExistsQ[DirectoryName @ $OPITeRInstallPath], 
-  CreateDirectory[DirectoryName @ $OPITeRInstallPath];
-  Monitor[
-  RunProcess[{"git", "clone", "https://bitbucket.org/jaegoode/opiter.git", DirectoryName @ $OPITeRInstallPath}]
-  , "OPITeR is not installed. Downloading OPITeR by \"git clone https://bitbucket.org/jaegoode/opiter.git\"..."]
-  ,
-  Print[Style["OPITeR not found. Please set $OPITeRInstallPath as the path of OPITeR's example.frm directory. For example: \"/Users/balth/Downloads/MyLoopS/packages/opiter\".", FontColor->Red]]
-  ]
-];
+  Print[Style["OPITeR not found. OPIteR can be add by:", FontColor->Red]];
+  DeleteDirectory[DirectoryName @ $OPITeRInstallPath, DeleteContents -> True];
+  Print[Style["OPIteR can be add by: git clone https://bitbucket.org/jaegoode/opiter.git "<> ToString[DirectoryName @ $OPITeRInstallPath], FontColor->Red]];
+  Print[Style["Or set $OPITeRInstallPath as the path of OPITeR's example.frm directory.", FontColor->Red]]
+]
 
 
 Get[$FeynCalcInstallPath];

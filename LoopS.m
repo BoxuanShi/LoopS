@@ -55,7 +55,8 @@ If[$OperatingSystem==="Windows",
     ,
     
     If[GeneratePVOPITeR[{},{}]=== $Failed, 
-    Print[Style["OPITeR test failed! Please verify that OPITeR and FORM are correctly installed.", FontColor->Red]],
+    Print[Style["OPITeR test failed! Please verify that OPITeR and FORM are correctly installed.", FontColor->Red]];
+    Print[Style["LoopS can be used without OPITeR, but the efficiency of Passarino–Veltman reduction will be significantly reduced in complex cases if OPITeR is not available.", FontColor->Red]];,
     Print["OPITeR test passed."]
     ];
 ];
