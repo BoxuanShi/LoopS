@@ -1,0 +1,14 @@
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS folder attributes
+._*
+.Spotlight-V100
+.Trashes
+__MACOSX/
+
+# VS Code settings
+.vscode/
