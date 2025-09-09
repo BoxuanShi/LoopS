@@ -28,8 +28,17 @@ $MultivariateApartInstallPath =
 FIREInstalledQ = If[! FileExistsQ[$FIREInstallPath], 
   Print[Style["FIRE not found. Please set $FIREInstallPath as the path of FIRE's .m file. For example: \"/Users/balth/Downloads/MyLoopS/packages/fire/FIRE6/FIRE6.m\".", FontColor->Red]]; False, True];
 
+
 If[! FileExistsQ[$OPITeRInstallPath], 
-Print[Style["OPITeR not found. Please set $OPITeRInstallPath as the path of OPITeR's example.frm directory. For example: \"/Users/balth/Downloads/MyLoopS/packages/opiter\".", FontColor->Red]]];
+  If[! FileExistsQ[DirectoryName @ $OPITeRInstallPath], 
+  CreateDirectory[DirectoryName @ $OPITeRInstallPath];
+  Monitor[
+  RunProcess[{"git", "clone", "https://bitbucket.org/jaegoode/opiter.git", DirectoryName @ $OPITeRInstallPath}]
+  , "OPITeR is not installed. Downloading OPITeR by \"git clone https://bitbucket.org/jaegoode/opiter.git\"..."]
+  ,
+  Print[Style["OPITeR not found. Please set $OPITeRInstallPath as the path of OPITeR's example.frm directory. For example: \"/Users/balth/Downloads/MyLoopS/packages/opiter\".", FontColor->Red]]
+  ]
+];
 
 
 Get[$FeynCalcInstallPath];
