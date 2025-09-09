@@ -10,7 +10,9 @@ All these modules are licensed under GPL-v3.
 
 Additionally, some functions are copied and modified from the CalcLoop package, which is licensed under the MIT License.
 
-**Note:** Direct downloads may not include OPITeR. Mathematica will display a prompt on first load, and following the instructions will install it.
+**Note:** 
+- Direct downloads may not include OPITeR. Mathematica will display a prompt on first load, and following the instructions will install it.
+- This package has only been tested on **Mathematica 14.0**.
 
 ## License Statement
 
