@@ -1,0 +1,64 @@
+include ../paths.inc
+vpath %.cpp ../sources
+vpath %.h ../sources
+
+CFLAGS = -O3 -g -Wall -Wno-strict-aliasing -std=c++17 -isystem../usr/include -DSMALL_POINT -DDISK_DB -DWITH_DEBUG -DWITH_SNAPPY -DWITH_ZSTD -DWITH_ZLIB -DPRIME -DFSBALLOCATOR_USE_THREAD_SAFE_LOCKING_PTHREAD -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+LFLAGS = -rdynamic -L../usr/lib/ -L../usr/lib64/ -ltcmalloc_minimal -lkyotocabinet -lsnappy -lzstd -lfuel -lsymbolica -lflint ../usr/lib/liblz4.a -lstdc++ -lpthread -lm -lz -lc
+else
+LFLAGS = -rdynamic -L../usr/lib/ -L../usr/lib64/ -L../extra/fuel/usr/lib/ -Wl,-Bstatic -ltcmalloc_minimal -lkyotocabinet -lsnappy -lzstd -lfuel -lsymbolica -l:liblz4.a -Wl,-Bdynamic -lgmp -lmpfr -lflint -lstdc++ -lrt -lpthread -lm -lz -lc -ldl '-Wl,-rpath,$$ORIGIN/../usr/lib/' '-Wl,-rpath,$$ORIGIN/../usr/lib64/' '-Wl,-rpath,$$ORIGIN/../extra/fuel/usr/lib/'
+endif
+
+
+
+OBJ = point.o equation.o functions.o common.o parser.o primes.o
+
+default: FIRE6 FLAME6 Ftool6
+
+FIRE6: $(OBJ) main.o
+	${CCPLUS} $(OBJ) main.o ${LFLAGS} -o FIRE6
+
+FLAME6: $(OBJ) thread.o
+	${CCPLUS} $(OBJ) thread.o ${LFLAGS} -o FLAME6
+
+Ftool6: $(OBJ) ftool.o
+	${CCPLUS} $(OBJ) ftool.o ${LFLAGS} -o Ftool6
+
+
+.cpp.o:
+	${CCPLUS} ${CFLAGS} ${INCDIR} -c $<
+
+clean:
+	rm -f ./*.o test
+
+point.o: point.cpp
+equation.o: equation.cpp
+functions.o: functions.cpp
+main.o: main.cpp
+point.o: point.h
+equation.o: equation.h
+equation.o: point.h
+functions.o: functions.h
+functions.o: equation.h
+functions.o: point.h
+main.o: functions.h
+main.o: equation.h
+main.o: point.h
+point.o: common.h
+common.o: common.h
+equation.o: common.h
+main.o: common.h
+functions.o: parser.h
+parser.o: common.h
+parser.o: point.h
+parser.o: equation.h
+thread.o: functions.h
+thread.o: equation.h
+thread.o: point.h
+ftool.o: functions.h
+ftool.o: equation.h
+ftool.o: point.h
+main.o: handler.h
+thread.o: handler.h

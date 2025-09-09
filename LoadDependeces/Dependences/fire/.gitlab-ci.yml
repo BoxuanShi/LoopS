@@ -1,0 +1,38 @@
+stages:          # List of stages for jobs, and their order of execution
+  - test
+
+test:
+  stage: test
+  script:
+    - mkdir ~/.symbolica
+    - echo $SYMB_LIC > ~/.symbolica/main_license
+    - apt-get update
+    - apt-get install -y cmake
+    - apt-get install -y zlib1g-dev
+    - apt-get install -y doxygen
+    - apt-get install -y g++
+    - apt-get install -y git
+    - export RUSTUP_INIT_SKIP_PATH_CHECK=yes
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - source "$HOME/.cargo/env"
+    - cd FIRE6
+    - ./configure --enable-zlib --enable-zstd --enable-snappy --enable-tcmalloc --enable-debug --enable-flint --enable-symbolica
+    - make submodule
+    - (ls usr/lib/liblz4.a >> /dev/null 2>&1) && rm -rf extra/fuel/usr/
+    - (ls usr/lib/liblz4.a >> /dev/null 2>&1) && mv usr/fuel_usr extra/fuel/usr
+    - make fuel -j 8
+    - (ls usr/lib/liblz4.a >> /dev/null 2>&1) || make dep -j 8
+    - make -j 8
+    - make doc
+    - make test
+    - make -f tests.makefile all calc=flint
+    - make -f tests.makefile all calc=symbolica
+    - mv extra/fuel/usr usr/fuel_usr
+    - ls -l ~/.symbolica
+  cache:
+    key: use
+    unprotect: true
+    paths:
+      - FIRE6/usr
+  only:
+    - merge_requests

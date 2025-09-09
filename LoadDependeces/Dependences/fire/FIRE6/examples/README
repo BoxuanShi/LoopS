@@ -1,0 +1,21 @@
+box.nb - Mathematica example - massless box
+doublebox.nb - Mathematica example - massless doublebox
+v2.nb - Mathematica example non-planar two-loop planar diagram
+
+Run other examples from the FIRE6 folder like
+examples/box
+
+Each of those executable files launches the C++ FIRE with the corresponding config file
+
+box = a simple box reduction
+boxr = box reduction with rules
+doublebox = a simple doublebox reduction
+doubleboxr = doublebox with rules
+doubleboxrp = doublebox with rules and preferred masters
+v2 = vertex non-planar
+v2l = vertex non-planar with LiteRed
+
+
+
+
+

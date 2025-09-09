@@ -1,0 +1,21 @@
+In order to run mpi executables use mpirun command as follows:
+
+mpirun -np N FILENAME ARGS...
+
+where FILENAME is the executable name and N is number of processes
+to launch simultaneously.
+COMMANDS SHOULD BE RUN FROM FIRE6/ DIRECTORY
+
+Current executables list:
+1) FIRE_MPI
+Program, that runs FIRE6p with given script for given d values
+and for given prime number index.
+Arguments are given as follows:
+ARG_PATH P D_START D_END
+where:
+    ARG_PATH - script to run
+    P - prime number index, 0 <= P <= 127
+    D_START - lower bound of d, inclusive
+    D_END - upper bound of d, inclusive
+If one runs it with N instances (-np N), 1 instance will
+give others tasks, thus resulting in N-1 workers.

@@ -1,0 +1,3 @@
+[submodule "FIRE6/extra/fuel"]
+	path = FIRE6/extra/fuel
+	url = https://gitlab.com/feynmanintegrals/fuel.git

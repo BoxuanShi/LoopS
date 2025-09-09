@@ -1,0 +1,9 @@
+Get["/Users/balth/Library/Mathematica/Applications/fire/FIRE6/FIRE6.m"];
+Internal = {l1}; 
+External = {n, nb}; 
+Propagators = {l1^2, -mb^2 + (l1 - (mb*n)/2 - (mb*nb)/2)^2, (l1 - (nb*np)/2)^2}; 
+Replacements = {n^2 -> 0, nb^2 -> 0, n*nb -> 2}; 
+PrepareIBP[];
+Prepare[AutoDetectRestrictions->True,LI->True];
+SaveStart[ToString["/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/F2EMFF/FIRE/familyNLO1"]];
+Quit[];

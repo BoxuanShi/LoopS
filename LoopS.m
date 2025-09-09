@@ -1,25 +1,13 @@
 (*LoopSInformation1*)
-$LoopSVersion="2025-08-28";
+$LoopSVersion="2025-09-09";
 $LoopSInstallPath = DirectoryName[$InputFileName];
 
+Get[FileNameJoin[{$LoopSInstallPath, "config.m"}]];
 
 (*LoadDependeces*)
 Print["################## LoopS: Loading Dependences ##################"];
 $Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoadDependeces"}]];
 Get["LoadDependeces.m"];
-Print["################### LoopS: Dependences Loaded ##################"];
-
-
-(*LoopSInformation2*)
-Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
-Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
-Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
-];
-Print[
-Style["See ",FontFamily->"Arial",FontSize->14,FontColor->Black],
-Style[Hyperlink["https://github.com/BoxuanShi/LoopS","https://github.com/BoxuanShi/LoopS"],FontFamily->"Arial",FontSize->14,FontColor->Black],
-Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black]
-]
 
 
 (*ProcessDefine*)
@@ -67,5 +55,22 @@ If[$OperatingSystem==="Windows",
     ,
     
     If[GeneratePVOPITeR[{},{}]=== $Failed, 
-    Print[Style["GeneratePVOPITeR test failed! Please verify that OPITeR and FORM are correctly installed.", FontColor->Red]]];
+    Print[Style["OPITeR test failed! Please verify that OPITeR and FORM are correctly installed.", FontColor->Red]],
+    Print["OPITeR test passed."]
+    ];
 ];
+
+
+Print["################### LoopS: Dependences Loaded ##################"];
+
+
+(*LoopSInformation2*)
+Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
+Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
+Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
+];
+Print[
+Style["See ",FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[Hyperlink["https://github.com/BoxuanShi/LoopS","https://github.com/BoxuanShi/LoopS"],FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black]
+]

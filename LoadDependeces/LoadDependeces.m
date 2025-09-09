@@ -33,8 +33,13 @@ Print[Style["OPITeR not found. Please set $OPITeRInstallPath as the path of OPIT
 
 
 Get[$FeynCalcInstallPath];
+Print["FeynCalc is loaded by ", $FeynCalcInstallPath];
+
 Get[$MultivariateApartInstallPath];
+Print["MultivariateApart is loaded by ", $MultivariateApartInstallPath];
+
 If[FIREInstalledQ, Get[$FIREInstallPath]];
+Print["FIRE is loaded by ", $FIREInstallPath];
 
 
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];

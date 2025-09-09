@@ -1,0 +1,32 @@
+include ../paths.inc
+vpath %.cpp ../sources/
+vpath %.h ../sources/
+
+CFLAGS = -O3 -g -Wall -Werror -Wextra -Wpedantic -Wno-strict-aliasing -Wno-unused-parameter -std=c++17 -I/usr/local/include -isystem../usr/include -isystem../extra/fuel/usr/include/ -DWITH_DEBUG
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+LFLAGS = -rdynamic -L../usr/lib64/ -L../extra/fuel/usr/lib/ -L../usr/lib/ -lfuel -lsymbolica -lflint -L/usr/local/lib
+else
+LFLAGS = -rdynamic -L../usr/lib64/ -L../extra/fuel/usr/lib/ -L../usr/lib/ -Wl,-Bstatic -lfuel -lsymbolica -static-libstdc++ -Wl,-Bdynamic -lgmp -lmpfr -lflint -L/usr/local/lib -lpthread -ldl '-Wl,-rpath,$$ORIGIN/../usr/lib/' '-Wl,-rpath,$$ORIGIN/../usr/lib64/' '-Wl,-rpath,$$ORIGIN/../extra/fuel/usr/lib/'
+endif
+
+OBJ = tools/tables.o
+
+default: diff
+
+diff: $(OBJ) tools/diff.o ../usr/lib/libfuel.a
+	${CCPLUS} $(OBJ) tools/diff.o ${LFLAGS} -o diff
+
+.cpp.o:
+	${CCPLUS} ${CFLAGS} ${INCDIR} -c $< -o $@
+
+clean:
+	rm -f ./*.o diff
+	rm -f ./tools/*.o diff
+
+tools/diff.o: ../sources/tools/diff.cpp
+tools/tables.o: ../sources/tools/tables.cpp
+tools/tables.o: ../sources/tools/diff.cpp
+tools/diff.o: Makefile
+tools/tables.o: Makefile
