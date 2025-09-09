@@ -9,7 +9,7 @@ expr0, so that the expr should be linear dependent with patt.";
 DropZeroByNumerics[expr0_, patt_] := 
  DropZeroByNumerics[expr0, expr0, patt]
 DropZeroByNumerics[expr0_, expr_, patt_] := 
- Module[{tp1, poly1, vars, func1, poly2, poly3, polyv, tpRules2},
+ Module[{x, tp1, poly1, vars, func1, poly2, poly3, polyv, tpRules2},
   poly1 = expr0 // getS[#, patt] &;
   tp1 = expr // SeparatePoly[#, poly1, "SeparateDropOne" -> True] &;
   If[! SubsetQ[poly1, tp1[[2]]], 
@@ -35,5 +35,5 @@ patt."]; Abort[]];
   polyv = Select[polyv, #[[1]] === 0 &][[All, 2]];
   polyv = Join[polyv, Complement[poly1, tp1[[2]]]];
   
-  tpRules2 = Dispatch@Thread[(Verbatim /@ polyv) -> 0];
-  expr0 /. tpRules2]
+  tpRules2 = Dispatch@Thread[polyv -> 0];
+  expr0  /. x_patt :> Replace[x, tpRules2]]
