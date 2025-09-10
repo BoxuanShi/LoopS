@@ -1,5 +1,5 @@
 
-#: IncDir /Users/balth/Downloads/LoopS-Mine/packages/LoopS/LoadDependeces/Dependences/opiter/opiter
+#: IncDir /Users/balth/Downloads/LoopS-Mine/packages/LoopS/LoadDependencies/Dependencies/opiter/opiter
 #include- opiter.frm
 Autodeclare Vector q;
 Off statistics;

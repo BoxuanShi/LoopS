@@ -260,7 +260,7 @@ MasterIntegralsS;
 (*MasterIntegralResults*)
 MIformlist;
 MIsollist;
-\[Epsilon];
+Global`\[Epsilon];
 
 
 (*ProcessDefine*)

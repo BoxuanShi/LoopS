@@ -1,7 +1,7 @@
 ClearAll[MatchMIs];
 Options[MatchMIs] := 
-  CreateOptions[{"SimplifyMatchMIs" -> (CollectFlat[#, {\[Epsilon], _G | _Log \
-| _PolyLog | _HPL}, SimplifyS, Simplify] &)}, {matchFI, TableS}];
+  CreateOptions[{"SimplifyMatchMIs" :> (CollectFlat[#, {\[Epsilon]| ToExpression["_G"] | _Log \
+| _PolyLog | ToExpression["_HPL"]}, SimplifyS, Simplify] &)}, {matchFI, TableS}];
 MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, 
   process_String : "CurrentProcess", opt : OptionsPattern[]] := 
  MatchMIs[MIs, MIformlist, MIsollist, loops, family, 

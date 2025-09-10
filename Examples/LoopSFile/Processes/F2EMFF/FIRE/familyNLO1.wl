@@ -1,4 +1,4 @@
-Get["/Users/balth/Library/Mathematica/Applications/fire/FIRE6/FIRE6.m"];
+Get["/Users/balth/Downloads/LoopS-Mine/packages/LoopS/LoadDependencies/Dependencies/fire/FIRE6/FIRE6.m"];
 Internal = {l1}; 
 External = {n, nb}; 
 Propagators = {l1^2, -mb^2 + (l1 - (mb*n)/2 - (mb*nb)/2)^2, (l1 - (nb*np)/2)^2}; 
