@@ -31,7 +31,7 @@ For details about the licenses of each module, please refer to their official do
 
 ## Dependencies
 
-- **FeynCalc**: Required for LoopS. Please install FeynCalc and ensure it can be loaded in Mathematica using ``<<FeynCalc` ``.
-- **Form**: Required for OPITeR. Please install FORM separately if you intend to use OPITeR features.
+- **[FeynCalc](https://feyncalc.github.io/)**: Required for LoopS. Please install FeynCalc and ensure it can be loaded in Mathematica using ``<<FeynCalc` ``.
+- **[FORM](https://www.nikhef.nl/~form/)**: Required for OPITeR. Please install FORM separately if you intend to use OPITeR features.
 
 LoopS can be used without OPITeR, but the efficiency of Passarino–Veltman reduction will be significantly reduced in complex cases if OPITeR is not available.
