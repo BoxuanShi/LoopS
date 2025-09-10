@@ -2,13 +2,13 @@
 
 This package includes the following third-party modules or interfaces:
 
-- **FIRE**
-- **MultivariateApart**
-- **OPITeR** (included as a Git submodule)
+- **[FIRE](https://gitlab.com/feynmanintegrals/fire)**
+- **[MultivariateApart](https://gitlab.msu.edu/vmante/multivariateapart)**
+- **[OPITeR](https://bitbucket.org/jaegoode/opiter/src/main/)** (included as a Git submodule)
 
-All these modules are licensed under GPL-v3.
+All these modules are licensed under GPL-3.0.
 
-Additionally, some functions are copied and modified from the CalcLoop package, which is licensed under the MIT License.
+Additionally, some functions are copied and modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
 
 **Note:** 
 - Direct downloads may not include OPITeR. Mathematica will display a prompt on first load, and following the instructions will install it.
@@ -16,7 +16,7 @@ Additionally, some functions are copied and modified from the CalcLoop package, 
 
 ## License Statement
 
-- This package (LoopS) and its included FIRE, MultivariateApart, and OPITeR related code are licensed under GPL-v3.
+- This package (LoopS) and its included FIRE, MultivariateApart, and OPITeR related code are licensed under GPL-3.0.
 - By using this package, you agree to comply with the GPL-3.0 terms.
 - Original contributions from CalcLoop (MIT) are acknowledged, but the modified
 versions included here are redistributed under GPL-3.0.
