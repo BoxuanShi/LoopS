@@ -11,7 +11,7 @@ All these modules are licensed under GPL-3.0.
 Additionally, some functions are copied and modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
 
 **Note:** 
-- Direct downloads may not include OPITeR. Mathematica will display a prompt on first load, and following the instructions will install it.
+- Direct downloads may not include OPITeR. If missing, LoopS will automatically notify you in Mathematica and provide instructions to install it.
 - This package has only been tested on **Mathematica 14.0**.
 
 ## License Statement
@@ -32,6 +32,6 @@ For details about the licenses of each module, please refer to their official do
 ## Dependencies
 
 - **[FeynCalc](https://feyncalc.github.io/)**: Required for LoopS. Please install FeynCalc and ensure it can be loaded in Mathematica using ``<<FeynCalc` ``.
-- **[FORM](https://www.nikhef.nl/~form/)**: Required for OPITeR. Please install FORM separately if you intend to use OPITeR features.
+- **[FORM](https://www.nikhef.nl/~form/)** (Source code also available on [GitHub](https://github.com/form-dev/form)): Required for OPITeR. Please install FORM separately if you intend to use OPITeR features.
 
 LoopS can be used without OPITeR, but the efficiency of Passarino–Veltman reduction will be significantly reduced in complex cases if OPITeR is not available.
