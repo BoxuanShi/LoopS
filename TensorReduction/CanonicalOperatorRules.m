@@ -1,5 +1,3 @@
-CanonicalOperatorRules;
-
 ClearAll[getdummyindices2]
 (*only for PermutationRulesFromSets,CanonicalOperatorRules*)
 getdummyindices2[expr_] := Module[{tp1, tp2},

@@ -1,5 +1,3 @@
-FindRulesComplete;
-
 ClearAll[FindRulesComplete]
 FindRulesComplete::usage = 
   "FindRulesComplete return the minimal MIs only when the masters in every \

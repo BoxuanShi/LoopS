@@ -1,5 +1,3 @@
-SymanzikOrder;
-
 ClearAll[SymanzikOrder]
 SymanzikOrder[polynomial_, vshead_Symbol, n_Integer : -1] := Module[
       {vs, vt, crs, gcd, cmx, cns, cas, cps, cvs, ord, max},

@@ -1,14 +1,12 @@
-ToSFADBugFix;
-
-ParallelLoad["ToSFAD"] := Module[{},
-  ClearAll[ToSFAD];
-  Options[ToSFAD] = {
+ParallelLoad["ToSPD"] := Module[{},
+  ClearAll[ToSPD];
+  Options[ToSPD] = {
     	EtaSign 	-> Automatic,
     	FCI			-> False,
     	FCE			-> False,
     	FCVerbose	-> False
     };
-  ToSFAD[expr_, OptionsPattern[]] :=
+  ToSPD[expr_, OptionsPattern[]] :=
    	Block[{ex, res, fads, pds, pdsEval, fadsConverted, pdsConverted, rulePds, 
      ruleFads, ruleFinal},
     
@@ -44,13 +42,13 @@ ParallelLoad["ToSFAD"] := Module[{},
     
     		pdsEval = toSFAD[MomentumCombine[#, FCI -> True]] & /@ pds;
     
-    		pdsEval = pdsEval /. toSFAD[x_CartesianPropagatorDenominator] :> x;
+    		pdsEval = pdsEval /. ToSPD[x_CartesianPropagatorDenominator] :> x;
     
     		FCPrint[3, "ToSFAD: After toSFAD: ", pdsEval, 
      FCDoControl -> sfadVerbose];
     
     		If[ ! FreeQ[pdsEval, toSFAD],
-     			Message[ToSFAD::failmsg, 
+     			Message[ToSPD::failmsg, 
       "Failed to convert all PropagatorDenominators to \
 StandardPropagatorDenominators."];
      			Abort[]
@@ -61,7 +59,7 @@ StandardPropagatorDenominators."];
     		res = ex /. ruleFinal;
     
     		If[	! FreeQ2[{res}, {FAD, PropagatorDenominator}],
-     			Message[ToSFAD::failmsg, 
+     			Message[ToSPD::failmsg, 
       "Failed to eliminate all the occurences of FADs or PDs."]
      		];
     
@@ -112,4 +110,4 @@ StandardPropagatorDenominators."];
    	StandardPropagatorDenominator[a, 0, -b^2, {1, 1}] /; 
     FreeQ[a, Complex] && optEtaSign === Automatic;
   ]
-ParallelLoad["ToSFAD"];
+ParallelLoad["ToSPD"];

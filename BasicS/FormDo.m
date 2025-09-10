@@ -1,5 +1,3 @@
-FormDo;
-
 ClearAll[FormDo];
 Protect[formv, formPi];
 FormDo[expr_, func_ : (# &)] := Module[{i, vars, rules, tp1, q, dot},

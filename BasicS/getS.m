@@ -1,5 +1,3 @@
-getS;
-
 ClearAll[getS];
 getS[expr_] := Variables@Cases[{expr}, _, Infinity]
 getS[expr_, patt_, opt : OptionsPattern[]] := Cases[{expr}, patt, Infinity] // Union

@@ -1,5 +1,3 @@
-FIREReductionCXX;
-
 ClearAll[FIREReductionCXX]
 FIREReductionCXX::usage = 
   "FIREPrepareStart + FIREPrepareCXX + FIRERunCXX + FIRELoadStart + \

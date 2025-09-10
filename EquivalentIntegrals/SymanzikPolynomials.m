@@ -1,5 +1,3 @@
-SymanzikPolynomials;
-
 (*ClearAll[IG]
 IG[x_,props_List,loops_List,process_String:"CurrentProcess"]:=IG[x,props,\
 loops,ToExpression[process]]

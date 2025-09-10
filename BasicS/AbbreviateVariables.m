@@ -1,5 +1,3 @@
-AbbreviateVariables;
-
 ClearAll[AbbreviateVariables];
 Protect[AbbrV];
 Options[AbbreviateVariables] = {"AbbreviateVariablesName" -> AbbrD};

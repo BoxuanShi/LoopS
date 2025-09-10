@@ -1,5 +1,3 @@
-OneLoopExamples;
-
 (*general MI form with redundant parameters, SymanzikIndepentVars can return \
 the independent variables*)
 

@@ -1,5 +1,3 @@
-CollectS;
-
 ClearAll[CollectS, CollectS0]
 CollectS[expr_, form_, func1_ : (# &), func2_ : (# &)] /; 
   SubsetQ[{Function, Symbol}, Flatten@{Head@func1, Head@func2}] := 

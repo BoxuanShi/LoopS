@@ -1,11 +1,17 @@
 $FeynCalcInstallPath = "FeynCalc`";
 
 $MultivariateApartInstallPath = FileNameJoin[{DirectoryName @ $InputFileName,
-      "LoadDependeces", "Dependences", "multivariateapart", "MultivariateApart.wl"
+      "LoadDependencies", "Dependencies", "multivariateapart", "MultivariateApart.wl"
      }];
 
-$FIREInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependeces",
-      "Dependences", "fire", "FIRE6", "FIRE6.m"}];
+$FIREInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
+      "Dependencies", "fire", "FIRE6", "FIRE6.m"}];
 
-$OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependeces",
-      "Dependences", "opiter", "opiter"}];
+$OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
+      "Dependencies", "opiter", "opiter"}];
+
+
+
+GToj;
+jToG;
+amfConventionTrans;

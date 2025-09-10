@@ -1,5 +1,3 @@
-getImS;
-
 ClearAll[getImS, getReS]
 getImS[expr_] := 
  Module[{ii}, Coefficient[expr /. Complex[a_, b_] :> b*ii, ii]*I]

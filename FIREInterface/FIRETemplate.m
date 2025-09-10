@@ -1,5 +1,3 @@
-FIRETemplate;
-
 (*the option Verbose is set as False by default to preserve the print from \
 FIRE.
 the exception is /.G->F for CXX reduction, print from the FIRE is reserved to \

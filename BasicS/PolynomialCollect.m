@@ -1,5 +1,3 @@
-PolynomialCollect;
-
 ClearAll[PolynomialCollect, PolynomialCollect0]
 PolynomialCollect[expr_, patt0_] := Module[{vars, patt},
   patt = Alternatives @@ Flatten[{patt0}];

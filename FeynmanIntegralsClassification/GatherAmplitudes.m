@@ -1,5 +1,3 @@
-GatherAmplitudes;
-
 ClearAll[GatherAmplitudes];
 GatherAmplitudes::usage = 
   "1. GatherAmplitudes[amp] gather amplitudes in amp list only differ \

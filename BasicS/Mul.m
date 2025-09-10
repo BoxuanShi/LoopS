@@ -1,5 +1,3 @@
-Mul;
-
 ClearAll[Mul, Mul0];
 Protect[Mulq];
 Options[Mul] := CreateOptions[{}, {Mul0}];

@@ -1,7 +1,3 @@
-FamilyClassify;
-RemoveRedundancy;
-FamilyClassifySortRules;
-
 ClearAll[FamilyClassify];
 (*the option "FamilyClassifySortRules" is to prevent inconsistencies \
 in the family classification caused by version updates.*)

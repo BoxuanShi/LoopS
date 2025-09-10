@@ -1,5 +1,3 @@
-GenerateEiknolFamilies;
-
 ClearAll[GenerateEiknolFamilies]
 GenerateEiknolFamilies[family_List, MIs_List, loops_List] := 
  Module[{y, i, j, tpPermu, familyEiknol, nfamEki, signEki, tpMap, tpMapInv, 

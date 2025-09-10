@@ -1,5 +1,3 @@
-GeneratePVMMA;
-
 ClearAll[GeneratePVbasis];
 GeneratePVbasis[numberOfIndex_Integer, externalMoms_List] := 
  Module[{i, tpIndices, tp1, tp2, tp4, tp6, tpdiracList, tpEq1, tpcoeList, 

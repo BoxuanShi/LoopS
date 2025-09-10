@@ -1,5 +1,3 @@
-propsToLS;
-
 ClearAll[propsToLS, propsToLS0, LSToprops]
 (*LSToprops would drop -1 power since \"{j,power[[i]]}\"*)
 LSToprops[expr_, process_String : "CurrentProcess"] := 

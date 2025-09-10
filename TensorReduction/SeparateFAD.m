@@ -1,5 +1,3 @@
-SeparateFAD;
-
 ClearAll[SeparateFAD]
 SeparateFAD[amp_, loops_, process_String : "CurrentProcess"] := 
  SeparateFAD[amp, loops, ToExpression[process]]

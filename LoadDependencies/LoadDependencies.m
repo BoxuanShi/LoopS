@@ -1,21 +1,8 @@
-LoadDependences;
+BeginPackage["LoopS`"];
 
-(*Parallel`Kernels`Private`$clientCode*)
 
-(*SetSharedVariable[CurrentProcess];*)
-
-ClearAll[ParallelNeedS]
-ParallelNeedS[context_] := ParallelNeeds[context]
-ParallelNeedS[context_, filepath_String] := Module[{},
-  Parallelize;
-  If[FileExistsQ[filepath],
-   Parallel`Protected`AddInitCode[
-    Parallel`Client`HoldCompound[
-      Block[{Print=(#&)}, Needs[context, filepath]]
-      ]],
-   ParallelNeeds[context]
-   ]
-  ]
+$Path = Union@Append[$Path, DirectoryName[$InputFileName]];
+Get["ParallelNeedS.m"];
 
 
 $FeynCalcInstallPath = 
@@ -38,6 +25,10 @@ If[$OperatingSystem =!= "Windows",
 ]
 
 
+EndPackage[];
+
+
+
 Get[$FeynCalcInstallPath];
 Print["FeynCalc is loaded by ", $FeynCalcInstallPath];
 
@@ -50,7 +41,7 @@ Print["FIRE is loaded by ", $FIREInstallPath];
 
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];
 ParallelNeedS["MultivariateApart`", $MultivariateApartInstallPath];
-If[FIREInstalledQ, ParallelNeedS["FIRE`", $FIREInstallPath]];
+If[FIREInstalledQ, LoopS`ParallelNeedS["FIRE`", $FIREInstallPath]];
 
 
 (*check FeynCalc version*)

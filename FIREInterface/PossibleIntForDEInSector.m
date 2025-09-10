@@ -1,5 +1,3 @@
-PossibleIntForDEInSector;
-
 (*IntegerPartitions[12,{8},{1,2,3}]//TimingS*)
 
 ClearAll[IncrementListElement]

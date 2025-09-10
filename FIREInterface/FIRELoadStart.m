@@ -1,5 +1,3 @@
-FIRELoadStart;
-
 ClearAll[FIRELoadStart]
 Options[FIRELoadStart] = {"FIREVerbose" -> False};
 FIRELoadStart[loops_List, family_List, process_String : "CurrentProcess", 

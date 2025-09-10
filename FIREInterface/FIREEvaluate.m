@@ -1,5 +1,3 @@
-FIREEvaluate;
-
 ClearAll[FIREEvaluate];
 SetAttributes[FIREEvaluate, HoldFirst]
 Options[FIREEvaluate] := CreateOptions[{}, {ParallelEvaluateS}]

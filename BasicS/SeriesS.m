@@ -1,5 +1,3 @@
-SeriesS;
-
 (*can significantly accelerate Series for the case every term do not need \
 limit*)
 

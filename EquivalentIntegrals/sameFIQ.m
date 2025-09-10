@@ -1,5 +1,3 @@
-sameFIQ;
-
 ClearAll[sameFIQ];
 Options[sameFIQ] := CreateOptions[{}, {matchFI, Solve}];
 sameFIQ[target_List, formlist_List, loops_List, 

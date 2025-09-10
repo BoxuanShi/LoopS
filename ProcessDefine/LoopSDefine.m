@@ -1,5 +1,3 @@
-LoopS;
-
 ClearAll[LoopS]
 Options[LoopS] = {};
 LoopS::usage = 

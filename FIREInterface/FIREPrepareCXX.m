@@ -1,5 +1,3 @@
-FIREPrepareCXX;
-
 ClearAll[GatherGInFamily]
 GatherGInFamily[Glist_List, family_List] := Module[{Glist2, Glist3},
   Glist2 = Join[Glist, G[#, "x"] & /@ (Range@Length@family)];

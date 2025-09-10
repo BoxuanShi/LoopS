@@ -1,5 +1,3 @@
-texRational;
-
 ClearAll[texRational]
 texRational[expr_] := Module[{tp1, tp2, tpR},
   tp1 = getS@expr;

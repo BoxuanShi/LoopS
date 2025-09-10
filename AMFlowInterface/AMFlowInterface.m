@@ -1,5 +1,4 @@
-AMFInterface;
-
+ClearAll[GToj, jToG];
 GToj[expr_] := 
  expr /. G[a_, b_] :> j[ToExpression["family" <> ToString[a]], Sequence @@ b]
 jToG[expr_] := 

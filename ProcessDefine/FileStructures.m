@@ -1,6 +1,4 @@
-FileStructures;
-
-ClearAll[ProcessPath, PVPath, FIREWorkPath, LoopSWorkDirectory]
+ClearAll[ProcessPath, PVPath, FIREWorkPath, LoopSWorkDirectory, OPITeRWorkPath]
 LoopSWorkDirectory := 
   LoopSWorkDirectory = 
    PathName@FileNameJoin[{ExpandFileName[NotebookDirectoryS[]], "LoopSFile","Processes"}];
@@ -14,5 +12,5 @@ FIREFamilyName[loops_List] := Module[{str},
   str = StringJoin @@ Table["N", {i, Length@loops}];
   "family" <> str <> "LO"]
 
-$OPITeRWorkPath := 
+OPITeRWorkPath := 
  FileNameJoin[{ParentDirectory@LoopSWorkDirectory, "tempopiter"}]

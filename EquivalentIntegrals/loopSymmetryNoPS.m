@@ -1,6 +1,3 @@
-loopSymmetryNoPS;
-
-Off[CalcLoop`LoopSymmetry::mass];
 ClearAll[loopSymmetryNoPS];
 MMATranspose = Transpose;
 Options[loopSymmetryNoPS] = {"PrintLog" -> False};
@@ -36,9 +33,7 @@ loopSymmetryNoPS[props0_List, loopmoms_List, moms_, opt : OptionsPattern[]] /;
    	propshape = 
     If[#[[1]] === #[[2]], {0, #[[3]]}, {#[[2]], #[[3]]}] & /@ props;
    	
-   	(*** check mass terms in linear propagators ***)
-   	If[Plus @@ Times @@@ propshape =!= 0, 
-    Message[CalcLoop`LoopSymmetry::mass, props0]];
+
    	(*** check loop momenta dependence ***)
    	If[Or @@ (FreeQ[#[[1]], 
           Alternatives @@ loopmoms] || #[[1]] =!= #[[2]] && ! 

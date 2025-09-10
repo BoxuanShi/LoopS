@@ -1,5 +1,3 @@
-GenerateSymmetryRules;
-
 (*generate symmetry transformation rules for permutation group generators \
 {(1,2),(3,4),(1,3)(2,4)...}, the second arguement is the corresponding \
 variables of "1, 2, 3, 4..."*)

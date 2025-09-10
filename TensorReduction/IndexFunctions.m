@@ -1,5 +1,3 @@
-IndexFunctions;
-
 ClearAll[getfullindices, getdummyindices, getdummyindicesList]
 getfullindices[amp_, patt_ : _GAD | _GSD | _GA | _GS | _FV | _FVD] := 
  Variables@(List @@@ Union[Cases[FCES@{amp}, patt, Infinity]])
@@ -25,7 +23,7 @@ RenameDummyInd[expr_] := Module[{tp1, tp2, tp3, tp4, i},
 SetAttributes[RenameDummyInd, Listable]
 
 
-ClearAll[indicesOrder, indicesOrder]
+ClearAll[indicesOrder, indicesOrder0]
 indicesOrder[expr_, process_String : "CurrentProcess"] := 
  indicesOrder[expr, ToExpression[process]]
 indicesOrder[expr_, process_Association] := 

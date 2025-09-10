@@ -1,5 +1,3 @@
-ReplaceSymmetryG;
-
 ClearAll[ReplaceSymmetryG]
 ReplaceSymmetryG[expr_, symRules_Association, rules__] := 
  Fold[ReplaceSymmetryG[#1, symRules, #2] &, expr, {rules}]

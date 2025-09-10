@@ -1,5 +1,3 @@
-FIREReductionMMA;
-
 ClearAll[FIREReductionMMA]
 Options[FIREReductionMMA] := 
   CreateOptions[{"FIREPrepareStart" -> FIREPrepareStart}, {FIREPrepareStart, 

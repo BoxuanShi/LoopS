@@ -1,5 +1,3 @@
-ApartFFS;
-
 ClearAll[ApartFFS]
 Options[ApartFFS] = {"ApartFFSSimplify" :> SimplifyS};
 ApartFFS[deno_, loops_List, process_String : "CurrentProcess", 

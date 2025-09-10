@@ -1,5 +1,3 @@
-DownValuesArguments;
-
 ClearAll[DownValuesArguments]
 DownValuesArguments[func_Symbol] := Module[{tp1, strcase},
   tp1 = DownValues[func][[All, 1]];

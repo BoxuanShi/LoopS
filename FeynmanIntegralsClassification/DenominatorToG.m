@@ -1,5 +1,3 @@
-DenominatorToG;
-
 ClearAll[DenominatorToG]
 Options[DenominatorToG] := 
   CreateOptions[{"DenominatorToGForm" -> "Expression", 

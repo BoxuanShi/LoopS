@@ -1,5 +1,3 @@
-CanonicalLoops;
-
 ClearAll[CanonicalLoops]
 Options[CanonicalLoops] = {"DiscVariables" -> {}};
 DiscVariables;

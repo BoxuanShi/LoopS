@@ -1,5 +1,3 @@
-CreateProcess;
-
 ClearAll[CreateProcess]
 CreateProcess::kinematics = "kinematics is absent and has been set as {}";
 CreateProcess[expr__Association | expr__List | expr__Rule] := 

@@ -1,5 +1,3 @@
-BlockCondition;
-
 ClearAll[BlockCondition]
 BlockCondition[condi_, a_, b_] := Module[{tp1, block},
   block = If[condi, Block, (#2 &)];

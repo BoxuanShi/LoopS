@@ -1,5 +1,3 @@
-FindCompleteGList;
-
 ClearAll[SubSectors]
 SubSectors[g0_G, loops_List] := Module[{i, vec, pos, subpos, tp1, tp2},
   vec = tosector[g0][[2]];

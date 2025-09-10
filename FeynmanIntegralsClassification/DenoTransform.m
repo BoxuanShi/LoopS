@@ -1,5 +1,3 @@
-DenoTransform;
-
 (*FADToProps[FAD[l1,l1+p,{l1+nb,m,1}]]==={l1^2,(l1+p)^2,-m^2+(l1+nb)^2}
 FADToProps[FAD[l1,l1+p,{l1+nb,m,1}]]==={l1^2,(l1+p)^2,-m^2+(l1+nb)^2}*)
 

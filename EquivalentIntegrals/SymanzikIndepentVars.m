@@ -1,5 +1,3 @@
-SymanzikIndepentVars;
-
 ClearAll[SymanzikIndepentVars]
 SymanzikIndepentVars[propslist_List, loops_List, 
   process_String : "CurrentProcess"] := 

@@ -1,5 +1,3 @@
-AmplitudeReduce;
-
 ClearAll[AmplitudeReduce]
 Options[AmplitudeReduce] := 
   CreateOptions[{"AmplitudeReduceForm" -> "Expression", 

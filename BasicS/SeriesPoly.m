@@ -1,6 +1,3 @@
-SeriesPoly;
-SeriesPower;
-
 ClearAll[SeriesPoly, SeriesPoly0];
 SeriesPoly[expr_, {x_, x0_, ord_Integer}] := Module[{expr2, se},
   expr2 = expr /. x -> x + x0;

@@ -1,5 +1,3 @@
-MatchMIs;
-
 ClearAll[MatchMIs];
 Options[MatchMIs] := 
   CreateOptions[{"SimplifyMatchMIs" -> (CollectFlat[#, {\[Epsilon], _G | _Log \

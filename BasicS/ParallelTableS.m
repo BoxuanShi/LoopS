@@ -1,5 +1,3 @@
-ParallelTableS;
-
 $DistributedContexts = All;
 
 ClearAll[ParallelEvaluateS]

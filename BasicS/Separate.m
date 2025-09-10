@@ -1,5 +1,3 @@
-Separate;
-
 ClearAll[Separate, Separate0, Separate1, SeparatePoly, SeparatePoly0];
 SeparateHead;
 SeparateDropOne;

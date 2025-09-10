@@ -1,5 +1,3 @@
-FindnumRules;
-
 {Off[Solve::svars], ClearAll@FindnumRules, Protect[De2]};
 FindnumRules[basis_List, process_String : "CurrentProcess"] := 
  FindnumRules[basis, ToExpression[process]]

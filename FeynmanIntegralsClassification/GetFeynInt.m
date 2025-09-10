@@ -1,5 +1,3 @@
-GetFeynInt;
-
 ClearAll[GetFeynInt]
 Options[GetFeynInt] := CreateOptions[{"Parallelization" -> False}, {TableS}];
 GetFeynInt[amp_, loops_List, process_String : "CurrentProcess", 

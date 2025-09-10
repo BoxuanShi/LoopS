@@ -1,3 +1,3 @@
-[submodule "LoadDependeces/Dependences/opiter"]
-	path = LoadDependeces/Dependences/opiter
+[submodule "LoadDependencies/Dependencies/opiter"]
+	path = LoadDependencies/Dependencies/opiter
 	url = https://bitbucket.org/jaegoode/opiter.git

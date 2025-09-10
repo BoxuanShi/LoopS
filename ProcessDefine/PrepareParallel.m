@@ -1,5 +1,3 @@
-PrepareParallel;
-
 ClearAll[PrepareParallel]
 LoopSParallelKernels = 
   If[NumberQ[LoopSParallelKernels], LoopSParallelKernels, 4];

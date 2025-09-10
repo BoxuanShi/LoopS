@@ -1,5 +1,3 @@
-PVRules;
-
 ClearAll[PVRules]
 PVRules[loopsPV_List, Indices_List, head_ : purePV] := 
  Module[{i, loopsIndex, loopsPV2, Indices2, loopRules, IndexRules, tpPVRules, 

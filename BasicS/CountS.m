@@ -1,5 +1,3 @@
-CountS;
-
 ClearAll[CountS];
 CountS[list_List, patt_, level_ : {1}, 
   testfunc_ : (Union@Flatten@{Together[#1 - #2]} === {0} &)] := If[

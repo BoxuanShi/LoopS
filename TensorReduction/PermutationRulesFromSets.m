@@ -1,5 +1,3 @@
-PermutationRulesFromSets;
-
 (*to generate dummy indices in different fermion lines*)
 
 ClearAll[PermutationRulesFromSets(*,tp1,tp2,tp3,tp4,tp5*)]
@@ -15,4 +13,4 @@ PermutationRulesFromSets[si___List] :=
      Length@tp4}];
   tp5 = TableS[If[tp3[[i]] =!= {si}, Nothing, tp2[[i]]], {i, Length@tp2}];
   (inverseRule[Thread[tp1 -> #], tp1] &) /@ tp5
-  ]  
+  ]

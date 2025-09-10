@@ -1,5 +1,3 @@
-AbbreviateDeno;
-
 ClearAll[FactorFlat]
 FactorFlat[expr_] := Sort[FactorFlat0[expr]]
 FactorFlat0[expr_Times] := Flatten[FactorFlat0 /@ (List @@ expr)];

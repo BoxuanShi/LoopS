@@ -1,5 +1,3 @@
-DistributeToPolyND;
-
 ClearAll[DistributeToPolyND, DistributeToPolyND0];
 SetAttributes[DistributeToPolyND, Listable];
 DistributeToPolyND[expr_] := Total@Flatten@DistributeToPolyND0[{expr}]

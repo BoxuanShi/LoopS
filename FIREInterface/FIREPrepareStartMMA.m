@@ -1,5 +1,3 @@
-FIREPrepareStartMMA;
-
 ClearAll[FIREPrepareStartMMA]
 Options[FIREPrepareStartMMA] := 
   CreateOptions[{"FIREVerbose" -> False}, {PrepareParallel}];

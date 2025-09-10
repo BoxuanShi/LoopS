@@ -1,5 +1,3 @@
-ClearProcess;
-
 ClearProcess[] := Module[{},
   (*Clear defined FeynCalcs - general*)
   FCClearScalarProducts[];

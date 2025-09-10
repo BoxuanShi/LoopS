@@ -1,5 +1,3 @@
-FIRELoadTable;
-
 ClearAll[FIRELoadTable]
 Options[FIRELoadTable] = {"FIREVerbose" -> False};
 FIRELoadTable[loops_List, family_List, process_String : "CurrentProcess", 

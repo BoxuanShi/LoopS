@@ -1,5 +1,3 @@
-GeneratePVOPITeR;
-
 ClearAll[GeneratePVOPITeR];
 GeneratePVOPITeR[nLlist_List, extmomsind_List] /; (OrderedQ@Reverse@nLlist) :=
   Module[{i, x, loopsPV, loopsOPITeR, loopRules, inds, indsRules, extOPITeR, 
@@ -31,12 +29,12 @@ GeneratePVOPITeR[nLlist_List, extmomsind_List] /; (OrderedQ@Reverse@nLlist) :=
       1]] -> (ToString /@ extRules[[All, 2]])];(*convert to string replace*)
   
   outfile = 
-   FileNameJoin[{$OPITeRWorkPath, 
+   FileNameJoin[{OPITeRWorkPath, 
      "pvreduceout" <> ToString[$KernelID] <> ".m"}];
   template = OPITeRTemplete[Union@loopsOPITeR, extOPITeR, exp, outfile];
   
   infile = 
-   FileNameJoin[{$OPITeRWorkPath, 
+   FileNameJoin[{OPITeRWorkPath, 
      "pvreducein" <> ToString[$KernelID] <> ".frm"}];
   Export[infile, template, "Text"];
   Run["form " <> infile];

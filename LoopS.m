@@ -1,24 +1,58 @@
-(*LoopSInformation1*)
-$LoopSVersion="2025-09-09";
+BeginPackage["LoopS`"];
+
+
+(*LoopSInformation*)
+$LoopSVersion="2025-09-11";
 $LoopSInstallPath = DirectoryName[$InputFileName];
 
-Get[FileNameJoin[{$LoopSInstallPath, "config.m"}]];
+Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
+Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
+Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
+];
+Print[
+Style["See ",FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[Hyperlink["https://github.com/BoxuanShi/LoopS","https://github.com/BoxuanShi/LoopS"],FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black]
+]
 
-(*LoadDependeces*)
-Print["################## LoopS: Loading Dependences ##################"];
-$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoadDependeces"}]];
-Get["LoadDependeces.m"];
+Get[FileNameJoin[{$LoopSInstallPath, "Config.m"}]];
 
 
+EndPackage[];
+
+
+
+(*LoadDependencies*)
+Print["################## LoopS: Loading Dependencies ##################"];
+$Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoadDependencies"}]];
+Get["LoadDependencies.m"];
+
+
+
+BeginPackage["LoopS`"];
+
+
+$ContextPath = Prepend[$ContextPath, "Global`"];
+$ContextPath = Prepend[$ContextPath, "FeynCalc`"];
+$ContextPath = Prepend[$ContextPath, "MultivariateApart`"];
+$ContextPath = Prepend[$ContextPath, "FIRE`"];
+ParallelLoad["AddLoopSContext"]:= Module[{},
+  If[!MemberQ[$ContextPath, "LoopS`"],
+   $ContextPath = Prepend[$ContextPath, "LoopS`"];
+   ];
+];
+
+
+Get[FileNameJoin[{$LoopSInstallPath, "Usage.m"}]];
+
+
+Begin["LoopS`Private`"];
 (*ProcessDefine*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"ProcessDefine"}]];
 Get["ProcessDefineLoad.m"];
 (*BasicS*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"BasicS"}]];
 Get["BasicSLoad.m"];
-(*PVReduction*)
-(* $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"PVReduction"}]]; *)
-(* Get["PVReductionLoad.m"]; *)
 (*TensorReduction*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"TensorReduction"}]];
 Get["TensorReductionLoad.m"];
@@ -37,6 +71,7 @@ Get["AMFlowInterfaceLoad.m"];
 (*MasterIntegralResults*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]];
 Get["MasterIntegralResultsLoad.m"];
+End[];
 
 
 (*Unusual bug fix*)
@@ -62,16 +97,7 @@ If[$OperatingSystem==="Windows",
 ];
 
 
-Print["################### LoopS: Dependences Loaded ##################"];
+Print["################### LoopS: Dependencies Loaded ##################"];
 
 
-(*LoopSInformation2*)
-Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
-Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
-Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
-];
-Print[
-Style["See ",FontFamily->"Arial",FontSize->14,FontColor->Black],
-Style[Hyperlink["https://github.com/BoxuanShi/LoopS","https://github.com/BoxuanShi/LoopS"],FontFamily->"Arial",FontSize->14,FontColor->Black],
-Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black]
-]
+EndPackage[];

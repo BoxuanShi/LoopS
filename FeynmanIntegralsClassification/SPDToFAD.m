@@ -1,5 +1,3 @@
-SPDToFAD;
-
 ClearAll[SPDToFAD, SPDToFAD0];
 SPDToFAD[expr_, loops_List, process_String : "CurrentProcess"] := 
  SPDToFAD[expr, loops, ToExpression[process]]

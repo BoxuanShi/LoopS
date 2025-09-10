@@ -1,7 +1,3 @@
-FindfamilyG;
-Symmetry;
-SymmetryFirstQ;
-
 ClearAll[FindfamilyG];
 Options[FindfamilyG] := CreateOptions[{"Symmetry" -> <|"Rules" -> {{}}, "InvRules" -> {{}}|>, "SymmetryFirstQ" -> True, "FindfamilyGDefault" -> Hold[Abort[]], "FGMode" -> "GSearch"}, {CanonicalLoops}];
 

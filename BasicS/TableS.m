@@ -1,5 +1,3 @@
-TableS;
-
 ClearAll[TimingS, CreateDirectoryS]
 SetAttributes[TimingS, HoldAll]
 TimingS[expr_, str_String : ""] := Module[{tp1, tp2, tp3},
@@ -36,6 +34,7 @@ TableS[a_, b__List, word_String : "", opt : OptionsPattern[]] /;
 SetAttributes[TableS, HoldAll]
 
 
+ClearAll[DoS]
 DoS[a_, b__List] := 
  If[$KernelID === 0, 
   Monitor[Do[a, b], 

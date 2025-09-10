@@ -1,5 +1,3 @@
-SetProcessDirectory;
-
 ClearAll[SetProcessDirectory]
 SetProcessDirectory[] := Module[{dir},
   dir = ProcessPath@ProcessName;

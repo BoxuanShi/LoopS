@@ -1,6 +1,4 @@
-ReduceSPDToG;
-
-Clear[ReduceSPDToG, De2GRules]
+ClearAll[ReduceSPDToG, De2GRules]
 ReduceSPDToG::usage = 
   "ReduceSPDToG[expr0_,familylist_,moms_:moms] can transform an expr with \
 SPD[_,_]*G[_,_] or {SPD[_,_],G[_,_]} into pure G.";

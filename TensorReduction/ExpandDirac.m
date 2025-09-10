@@ -1,5 +1,3 @@
-ExpandDirac;
-
 ClearAll[DiracTraceExpand, DiracTraceExpand0]
 DiracTraceExpand[expr_] := getDo[FCES@expr, _DiracTrace, DiracTraceExpand0]
 DiracTraceExpand0[expr_DiracTrace] := Module[{i, tp1},

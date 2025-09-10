@@ -1,5 +1,3 @@
-FIRERunCXX;
-
 ClearAll[FIRERunCXX]
 FIRERunCXX[loops_List, family_List, process_String : "CurrentProcess"] := 
  FIRERunCXX[loops, family, ToExpression[process]]

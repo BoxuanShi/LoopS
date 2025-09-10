@@ -1,5 +1,3 @@
-CoefficientS;
-
 ClearAll[CoefficientS]
 CoefficientS[expr_, arg_, simplify_ : (# &)] /; Head@expr =!= List := 
  Module[{tp1, tp2},

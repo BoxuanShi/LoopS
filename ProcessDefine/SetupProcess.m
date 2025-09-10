@@ -1,5 +1,3 @@
-SetupProcess;
-
 ClearAll[SetupProcess];
 
 SetupProcess::spddefine = "Irreducible scalar product `1` exist.";

@@ -1,5 +1,3 @@
-matchFI;
-
 ClearAll[countProps]
 countProps[props_List, loops_List] := 
  Module[{x, props1, props2, props3, inv, i, ct, tp1, tp2, tp3, tp4, 
@@ -77,7 +75,7 @@ matchFI[target0_List, formlist_List, loops_List, kinematics_List,
   (*Print[kinematics];*)
   {head, failedreturn} = {OptionValue["Head"], 
     OptionValue["FailedReturn"]};
-  If[zeroSectorQ[target0, loops, kinematics], Return[head[0]]];
+  If[zeroSectorQ[target0, loops, kinematics], Return[0]];
   
   {target, ctt} = countProps[target0, loops];
   permuL = EiknolPermutation[target, loops];

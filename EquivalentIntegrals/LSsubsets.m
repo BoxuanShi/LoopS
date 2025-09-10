@@ -1,6 +1,3 @@
-LSsubsets;
-LSsubsetsSortQ;
-
 ClearAll[LSsubsets]
 LSsubsets::usage = "1. Option \"LSsubsetsSortQ\" (default True) sorts the output subsets. Switch if off to obtain old version result.";
 Options[LSsubsets] := 

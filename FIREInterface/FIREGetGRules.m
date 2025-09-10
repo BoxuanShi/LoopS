@@ -1,5 +1,3 @@
-FIREGetGRules;
-
 ClearAll[FIREGetGRules];
 FIREReductionVerbose;
 Options[FIREGetGRules] := 

@@ -1,5 +1,3 @@
-AbbreviatePolynomials;
-
 ClearAll[AbbreviatePolynomials];
 Protect[AbbrP];
 Options[AbbreviatePolynomials] := 

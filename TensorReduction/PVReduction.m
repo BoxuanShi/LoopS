@@ -1,5 +1,3 @@
-PVReduction;
-
 ClearAll[loopRulesPV];
 Protect[\[Lambda]PV, indPV];
 Options[loopRulesPV] = {"PVPatt" -> Automatic};

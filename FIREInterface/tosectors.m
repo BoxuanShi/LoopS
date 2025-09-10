@@ -1,5 +1,3 @@
-tosectors;
-
 tosector[Gs_] := 
  Gs /. G[a_, b_] :> G[a, (b /. {c_ /; c > 1 -> 1, c_ /; c < 0 -> 0})]
 samesectorQ[G1_, G2_] := Module[{tp1, tp2},

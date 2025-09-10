@@ -1,5 +1,3 @@
-zeroSectorQ;
-
 ClearAll[zeroSectorQ]
 zeroSectorQ[pdlist0_, loops_List, process_String : "CurrentProcess"] := 
  zeroSectorQ[pdlist0, loops, ToExpression[process]]

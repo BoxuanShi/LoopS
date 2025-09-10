@@ -1,6 +1,4 @@
-groupByRationalRatios;
-
-Clear[groupByRationalRatios, groupByRationalRatios2]
+ClearAll[groupByRationalRatios, groupByRationalRatios2]
 groupByRationalRatios::usage = 
   "there are two modes of groupByRationalRatios[matrix, pre0, inverseQ]. 
 i. pre0 is a number which limits the sum of numerator and denominator of the \

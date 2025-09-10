@@ -1,5 +1,3 @@
-AtomizeRules;
-
 ClearAll[AtomizeRules, inverseRule]
 AtomizeRules[rules0_, vars0_ : Automatic] := 
  Module[{rules, vars, eqns, sol, tp1, v, dot}, 

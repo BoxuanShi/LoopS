@@ -1,5 +1,3 @@
-FIREPrepareStart;
-
 ClearAll[FIREPrepareStart];
 FIREVerbose;
 Options[FIREPrepareStart] := 

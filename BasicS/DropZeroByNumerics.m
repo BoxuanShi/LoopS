@@ -1,5 +1,3 @@
-DropZeroByNumerics;
-
 ClearAll[DropZeroByNumerics];
 DropZeroByNumerics::usage = 
   "1. DropZeroByNumerics[expr0, expr, patt] drops the patt with zero \

@@ -1,5 +1,3 @@
-OperatorCollect;
-
 ClearAll[OperatorCollect, RefineSpinor];
 Options[OperatorCollect] := CreateOptions[{}, {PolynomialCollect}]
 OperatorCollect[expr_, opt : OptionsPattern[]] := 

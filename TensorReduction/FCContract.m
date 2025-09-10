@@ -1,3 +1,1 @@
-FCContract;
-
 FCContract = FeynCalc`Contract;

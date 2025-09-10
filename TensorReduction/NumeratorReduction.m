@@ -1,5 +1,3 @@
-NumeratorReduction;
-
 ClearAll[NumeratorReduction];
 Protect[LorInd];
 Protect[OPs];
