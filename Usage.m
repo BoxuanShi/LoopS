@@ -150,6 +150,7 @@ ApartFFSSimplify;
 DenominatorToG;
 DenominatorToGForm;
 DropZeroSectorQ;
+DropZeroSector;
 DenominatorToGSimplify;
 
 FADToProps;
@@ -178,6 +179,7 @@ FGMode;
 FindnumRules;
 
 GatherAmplitudes;
+GatherAmplitudesZeroRules;
 
 GetFeynInt;
 
