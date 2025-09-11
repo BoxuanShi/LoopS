@@ -3,9 +3,9 @@ ClearAll[FamilyClassify];
 in the family classification caused by version updates.*)
 Options[FamilyClassify] := 
   CreateOptions[{"RemoveRedundancy" -> True, 
-    "FamilyClassifySortRules" -> {-Length[#] &, #[[All, 
-         1 ;; 3]] &}}, {FindfamilyG, LSsubsets, GetFeynInt, 
-    CompleteProps, TableS, CanonicalLoops}];
+    "FamilyClassifySortRules" -> {-Length[#] &, #[[All, 1 ;; 3]] &}, 
+    "UserDefinedFamily" -> {}}, {FindfamilyG, LSsubsets, GetFeynInt, 
+    CompleteProps, TableS, CanonicalLoops, GenerateFamilyLS}];
 FamilyClassify[propslistlist_, loops_, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
@@ -19,7 +19,7 @@ FamilyClassify[propslistlist_, loops_, process_Association,
 FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_, 
    moms_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{i, j, x, y, tp0, tp1, tp2, tp3, tp4, tp5, num, familyLS, sym,
-    optLS}, 
+    optLS, UDF}, 
   Print["CompleteBasis is: ", 
    CompleteProps[{}, loops, 
     Evaluate@FilterOptions[{opt}, CompleteProps]]];
@@ -41,9 +41,13 @@ FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_,
     SortBy[#, OptionValue["FamilyClassifySortRules"]] &;
   tp3[[All, All, 4]] = 1;
   tp4 = LSToprops[#, kinematics] & /@ tp3;
-  Block[{Print = # &},
-   Monitor[
-    For[num = 1; familyLS = {{}, {}}, num <= Length@tp4, num++, 
+  
+  UDF = OptionValue["UserDefinedFamily"];
+  familyLS = 
+   GenerateFamilyLS[UDF, loops, moms, kinematics, 
+    Evaluate@FilterOptions[{opt}, GenerateFamilyLS]];
+  Block[{Print = # &}, 
+   Monitor[For[num = 1, num <= Length@tp4, num++, 
      If[FindfamilyG[tp4[[num]], familyLS, loops, moms, kinematics, 
         "FindfamilyGDefault" -> Return[False], 
         "FGMode" -> "FamilySearch", 
@@ -55,9 +59,9 @@ FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_,
        LSsubsets[tp4[[num]], loops, moms, kinematics, 
         Evaluate@FilterOptions[{opt}, LSsubsets]]]]], {num, 
      Length@tp4}]];
-  If[OptionValue["RemoveRedundancy"],
-   Monitor[
-    sym = DeleteCases[OptionValue["Symmetry"]["Rules"], 
+  If[OptionValue["RemoveRedundancy"], 
+   Monitor[sym = 
+     DeleteCases[OptionValue["Symmetry"]["Rules"], 
       x_ /; AllTrue[x, #[[1]] === #[[2]] &]];
     tp5 = 
      TableS[tp3[[i]] /. sym[[j]] // 
@@ -69,7 +73,6 @@ FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_,
     familyLS[[2]] = 
      DeleteCases[familyLS[[2]], x_ /; ! MemberQ[tp5, x[[1]]], {2}], 
     "Removing Redundancy familyLS..."]];
-  
   {familyLS, familyLS[[1]]}]
 
 
