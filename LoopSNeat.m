@@ -32,4 +32,4 @@ LoopSWorkDirectory;
 
 
 (*Generate LoopS directory*)
-CreateDirectoryS[FileNameJoin[{NotebookDirectoryS[],"LoopS","Processes"}]];
+CreateDirectoryS[LoopSWorkDirectory];

@@ -35,3 +35,9 @@ For details about the licenses of each module, please refer to their official do
 - **[FORM](https://www.nikhef.nl/~form/)** (Source code also available on [GitHub](https://github.com/form-dev/form)): Required for OPITeR. Please install FORM separately if you intend to use OPITeR features.
 
 LoopS can be used without OPITeR, but the efficiency of Passarino–Veltman reduction will be significantly reduced in complex cases if OPITeR is not available.
+
+## Usage Notes
+
+- LoopS relies on the current notebook directory (`NotebookDirectory[]`) for certain operations.
+  If your notebook has not been saved, `NotebookDirectory[]` will return `$Failed`, and some 
+  functions may not work as expected. Please **save your notebook before loading LoopS**.
