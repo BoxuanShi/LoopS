@@ -325,6 +325,9 @@ FCES;
 
 GeneratePV;
 UseOPITeR;
+indPV;
+PVInd;
+PVL;
 
 GeneratePVbasis;
 GeneratePVMMA;
@@ -359,6 +362,7 @@ PermutationRulesFromSets;
 
 loopRulesPV;
 PVReduce;
+\[Lambda]PV;
 
 PVRules;
 

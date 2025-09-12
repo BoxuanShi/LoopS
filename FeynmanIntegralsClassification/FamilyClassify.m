@@ -19,7 +19,7 @@ FamilyClassify[propslistlist_, loops_, process_Association,
 FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_, 
    moms_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{i, j, x, y, tp0, tp1, tp2, tp3, tp4, tp5, num, familyLS, sym,
-    optLS, UDF}, 
+    optLS, RDQ, tpf}, 
   Print["CompleteBasis is: ", 
    CompleteProps[{}, loops, 
     Evaluate@FilterOptions[{opt}, CompleteProps]]];
@@ -42,12 +42,31 @@ FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_,
   tp3[[All, All, 4]] = 1;
   tp4 = LSToprops[#, kinematics] & /@ tp3;
   
-  UDF = OptionValue["UserDefinedFamily"];
+  
+  RDQ = OptionValue["RemoveRedundancy"];
+  If[RDQ,
+   sym = 
+    DeleteCases[OptionValue["Symmetry"]["Rules"], 
+     x_ /; AllTrue[x, #[[1]] === #[[2]] &]];
+   tp5 = 
+    TableS[tp3[[i]] /. sym[[j]] // 
+       CanonicalLoops[#, loops, moms, kinematics, 
+          Evaluate@optLS][[1]] &, {i, Length@tp3}, {j, Length@sym}, 
+      Method -> Automatic, Evaluate@FilterOptions[{opt}, TableS]] // 
+     Flatten[#, 1] &;
+   tp5 = Join[tp5, tp3]];
+  
+  
   familyLS = 
-   GenerateFamilyLS[UDF, loops, moms, kinematics, 
-    Evaluate@FilterOptions[{opt}, GenerateFamilyLS]];
-  Block[{Print = # &}, 
-   Monitor[For[num = 1, num <= Length@tp4, num++, 
+   GenerateFamilyLS[OptionValue["UserDefinedFamily"], loops, moms, 
+    kinematics, Evaluate@FilterOptions[{opt}, GenerateFamilyLS]];
+  If[RDQ, 
+   familyLS[[2]] = 
+    DeleteCases[familyLS[[2]], x_ /; ! MemberQ[tp5, x[[1]]], {2}]];
+  
+  
+  Block[{Print = # &}, Monitor[
+    For[num = 1, num <= Length@tp4, num++, 
      If[FindfamilyG[tp4[[num]], familyLS, loops, moms, kinematics, 
         "FindfamilyGDefault" -> Return[False], 
         "FGMode" -> "FamilySearch", 
@@ -55,24 +74,15 @@ FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_,
       AppendTo[familyLS[[1]], 
        CompleteProps[(sortfamily[#, loops] &)@tp4[[num]], loops, 
         extmomsind, Evaluate@FilterOptions[{opt}, CompleteProps]]];
-      AppendTo[familyLS[[2]], 
+      tpf = 
        LSsubsets[tp4[[num]], loops, moms, kinematics, 
-        Evaluate@FilterOptions[{opt}, LSsubsets]]]]], {num, 
-     Length@tp4}]];
-  If[OptionValue["RemoveRedundancy"], 
-   Monitor[sym = 
-     DeleteCases[OptionValue["Symmetry"]["Rules"], 
-      x_ /; AllTrue[x, #[[1]] === #[[2]] &]];
-    tp5 = 
-     TableS[tp3[[i]] /. sym[[j]] // 
-        CanonicalLoops[#, loops, moms, kinematics, 
-           Evaluate@optLS][[1]] &, {i, Length@tp3}, {j, Length@sym}, 
-       Method -> Automatic, Evaluate@FilterOptions[{opt}, TableS]] // 
-      Flatten[#, 1] &;
-    tp5 = Join[tp5, tp3];
-    familyLS[[2]] = 
-     DeleteCases[familyLS[[2]], x_ /; ! MemberQ[tp5, x[[1]]], {2}], 
-    "Removing Redundancy familyLS..."]];
+        Evaluate@FilterOptions[{opt}, LSsubsets]];
+      If[RDQ, 
+       tpf = DeleteCases[tpf, x_ /; ! MemberQ[tp5, x[[1]]], {1}]];
+      AppendTo[familyLS[[2]], tpf];
+      ]
+     ], {num, Length@tp4}]];
+  
   {familyLS, familyLS[[1]]}]
 
 

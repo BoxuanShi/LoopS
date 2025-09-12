@@ -3,7 +3,6 @@ FIRE.
 the exception is /.G->F for CXX reduction, print from the FIRE is reserved to \
 check whether all reduction is done by terminal.
 *)
-
 ClearAll[FIRETemplate];
 FIRETemplate = <|
    "Start" -> StringTemplate["Get[`FIRE`];
@@ -14,6 +13,7 @@ Replacements = `Replacements`;
 PrepareIBP[];
 Prepare[AutoDetectRestrictions\[Rule]True,LI\[Rule]True];
 SaveStart[ToString[`family`]];
+Pause[1];
 Quit[];
 "],
    

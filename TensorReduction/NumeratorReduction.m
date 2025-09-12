@@ -51,15 +51,14 @@ NumeratorReduction[expr_, indices_List,
 
   (*1. first step simplification*)
    tp1 = tp1 // 
-      CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify] & // 
+      CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify[# /. DiracTrace -> TR] & ] & // 
      ExpandDirac(*//TimingS*);
 
    tp2 = tp1 // 
      CollectS[#, _FAD | _SFAD, # &, 
        FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &;
-
        , "NumeratorReduction: Preprocessing..."];
-   
+
   (*have to collect FVD, MTD here, otherwise, 
   many terms with open index appear...*)
   (*tpt2=tp2;*)(*we do not include form _FVD|_MTD in the first time dirac \
@@ -74,7 +73,7 @@ simplify, we will include them after pv reduction, Dot[___]*
    optloop = FilterOptions[{opt}, loopRulesPV];
    tp3 =(*Monitor[*)
     Table[tp2[[i]] // loopRulesPV[#, loopmoms, extmomsind, optloop] & // 
-         DotExpand // # /. DiracTrace -> TR & // 
+         DotExpand // DiracTraceExpand (*// # /. DiracTrace -> TR &*) // 
        PVReduce[#, loopmoms, purePV] &, {i, Length@tp2}] // FCES(*,
    "tp3 1"]*);
    , "NumeratorReduction: PV reducing..."];

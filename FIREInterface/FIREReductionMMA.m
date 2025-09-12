@@ -14,12 +14,21 @@ FIREReductionMMA[Fslist_List, loops_List, family_List, process_Association,
 FIREReductionMMA[Fslist_List, loops_List, family_List, extmomsind_List, 
    kinematics_List, FIREWorkPath_String, FIREFamilyName_String, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{tp1, opt1, opt2, opt3, optpp},
+ Module[{tp1, opt1, opt2, opt3, firestart},
   
-  opt1 = FilterOptions[{opt}, OptionValue["FIREPrepareStart"]];
+  (* opt1 = FilterOptions[{opt}, OptionValue["FIREPrepareStart"]];
   Monitor[
    OptionValue["FIREPrepareStart"][loops, family, extmomsind, kinematics, 
-    FIREWorkPath, FIREFamilyName, Evaluate@opt1], "FIREPrepareStart..."];
+    FIREWorkPath, FIREFamilyName, Evaluate@opt1], "FIREPrepareStart..."]; *)
+
+ (*FIREPrepareStart*)
+  firestart = 
+   If[OptionValue["FIREPrepareStart"] === True, FIREPrepareStart, 
+    OptionValue["FIREPrepareStart"]];
+  opt1 = FilterOptions[{opt}, firestart];
+  Monitor[
+   firestart[loops, family, extmomsind, kinematics, FIREWorkPath, 
+    FIREFamilyName, Evaluate@opt1], "FIREPrepareStart..."];
   
   opt2 = FilterOptions[{opt}, FIRELoadStart];
   Monitor[
