@@ -146,6 +146,7 @@ DropZeroByNumerics;
 
 ApartFFS;
 ApartFFSSimplify;
+UserDefinedApartFFS;
 
 DenominatorToG;
 DenominatorToGForm;

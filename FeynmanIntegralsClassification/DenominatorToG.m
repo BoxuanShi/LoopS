@@ -43,7 +43,7 @@ DenominatorToG[nume_, deno_, loops_List, familyLS_List, moms_List,
     _, Return[0]]
    ];
   
-  apdeno = FADToProps[apdeno, List];
+  (* apdeno = FADToProps[apdeno, List]; *)
   
   (*denominator to G*)
   optFF = FilterOptions[{opt}, FindfamilyG];
