@@ -12,3 +12,4 @@ Get["ReduceSPDToG.m"];
 Get["DenominatorToG.m"];
 Get["AmplitudeReduce.m"];
 Get["GatherAmplitudes.m"];
+Get["CountPropsInFamily.m"];

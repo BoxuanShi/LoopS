@@ -76,15 +76,16 @@ PropsToM0[props_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   tp1 // Together // Expand // # /. OptionValue["kinematics"] &]
 
 
-ClearAll[linearPropsQ, linearPropsQ0]
+ClearAll[LinearPropsExistQ, linearPropsQ, linearPropsQ0]
 linearPropsQ[props_, loops_List] := linearPropsQ0[props, "loops" -> loops]
 Options[linearPropsQ0] = {"loops" -> "loops"};
 linearPropsQ0[props_, opt : OptionsPattern[]] := Module[{tp1, loops},
   loops = OptionValue["loops"];
   tp1 = Max@Exponent[props, loops]; 
-  Which[tp1 === 2, False, tp1 === 1, True, True, Print["False props form."]; 
+  Which[tp1 === 2, False, tp1 === 1, True, True, Print["linearPropsQ: False props form."]; 
    Abort[]]]
 SetAttributes[linearPropsQ0, Listable]
+LinearPropsExistQ[props_List, loops_List] := !FreeQ[linearPropsQ[props, loops], True]
 
 
 ClearAll[spdlist]

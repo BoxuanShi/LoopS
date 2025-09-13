@@ -148,6 +148,8 @@ ApartFFS;
 ApartFFSSimplify;
 UserDefinedApartFFS;
 
+CountPropsInFamily;
+
 DenominatorToG;
 DenominatorToGForm;
 DropZeroSectorQ;
@@ -160,6 +162,7 @@ PropsToFAD;
 PropsToSPD;
 PropsToM;
 linearPropsQ;
+LinearPropsExistQ;
 spdlist;
 IndependentArray;
 CompleteProps;
@@ -171,12 +174,11 @@ UserDefinedFamily;
 sortfamily;
 
 FindfamilyG;
+UserDefinedFindfamilyG;
 Symmetry;
 SymmetryFirstQ;
-Symmetry;
-SymmetryFirstQ;
-FindfamilyGDefault;
-FGMode;
+FindfamilyGFailedReturn;
+FindfamilyGMode;
 
 FindnumRules;
 

@@ -21,9 +21,10 @@ ApartFFS[deno_, loops_List, moms_, SPRep_List,
         Length@y] && (deno - Dot @@ tpuser // 
            FeynAmpDenominatorExplicit // ExpandMomentum // FCES // 
         Together) === 0,
-    Return[tpuser],
+    Nothing,
     Message[ApartFFS::UserDefinedApartFFS, {deno -> tpuser}]
-    ]
+    ];
+    Return[tpuser]
    ];
   
   tp1 = ApartFF[ExpandMomentum[deno, moms], loops, FDS -> False] // 
