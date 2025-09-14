@@ -189,6 +189,7 @@ GetFeynInt;
 
 ReduceSPDToG;
 De2GRules;
+De2;
 
 ReplaceSymmetryG;
 
@@ -329,7 +330,7 @@ FCES;
 GeneratePV;
 UseOPITeR;
 indPV;
-PVInd;
+PVind;
 PVL;
 
 GeneratePVbasis;
