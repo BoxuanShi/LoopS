@@ -68,6 +68,7 @@ FactorAll;
 Mul;
 
 NotebookDirectoryS;
+$NotebookDirectory;
 
 OptRestrict;
 
