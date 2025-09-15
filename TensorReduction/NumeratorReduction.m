@@ -44,15 +44,12 @@ NumeratorReduction[expr_, indices_List,
   ExpandMomentum can restore Momentum[x p,D] -> x Momentum[p,D]*)
 
   Monitor[
-   tp1 = FCES@expr /. 
-      Dispatch@{SPD[a_, b_] :> ExpandMomentum[SPD[a, b], moms], 
-        FVD[a_, b_] :> ExpandMomentum[FVD[a, b], moms]} // FCES;
+   tp1 = FCES @ expr /. 
+      Dispatch @ {SPD[a_, b_] :> ExpandMomentum[SPD[a, b], moms], FVD[a_, b_] :> ExpandMomentum[FVD[a, b], moms]} // FCES;
    tp1 = tp1 // RefineSpinor;
 
   (*1. first step simplification*)
-   tp1 = tp1 // 
-      CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify[# /. DiracTrace -> TR] & ] & // 
-     ExpandDirac(*//TimingS*);
+   tp1 = tp1 // CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify[# /. DiracTrace -> TR] & ] & // ExpandDirac (*//TimingS*);
 
    tp2 = tp1 // 
      CollectS[#, _FAD | _SFAD, # &, 
@@ -73,7 +70,7 @@ simplify, we will include them after pv reduction, Dot[___]*
    optloop = FilterOptions[{opt}, loopRulesPV];
    tp3 =(*Monitor[*)
     Table[tp2[[i]] // loopRulesPV[#, loopmoms, extmomsind, optloop] & // 
-         DotExpand // DiracTraceExpand (*// # /. DiracTrace -> TR &*) // 
+         DotSimplify // DiracTraceExpand (*// # /. DiracTrace -> TR &*) // 
        PVReduce[#, loopmoms, purePV] &, {i, Length@tp2}] // FCES(*,
    "tp3 1"]*);
    , "NumeratorReduction: PV reducing..."];

@@ -40,5 +40,5 @@ ExpandMomentum[expr_, moms_List] := Module[{expsingleMom},
 
 ClearAll[ExpandDirac]
 ExpandDirac[expr_] := 
- expr // DiracGammaExpand // ExpandScalarProduct // DotExpand(*//FCES*)// 
+ expr // DiracGammaExpand // ExpandScalarProduct // DotSimplify(*//FCES*)// 
   DiracTraceExpand

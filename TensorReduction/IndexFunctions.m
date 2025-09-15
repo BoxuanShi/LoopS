@@ -2,10 +2,10 @@ ClearAll[getfullindices, getdummyindices, getdummyindicesList]
 getfullindices[amp_, patt_ : _GAD | _GSD | _GA | _GS | _FV | _FVD] := 
  Variables@(List @@@ Union[Cases[FCES@{amp}, patt, Infinity]])
 
-(*DotExpand is to avoid bugs in some computer in the case of self-defined EOM \
+(*DotSimplify is to avoid bugs in some computer in the case of self-defined EOM \
 exist.*)
 getdummyindices[amp_, head_ : LorentzIndex] := 
- FCGetDummyIndices[DotExpand@FCI@amp, Flatten@{head}]
+ FCGetDummyIndices[DotSimplify @ FCI @ amp, Flatten@{head}]
 
 (*get dummy index for every spinor..., input should be one operator*)
 getdummyindicesList[expr_] := Module[{tp1, tp2, tp3},
