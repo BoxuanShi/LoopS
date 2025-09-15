@@ -49,7 +49,11 @@ NumeratorReduction[expr_, indices_List,
    tp1 = tp1 // RefineSpinor;
 
   (*1. first step simplification*)
-   tp1 = tp1 // CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify[# /. DiracTrace -> TR] & ] & // ExpandDirac (*//TimingS*);
+   (* tp1 = tp1 //ExpandDirac // CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify[# /. DiracTrace -> TR] & ] & // ExpandDirac (*//TimingS*); *)
+   tp1 = tp1 //ExpandDirac;
+   tp1 = tp1 // Separate[#, DiracPattern | _FVD | _MTD] &;
+   tp1[[2]] = TableS[ DiracSimplify[ tp1[[2, i]] /. DiracTrace -> TR ], {i, Length @ tp1[[2]]} ];
+   tp1 = Dot @@ tp1 // ExpandDirac (*//TimingS*);
 
    tp2 = tp1 // 
      CollectS[#, _FAD | _SFAD, # &, 
@@ -166,10 +170,7 @@ simplify, we will include them after pv reduction, Dot[___]*
   (*tpx10=tp3;*)
   (*make the further simplification more easier if we add this OperatorHead*)
   tp3 = Monitor[
-    CollectS[tp3, x : _SPD /; ! FreeQ[x, Alternatives @@ loopmoms], 
-     OptionValue["NumeratorReductionSimplify"]],
-    "NumeratorReduction: Simplifying with the option \
-\"NumeratorReductionSimplify\"..."](*//TimingS*);
+    CollectS[tp3, x : _SPD /; ! FreeQ[x, Alternatives @@ loopmoms], OptionValue["NumeratorReductionSimplify"]], "NumeratorReduction: Simplifying with the option \"NumeratorReductionSimplify\"..."](*//TimingS*);
   (*although in the next step, we only concern about the SPD -> 
   deno to obtain scalar integrals, 
   we can still retain these structure for easier simplification...*)
