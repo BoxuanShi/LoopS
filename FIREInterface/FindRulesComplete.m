@@ -225,12 +225,12 @@ findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 20, kinematics_Lis
      ],
     {num2, MaxIt}];
    
-   Print["Input: ", Length@MI0, ", output: ", Length@MINext];
+   Print["Input: ", Length@MI, ", output: ", Length@MINext];
    
    ];
   
   
-  (*Print["Input: ",Length@MI0,", output: ",Length@MINext];*)
+  (*Print["Input: ",Length@MI,", output: ",Length@MINext];*)
   
   (*result*)
   Thread[MI0 -> (sol /. Dispatch[d -> D])] // 
