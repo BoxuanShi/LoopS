@@ -2,7 +2,7 @@ ClearAll[FIREGetGRules];
 FIREReductionVerbose;
 Options[FIREGetGRules] := 
   CreateOptions[{"FIREGetGRulesSimplify" :> SimplifyS, 
-    "FIREReductionVerbose" -> True, "PreferredSectors" -> {}}, {FindRulesComplete, TableS}];
+    "FIREReductionVerbose" -> True, "PreferredMIs" -> {}}, {FindRulesComplete, TableS}];
 FIREGetGRules[Fslist_List, loops_List, family_List, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
@@ -17,7 +17,7 @@ FIREGetGRules[Fslist0_List, loops_List, family_List, extmomsind_List,
    kinematics_List, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, rules2, tpmi, tpeqs, tpmap},
 
-  pref = OptionValue["PreferredSectors"];
+  pref = OptionValue["PreferredMIs"];
   Fslist = Union @ Join[Fslist0, pref];
   
   tp1 = Monitor[
@@ -35,7 +35,7 @@ FIREGetGRules[Fslist0_List, loops_List, family_List, extmomsind_List,
     "Applying FindRulesComplete..."];
   rules1 = Union @ Join[Thread[Fslist -> tp2], GsRules] /. Dispatch[d -> D];
   
-  
+  Monitor[
   rules2 = If[
   pref === {}
   ,
@@ -47,7 +47,7 @@ FIREGetGRules[Fslist0_List, loops_List, family_List, extmomsind_List,
   tpmap = Solve[tpeqs, tpmi][[1]];
   Thread[rules1[[All,1]] -> (rules1[[All,2]] /. Dispatch @ tpmap)]
   ];
-
+  , "Transforming to the PreferredMIs..."];
   
   TableS[
     rules2[[i]] // Collect[#, _G, OptionValue["FIREGetGRulesSimplify"]] &, {i, Length @ rules2}, 

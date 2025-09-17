@@ -207,7 +207,7 @@ FindTopSectors;
 FindRulesComplete;
 LinearPropagatorQ;
 findrules;
-PreferredSectors;
+PreferredMIs;
 FIREVerbose;
 findrulesX;
 FamilyMergeSeed;
