@@ -25,6 +25,7 @@ FIREGetGRules[Fslist_List, loops_List, family_List, extmomsind_List,
        OptionValue["FIREReductionVerbose"], {Print = (# &)}, 
       Fslist /. Dispatch[G -> F]]], "G -> F..."];
   Gs = getS[{tp1, FIREEvaluate[MasterIntegralsS[]]}, _G];
+  
   (*any method to parallel this step?*)
   optf2 = FilterOptions[{opt}, FindRulesComplete];
   GsRules = 

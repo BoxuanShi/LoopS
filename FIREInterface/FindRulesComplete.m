@@ -12,9 +12,12 @@ FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20,
    process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  FindRulesComplete[family, MI0, loops, MaxIt, process["kinematics"], 
   process["extmomsind"], opt]
-FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
+FindRulesComplete[family_List, MI02_List, loops_List, MaxIt_Integer : 20, 
    kinematics_List, extmomsind_List, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{x, liq, tp1, tp2, tp3, rules1, tpeqs, tpmap, rules2, pref, prefRed, tpmi},
+  OptRestrict[opt] := Module[{x, MI0, liq, tp1, tp2, tp3, rules1, tpeqs, tpmap, rules2, pref, prefRed, tpmi},
+
+  pref = OptionValue["PreferredSectors"];
+  MI0 = Union @ Join[MI02, pref];
   
   liq = (! FreeQ[linearPropsQ[#, loops] & /@ Flatten[family], True]);
   
@@ -32,8 +35,6 @@ FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20,
    findrules2[family, MI0, loops, MaxIt, kinematics, extmomsind, 
     "LinearPropagatorQ" -> False, Evaluate @ FilterOptions[{opt}, findrules2]]
    ];
-  
-  pref = OptionValue["PreferredSectors"];
 
   rules2 = If[
   pref === {}
