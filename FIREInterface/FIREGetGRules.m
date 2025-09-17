@@ -2,7 +2,7 @@ ClearAll[FIREGetGRules];
 FIREReductionVerbose;
 Options[FIREGetGRules] := 
   CreateOptions[{"FIREGetGRulesSimplify" :> SimplifyS, 
-    "FIREReductionVerbose" -> True}, {FindRulesComplete, TableS}];
+    "FIREReductionVerbose" -> True, "PreferredSectors" -> {}}, {FindRulesComplete, TableS}];
 FIREGetGRules[Fslist_List, loops_List, family_List, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
@@ -13,12 +13,13 @@ FIREGetGRules[Fslist_List, loops_List, family_List,
   FIREGetGRules[Fslist, loops, family, process["extmomsind"], 
   process["kinematics"], Evaluate[opt]]
 
-FIREGetGRules[Fslist_List, loops_List, family_List, extmomsind_List, 
+FIREGetGRules[Fslist0_List, loops_List, family_List, extmomsind_List, 
    kinematics_List, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, Gs, GsRules, tp1, tp2, tp3, tp4, block, optf2, 
-   opttable},(*tp1=Monitor[BlockCondition[!OptionValue[
-  "FIREReductionVerbose"],{Print=(#&)},FIREEvaluate[Fslist/. Dispatch[
-  G->F]]],"G -> F..."];*)
+ Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, rules2, tpmi, tpeqs, tpmap},
+
+  pref = OptionValue["PreferredSectors"];
+  Fslist = Union @ Join[Fslist0, pref];
+  
   tp1 = Monitor[
     FIREEvaluate[
      BlockCondition[! 
@@ -27,19 +28,29 @@ FIREGetGRules[Fslist_List, loops_List, family_List, extmomsind_List,
   Gs = getS[{tp1, FIREEvaluate[MasterIntegralsS[]]}, _G];
   
   (*any method to parallel this step?*)
-  optf2 = FilterOptions[{opt}, FindRulesComplete];
   GsRules = 
    Monitor[FindRulesComplete[family, Gs, loops, kinematics, 
-     extmomsind, Evaluate@optf2], "FindRulesComplete..."];
+     extmomsind, Evaluate @ FilterOptions[{opt}, FindRulesComplete]], "FindRulesComplete..."];
   tp2 = Monitor[tp1 /. Dispatch@GsRules, 
     "Applying FindRulesComplete..."];
-  tp3 = Union@Join[Thread[Fslist -> tp2], GsRules] /. Dispatch[d -> D];
-  opttable = FilterOptions[{opt}, TableS];
-  tp4 = TableS[
-    tp3[[i]] // 
-     Collect[#, _G, OptionValue["FIREGetGRulesSimplify"]] &, {i, 
-     Length@tp3}, 
+  rules1 = Union @ Join[Thread[Fslist -> tp2], GsRules] /. Dispatch[d -> D];
+  
+  
+  rules2 = If[
+  pref === {}
+  ,
+  rules1
+  ,
+  prefRed = (FIREEvaluate[pref /. G -> F] /. Dispatch @ rules1);
+  tpmi = prefRed // getS[#, _G]&;
+  tpeqs = Thread[pref == (FIREEvaluate[pref /. G -> F] /. Dispatch @ rules1)];
+  tpmap = Solve[tpeqs, tpmi][[1]];
+  Thread[rules1[[All,1]] -> (rules1[[All,2]] /. Dispatch @ tpmap)]
+  ];
+
+  
+  TableS[
+    rules2[[i]] // Collect[#, _G, OptionValue["FIREGetGRulesSimplify"]] &, {i, Length @ rules2}, 
     "FIREGetGRules: Simplifying with option \"SimplifyFunction\".", 
-    Evaluate@opttable];
-  (*Monitor[Dispatch[tp4],"Dispatching..."]*)
-  tp4]
+    Evaluate @ FilterOptions[{opt}, TableS]];
+  ]

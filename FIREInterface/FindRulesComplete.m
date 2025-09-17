@@ -2,7 +2,7 @@ ClearAll[FindRulesComplete]
 FindRulesComplete::usage = 
   "FindRulesComplete return the minimal MIs only when the masters in every \
 families have been found completely...";
-Options[FindRulesComplete] := DeleteCases[CreateOptions[{"PreferredSectors" -> {}}, {findrules2}], 
+Options[FindRulesComplete] := DeleteCases[CreateOptions[{}, {findrules2}], 
  x_ /; x[[1]] === "LinearPropagatorQ", {1}];
 FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
@@ -12,16 +12,13 @@ FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20,
    process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  FindRulesComplete[family, MI0, loops, MaxIt, process["kinematics"], 
   process["extmomsind"], opt]
-FindRulesComplete[family_List, MI02_List, loops_List, MaxIt_Integer : 20, 
+FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
    kinematics_List, extmomsind_List, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{x, MI0, liq, tp1, tp2, tp3, rules1, tpeqs, tpmap, rules2, pref, prefRed, tpmi},
-
-  pref = OptionValue["PreferredSectors"];
-  MI0 = Union @ Join[MI02, pref];
+  OptRestrict[opt] := Module[{x, liq, tp1, tp2, tp3},
   
   liq = (! FreeQ[linearPropsQ[#, loops] & /@ Flatten[family], True]);
   
-  rules1 = If[
+  If[
    liq
    ,
    tp1 = findrules2[family, MI0, loops, MaxIt, kinematics, extmomsind, 
@@ -34,28 +31,14 @@ FindRulesComplete[family_List, MI02_List, loops_List, MaxIt_Integer : 20,
    ,
    findrules2[family, MI0, loops, MaxIt, kinematics, extmomsind, 
     "LinearPropagatorQ" -> False, Evaluate @ FilterOptions[{opt}, findrules2]]
-   ];
-
-  rules2 = If[
-  pref === {}
-  ,
-  rules1
-  ,
-  prefRed = (FIREEvaluate[pref /. G -> F] /. Dispatch @ rules1);
-  tpmi = prefRed // getS[#, _G]&;
-  tpeqs = Thread[pref == (FIREEvaluate[pref /. G -> F] /. Dispatch @ rules1)];
-  tpmap = Solve[tpeqs, tpmi][[1]];
-  Thread[rules1[[All,1]] -> (rules1[[All,2]] /. Dispatch @ tpmap)]
-  ];
-
-  rules2
+   ]
   ]
 
 
 ClearAll[findrules];
 Options[findrules] := 
   CreateOptions[{"Parallelization" -> False, 
-    "FIREVerbose" -> False(*, "PreferredSectors" -> {}*)}, {PrepareParallel, FIRE}];
+    "FIREVerbose" -> False}, {PrepareParallel, FIRE}];
 findrules[family2_List, MI2_List, loops_List, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
@@ -67,9 +50,6 @@ findrules[family2_List, MI2_List, loops_List, process_Association,
 findrules[family2_List, MI2_List, loops_List, kinematics_List, 
    extmomsind_List, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{pref, nfam, family, range, MI, rules, rules2, a, b, invRules, optPS},
-
-  (* pref = DeleteDuplicates @ tosector @ OptionValue["PreferredSectors"];
-  MI2 = DeleteDuplicates @ Join[MI20, pref]; *)
   
   Internal =.; External =.; Propagators =.; Replacements =.;
   invRules[expr_, condi_ : (False &)] := 
@@ -106,10 +86,7 @@ findrules[family2_List, MI2_List, loops_List, kinematics_List,
     ];
   On[LaunchKernels::nodef];
   
-  rules2 = rules /. G[a_, b_] :> G[nfam - a + 1, b];
-  (* rules2 // 
-   invRules[#, MemberQ[pref, tosector @ #] &] & *)
-  rules2
+  rules /. G[a_, b_] :> G[nfam - a + 1, b]
   ]
 
 
