@@ -51,6 +51,6 @@ FIREGetGRules[Fslist0_List, loops_List, family_List, extmomsind_List,
   
   TableS[
     rules2[[i]] // Collect[#, _G, OptionValue["FIREGetGRulesSimplify"]] &, {i, Length @ rules2}, 
-    "FIREGetGRules: Simplifying with option \"SimplifyFunction\".", 
+    "FIREGetGRules: Simplifying with option \"SimplifyFunction\".", Method -> Automatic,
     Evaluate @ FilterOptions[{opt}, TableS]]
   ]
