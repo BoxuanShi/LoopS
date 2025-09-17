@@ -32,6 +32,7 @@ FindTopSectors[Glist_List, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   
   If[num >= maxc, Print["FindTopSectors: maximum recursion reached."]; 
    Abort[]];
+
   tp4
   ]
 
@@ -74,10 +75,10 @@ index."];
   
   opttable = FilterOptions[{opt}, TableS];
   sectors = 
-   TableS[SubSectors[topsec[[i]], loops], {i, Length@topsec}, 
+   TableS[SubSectors[topsec[[i]], loops], {i, Length@topsec}, Method -> Automatic, 
      Evaluate@opttable] // Flatten;
   
-  tp1 = TableS[possible[sectors[[i]], rx, sx, dx], {i, Length@sectors}, 
+  tp1 = TableS[possible[sectors[[i]], rx, sx, dx], {i, Length@sectors}, Method -> Automatic, 
      Evaluate@opttable] // Flatten;
   If[OptionValue["ForDEQ"], tp1 = tp1 // DeleteDuplicates];
   

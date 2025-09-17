@@ -1,9 +1,12 @@
 BeginPackage["LoopS`"];
 
 
+(*LoopSNeat1*)
 (*LoopSInformation*)
-$LoopSVersion="2025-09-11";
+$LoopSVersion="2025-09-17";
 $LoopSInstallPath = DirectoryName[$InputFileName];
+(*LoopSNeat1*)
+
 
 Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
 Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
@@ -28,7 +31,7 @@ $Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoadDependencies"}]]
 Get["LoadDependencies.m"];
 
 
-
+(*LoopS*)
 BeginPackage["LoopS`"];
 
 
@@ -47,6 +50,7 @@ Get[FileNameJoin[{$LoopSInstallPath, "Usage.m"}]];
 
 
 Begin["LoopS`Private`"];
+(*LoopSNeat2*)
 (*ProcessDefine*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"ProcessDefine"}]];
 Get["ProcessDefineLoad.m"];
@@ -71,15 +75,12 @@ Get["AMFlowInterfaceLoad.m"];
 (*MasterIntegralResults*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]];
 Get["MasterIntegralResultsLoad.m"];
-End[];
-
-
 (*Unusual bug fix*)
 LoopSWorkDirectory;
-
-
 (*Generate LoopS directory*)
 CreateDirectoryS[LoopSWorkDirectory];
+(*LoopSNeatEnd2*)
+End[];
 
 
 (*self-consistence check*)
