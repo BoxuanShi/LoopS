@@ -2,7 +2,7 @@ ClearAll[FIREGetGRules];
 FIREReductionVerbose;
 Options[FIREGetGRules] := 
   CreateOptions[{"FIREGetGRulesSimplify" :> SimplifyS, 
-    "FIREReductionVerbose" -> False}, {FindRulesComplete, TableS}];
+    "FIREReductionVerbose" -> True}, {FindRulesComplete, TableS}];
 FIREGetGRules[Fslist_List, loops_List, family_List, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
