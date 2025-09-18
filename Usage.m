@@ -110,6 +110,7 @@ ToStringInput;
 
 (*DifferentialEquations*)
 GDerivative;
+SortMIByBlock;
 
 
 (*EquivalentIntegrals*)
