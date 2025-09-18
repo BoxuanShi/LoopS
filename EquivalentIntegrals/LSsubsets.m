@@ -22,8 +22,8 @@ LSsubsets[propslist_List, loops_List, moms_List, kinematics_List,
   opttable = FilterOptions[{opt}, TableS];
   optLS = FilterOptions[{opt}, CanonicalLoops];
   tp3 = Block[{Monitor = (# &)}, 
-    TableS[CanonicalLoops[tp2[[i]], loops, moms, kinematics, Method -> Automatic, 
-      Evaluate@optLS], {i, Length@tp2}, Evaluate@opttable]];
+    TableS[CanonicalLoops[tp2[[i]], loops, moms, kinematics, 
+      Evaluate@optLS], {i, Length@tp2}, Method -> Automatic, Evaluate@opttable]];
 
   tp4 = GatherBy[tp3, #[[1]] &];
   If[OptionValue["LSsubsetsSortQ"], tp4 = Sort /@ tp4];

@@ -51,6 +51,7 @@ Get[FileNameJoin[{$LoopSInstallPath, "Usage.m"}]];
 
 Begin["LoopS`Private`"];
 (*LoopSNeat2*)
+$Path = Union@Append[$Path, $LoopSInstallPath];
 (*ProcessDefine*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"ProcessDefine"}]];
 Get["ProcessDefineLoad.m"];
