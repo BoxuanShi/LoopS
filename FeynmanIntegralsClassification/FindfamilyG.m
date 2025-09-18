@@ -53,7 +53,7 @@ FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List,
      mqprops = If[symQ,  props /. sym["InvRules"][[mqG[[3]]]], props];
      mqprops = mqprops /. tpuser[[2]];
      {mqG[[2]], mqsign} === 
-      Quiet[CountPropsInFamily[mqprops, familyLS[[1]][[mqG[[1]]]], loops,
+      Quiet[CountPropsInFamily[mqprops, familyLS[[1]][[mqG[[1]]]],
         kinematics]]
      ];
    
@@ -132,7 +132,7 @@ FindfamilyG[props0_List | props0_FAD | props0_SFAD, familyLS_List,
   sign3=1];*)
   
   {ct, sign3} = 
-   CountPropsInFamily[propsSTD, tpfamily, loops, kinematics];
+   CountPropsInFamily[propsSTD, tpfamily, kinematics];
   
   (*return G form*)
   tp3 = If[
