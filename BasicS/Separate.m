@@ -34,7 +34,7 @@ Separate1[expr_, patt0_List, opt : OptionsPattern[]] /;
   OptionValue["SeparateHead"] @@ {coe, Sequence @@ patt}]
 
 Options[SeparatePoly] = {"SeparateHead" -> List, 
-   "SeparateDropOne" -> False};
+   "SeparateDropOne" -> False, "SeparateOperation" -> Times};
 SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := SeparatePoly0[expr, "vars" -> vars, Evaluate@opt]
 
@@ -42,7 +42,9 @@ Options[SeparatePoly0] :=
   CreateOptions[{"vars" -> "vars"}, {SeparatePoly}];
 SetAttributes[SeparatePoly0, Listable];
 SeparatePoly0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{vars, sa, ar, ltop, tp1},
+ Module[{vars, sa, ar, ltop, tp1, opr},
+
+  opr = OptionValue["SeparateOperation"];
   vars = OptionValue["vars"];
   If[expr === 0, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
   If[vars === {}, 
@@ -52,9 +54,9 @@ SeparatePoly0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   ];
   sa = CoefficientArrays[expr, vars];
   ar = (ArrayRules /@ sa[[2 ;; -1]])[[All, 1 ;; -2]] // Flatten;
-  ltop[list_] := Times @@ (vars[[#]] & /@ list);
+  ltop[list_] := opr @@ (vars[[#]] & /@ list);
   tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
   tp1 = SortBy[tp1, Last];
   If[sa[[1]] =!= 0 && ! OptionValue["SeparateDropOne"], 
-   PrependTo[tp1, {sa[[1]], 1}], Nothing];
+   PrependTo[tp1, {sa[[1]], opr @@ {1}}], Nothing];
   OptionValue["SeparateHead"] @@ Transpose[tp1]]

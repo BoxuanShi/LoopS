@@ -23,5 +23,5 @@ SPDToFAD0[expr_, OptionsPattern[]] :=
      tp2]
     , {i, Length@tp1}];
   rules = Thread[rules[[All, 1]] -> tp3];
-  expr2 /. Dispatch@rules
+  expr2 /. Dispatch@rules // If[!FreeQ[#, SFAD], ToSFAD[#], #] & // FeynAmpDenominatorCombine // FCES
   ]

@@ -44,7 +44,7 @@ maximum index, dx: minimum and maximum sum of total negative and enhanced \
 index.";
 Options[FindCompleteGList] := 
  CreateOptions[{"ForDEQ" -> False, "DropZeroSectorQ" -> True, 
-   "Parallelization" -> False}, {TableS, FindTopSectors}]; ForDEQ;
+   "Parallelization" -> False}, {TableS, FindTopSectors}];
 FindCompleteGList[topsec0_List, family_List, loops_List, rx_Integer : 0, 
    sx_List : {0, 2}, dx_List : {0, 1}, process_String : "CurrentProcess", 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 

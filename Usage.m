@@ -85,6 +85,7 @@ sameSetQ;
 
 Separate;
 SeparatePoly;
+SeparateOperation;
 
 SeriesPoly;
 SeriesPower;
