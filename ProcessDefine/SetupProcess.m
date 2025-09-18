@@ -11,7 +11,7 @@ SetupProcess["CurrentProcess", ___] :=
  Print["CurrentProcess has been used by LoopS, please choose another name for \
 your process."]
 SetupProcess[process_String, b___, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{i, j, keys, str, outerSPD, processA},
+  OptRestrict[opt] := Module[{x, i, j, keys, str, outerSPD, processA},
   (*ClearProcess*)
   Block[{Print = (# &)}, ClearProcess[]];
   
@@ -60,7 +60,7 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
   (*check extramom definitions*)
   outerSPD = 
    Outer[SPD, extramoms, extramoms] // ExpandMomentum // ExpandDirac // 
-    getS[#, _SPD] &;
+    getS[#, x : _SPD /; FreeQ[x, Alternatives @@ loopmoms]] &;
   If[outerSPD =!= {}, Message[SetupProcess::spddefine, outerSPD]];
   
   (*CreateFiles*)
