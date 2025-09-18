@@ -8,8 +8,9 @@ ReduceSPDToG[expr0_, familylist_, process_Association] :=
  ReduceSPDToG[expr0, familylist, process["loopmoms"], process["kinematics"], 
   process["moms"]]
 ReduceSPDToG[expr0_, familylist_, loopmoms_, kinematics_, moms_] := 
- Module[{sym, expr, tp1, tp2, tp3, tp1f, num},
-  If[FreeQ[expr0, G],
+ Module[{expr, tp1, tp2, tp3, tp1f, num},
+
+  If[FreeQ[expr0, G] && expr0 =!= 0,
    If[familylist == {}, Return[expr0],
     Print["No G[___] provided."]; Abort[]],
    If[familylist == {}, Print["familyLS is empty."]; Abort[]]
