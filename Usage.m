@@ -108,6 +108,10 @@ ToStringHold;
 ToStringInput;
 
 
+(*DifferentialEquations*)
+GDerivative;
+
+
 (*EquivalentIntegrals*)
 CanonicalLoops;
 

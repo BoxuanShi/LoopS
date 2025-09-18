@@ -12,6 +12,9 @@ Get["ProcessDefineLoad.m"];
 (*BasicS*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"BasicS"}]];
 Get["BasicSLoad.m"];
+(*DifferentialEquations*)
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"DifferentialEquations"}]];
+Get["DifferentialEquationsLoad.m"];
 (*TensorReduction*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"TensorReduction"}]];
 Get["TensorReductionLoad.m"];
