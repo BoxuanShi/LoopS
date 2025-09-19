@@ -12,7 +12,7 @@ DistributeToPolyND0[expr_, vars_List] := Module[{ND, tp1},
    If[
     (tp1 = Distribute[expr]) =!= expr,
     Return[DistributeToPolyND0[tp1, vars]],
-    Print["DistributeToPolyND0: Encountered unknow structures."]; Abort[];
+    Print["DistributeToPolyND0: Encountered unknow structures. Use Together or Factor Firstly."]; Abort[];
     ],
    expr
    ]]
