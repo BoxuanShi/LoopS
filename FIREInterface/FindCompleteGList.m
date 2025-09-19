@@ -43,7 +43,7 @@ FindCompleteGList::usage =
 maximum index, dx: minimum and maximum sum of total negative and enhanced \
 index.";
 Options[FindCompleteGList] := 
- CreateOptions[{"ForDEQ" -> False, "DropZeroSectorQ" -> True, 
+ CreateOptions[{"PossibleIntForDEInSector" -> False, "DropZeroSectorQ" -> True, 
    "Parallelization" -> False}, {TableS, FindTopSectors}];
 FindCompleteGList[topsec0_List, family_List, loops_List, rx_Integer : 0, 
    sx_List : {0, 2}, dx_List : {0, 1}, process_String : "CurrentProcess", 
@@ -59,7 +59,7 @@ FindCompleteGList[topsec0_List, family_List, loops_List, rx_Integer : 0,
 FindCompleteGList[topsec0_List, family_List, loops_List, rx_Integer : 0, 
    sx_List : {0, 2}, dx_List : {0, 1}, kinematics_List, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, topsec, sectors, tp1, tp2, possible, opttable, optFTS},
+ Module[{i, topsec, sectors, tp1, tp2, opttable, optFTS, PIFD},
   
   Print["{rx, sx, dx} -> ", {rx, sx, dx}];
   Print["rx: Total of positive index (0 means no constraint), sx: minimum and \
@@ -69,18 +69,22 @@ index."];
   optFTS = FilterOptions[{opt}, FindTopSectors];
   topsec = FindTopSectors[topsec0, Evaluate@optFTS];
   
-  possible = If[OptionValue["ForDEQ"],
-    PossibleIntForDEInSector,
-    PossibleMIsInSector];
-  
   opttable = FilterOptions[{opt}, TableS];
   sectors = 
    TableS[SubSectors[topsec[[i]], loops], {i, Length@topsec}, Method -> Automatic, 
      Evaluate@opttable] // Flatten;
-  
-  tp1 = TableS[possible[sectors[[i]], rx, sx, dx], {i, Length@sectors}, Method -> Automatic, 
+
+  tp1 = TableS[PossibleMIsInSector[sectors[[i]], rx, sx, dx], {i, Length@sectors}, Method -> Automatic, 
      Evaluate@opttable] // Flatten;
-  If[OptionValue["ForDEQ"], tp1 = tp1 // DeleteDuplicates];
+
+  If[
+  (PIFD = OptionValue["PossibleIntForDEInSector"]) =!= False, 
+  tp1 = Join[
+    tp1, 
+    TableS[PossibleIntForDEInSector[sectors[[i]], Sequence @@ PIFD], {i, Length@sectors}, Method -> Automatic, 
+     Evaluate@opttable] // Flatten
+     ] // DeleteDuplicates
+    ];
   
   tp2 = If[OptionValue["DropZeroSectorQ"],
     TableS[

@@ -3221,7 +3221,7 @@ Cell[BoxData[
       RowBox[{"{", 
        RowBox[{"0", ",", "1"}], "}"}], ",", 
       RowBox[{"\"\<Parallelization\>\"", "->", "False"}], ",", 
-      RowBox[{"\"\<ForDEQ\>\"", "->", "False"}], ",", 
+      RowBox[{"\"\<PossibleIntForDEInSector\>\"", "->", "False"}], ",", 
       RowBox[{"\"\<FIRECXXKernels\>\"", "->", "2"}]}], "]"}], "//", 
     "TimingS"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.952927275119805*^9, 3.95292728824463*^9}, {
@@ -6761,7 +6761,7 @@ Cell[BoxData[{
       RowBox[{"{", 
        RowBox[{"0", ",", "1"}], "}"}], ",", 
       RowBox[{"\"\<Parallelization\>\"", "->", "True"}], ",", 
-      RowBox[{"\"\<ForDEQ\>\"", "->", "True"}], ",", 
+      RowBox[{"\"\<PossibleIntForDEInSector\>\"", "->", "True"}], ",", 
       RowBox[{"\"\<FIRECXXKernels\>\"", "->", "4"}]}], "]"}], "//", 
     "TimingS"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.952927275119805*^9, 3.95292728824463*^9}, {
