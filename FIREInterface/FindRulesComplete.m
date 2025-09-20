@@ -4,15 +4,15 @@ FindRulesComplete::usage =
 families have been found completely...";
 Options[FindRulesComplete] := DeleteCases[CreateOptions[{}, {findrules2}], 
  x_ /; x[[1]] === "LinearPropagatorQ", {1}];
-FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
+FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 500, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
  FindRulesComplete[family, MI0, loops, MaxIt, ToExpression[process], opt]
-FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
+FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 500, 
    process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  FindRulesComplete[family, MI0, loops, MaxIt, process["kinematics"], 
   process["extmomsind"], opt]
-FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
+FindRulesComplete[family_List, MI0_List, loops_List, MaxIt_Integer : 500, 
    kinematics_List, extmomsind_List, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := Module[{x, liq, tp1, tp2, tp3},
   
@@ -140,16 +140,16 @@ Options[findrules2] :=
  CreateOptions[{"LinearPropagatorQ" -> False}, {findrulesX, findrules, TableS}]
 (*findrules2 return the minimal MIs only when the masters in every families \
 have been found completely...*)
-findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
+findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 500, 
    process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
  findrules2[family, MI0, loops, MaxIt, ToExpression[process], opt]
-findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 20, 
+findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 500, 
    process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  findrules2[family, MI0, loops, MaxIt, process["kinematics"], 
   process["extmomsind"], opt]
 
-findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 20, kinematics_List, extmomsind_List, opt : OptionsPattern[]] /; OptRestrict[opt] := 
+findrules2[family_List, MI0_List, loops_List, MaxIt_Integer : 500, kinematics_List, extmomsind_List, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{sectors, fr, rulesSec, rulesOri, seedsNew, tp5, tp6, tp7, tp8, tp9, 
    tp10, seedsfull, rulesCom, sol, num, num1, num2, MI, MINext, MINext2, 
    opttable, optfr},
