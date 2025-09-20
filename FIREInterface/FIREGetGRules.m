@@ -43,7 +43,7 @@ FIREGetGRules[Fslist0_List, loops_List, family_List, extmomsind_List,
   ,
   prefRed = (FIREEvaluate[pref /. G -> F] /. Dispatch @ rules1);
   tpmi = prefRed // getS[#, _G]&;
-  tpeqs = Thread[pref == (FIREEvaluate[pref /. G -> F] /. Dispatch @ rules1)];
+  tpeqs = Thread[pref == prefRed];
   tpmap = Solve[tpeqs, tpmi][[1]];
   Thread[rules1[[All,1]] -> (rules1[[All,2]] /. Dispatch @ tpmap)]
   ];

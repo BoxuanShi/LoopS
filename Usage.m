@@ -29,6 +29,7 @@ recurRules;
 BlockCondition;
 
 CoefficientS;
+CoefficientCheckZero;
 
 CollectFlat;
 
@@ -220,6 +221,7 @@ FamilyMergeSeed;
 findrules2;
 
 FIREEvaluate;
+FIREdReplace;
 
 FIREGetGRules;
 FIREGetGRulesSimplify;

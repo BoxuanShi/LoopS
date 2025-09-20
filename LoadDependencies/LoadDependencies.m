@@ -41,7 +41,7 @@ Print["FIRE is loaded by ", $FIREInstallPath];
 
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];
 ParallelNeedS["MultivariateApart`", $MultivariateApartInstallPath];
-If[FIREInstalledQ, LoopS`ParallelNeedS["FIRE`", $FIREInstallPath]];
+If[FIREInstalledQ, ParallelNeedS["FIRE`", $FIREInstallPath]];
 
 
 (*check FeynCalc version*)

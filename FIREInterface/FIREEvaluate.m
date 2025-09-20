@@ -1,5 +1,5 @@
 ClearAll[FIREEvaluate];
 SetAttributes[FIREEvaluate, HoldFirst]
-Options[FIREEvaluate] := CreateOptions[{}, {ParallelEvaluateS}]
+Options[FIREEvaluate] := CreateOptions[{"FIREdReplace" -> D}, {ParallelEvaluateS}]
 FIREEvaluate[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- ParallelEvaluateS[expr, 1]
+ ParallelEvaluateS[expr, 1, Evaluate @ opt] /. d -> OptionValue["FIREdReplace"]
