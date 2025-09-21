@@ -14,7 +14,8 @@ ParallelNeedS[context_, filepath_String] := Module[{},
    Parallel`Protected`AddInitCode[
     Parallel`Client`HoldCompound[
       Block[{Print=(#&)}, Needs[context, filepath]]
-      ]],
+      ]];
+    Parallel`Protected`addBadContext[context],
    ParallelNeeds[context]
    ]
   ]

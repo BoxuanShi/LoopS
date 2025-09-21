@@ -10,6 +10,7 @@ SetupProcess[] := ClearProcess[];
 SetupProcess["CurrentProcess", ___] := 
  Print["CurrentProcess has been used by LoopS, please choose another name for \
 your process."]
+
 SetupProcess[process_String, b___, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := Module[{x, i, j, keys, str, outerSPD, processA},
   (*ClearProcess*)
