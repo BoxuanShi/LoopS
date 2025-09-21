@@ -40,6 +40,7 @@ Print["FIRE is loaded by ", $FIREInstallPath];
 
 
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];
+Parallel`Protected`addBadContext["FeynCalc`"];
 ParallelNeedS["MultivariateApart`", $MultivariateApartInstallPath];
 If[FIREInstalledQ, ParallelNeedS["FIRE`", $FIREInstallPath]];
 
