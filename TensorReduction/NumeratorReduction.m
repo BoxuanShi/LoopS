@@ -26,7 +26,7 @@ NumeratorReduction[expr_, process_Association, opt : OptionsPattern[]] /;
   process["purePV"], opt]
 NumeratorReduction[expr_, indices_List, 
    operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, 
-   extmomsind_List, purePV_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
+   extmomsind_List, purePV_String, opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop,
     maxit = OptionValue["MaxIt"], itc = 0, TestFunction, operatorRules},
   
@@ -75,7 +75,7 @@ simplify, we will include them after pv reduction, Dot[___]*
    tp3 =(*Monitor[*)
     Table[tp2[[i]] // loopRulesPV[#, loopmoms, extmomsind, optloop] & // 
          DotSimplify // DiracTraceExpand (*// # /. DiracTrace -> TR &*) // 
-       PVReduce[#, loopmoms, purePV] &, {i, Length@tp2}] // FCES(*,
+       PVReduce[#, loopmoms, purePV, extmomsind] &, {i, Length@tp2}] // FCES(*,
    "tp3 1"]*);
    , "NumeratorReduction: PV reducing..."];
   

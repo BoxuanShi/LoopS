@@ -33,7 +33,9 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
   
   (*setshared*)
   If[$KernelID == 0, 
-   "SetSharedVariable[" <> processA["ProcessName"] <> "]" // ToExpression];
+   "SetSharedVariable[" <> processA["ProcessName"] <> "]" // ToExpression;
+   "SetSharedVariable[" <> processA["purePV"] <> "]" // ToExpression
+   ];
   
   (*Distribute to some global variables*)
   Unprotect[ProcessName, moms, loopmoms, extmoms, extmomsind, extramoms, 

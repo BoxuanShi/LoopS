@@ -34,24 +34,33 @@ loopRulesPV[expr_, loopmoms_List, extmomsind_List, opt : OptionsPattern[]] /;
 
 
 ClearAll[PVReduce];
-PVReduce[expr_, process_String : "CurrentProcess"] := 
- PVReduce[expr, ToExpression[process]]
-PVReduce[expr_, process_Association] := 
- PVReduce[expr, process["loopmoms"], process["purePV"]]
-PVReduce[expr_, loopmoms_List, purePV_] := 
+Options[PVReduce] := CreateOptions[{}, {PVRules}]
+PVReduce[expr_, process_String : "CurrentProcess", 
+  opt : OptionsPattern[]] := PVReduce[expr, ToExpression[process], opt]
+
+PVReduce[expr_, process_Association, opt : OptionsPattern[]] := 
+ PVReduce[expr, process["loopmoms"], process["purePV"], 
+  process["extmomsind"], opt]
+
+PVReduce[expr_, loopmoms_List, purePV_String, extmomsind_List, 
+  opt : OptionsPattern[]] := 
  Module[{\[Delta]\[Delta], i, j, tp1, tp2, tp3, patt, name, tph1},
-  
   tp1[a_] := 
-   Join @@ Table[ConstantArray[loopmoms[[i]], a[[i]]], {i, Length@loopmoms}];
-  tp2[a_] := Join @@ Table[indPV[i, j], {i, Length@loopmoms}, {j, a[[i]]}];
-  tp3[a_] := PVRules[tp1[a], tp2[a], purePV];
-  patt = Table[
-    "a" <> ToString[i] <> "_" // ToExpression, {i, Length@loopmoms}];
-  name = Table["a" <> ToString[i] // ToExpression, {i, Length@loopmoms}];
-  
+   Join @@ Table[
+     ConstantArray[loopmoms[[i]], a[[i]]], {i, Length@loopmoms}];
+  tp2[a_] := 
+   Join @@ Table[indPV[i, j], {i, Length@loopmoms}, {j, a[[i]]}];
+  tp3[a_] := 
+   PVRules[tp1[a], tp2[a], purePV, extmomsind, 
+    FilterOptions[{opt}, {PVRules}]];
+  patt = 
+   Table["a" <> ToString[i] <> "_" // ToExpression, {i, 
+     Length@loopmoms}];
+  name = 
+   Table["a" <> ToString[i] // ToExpression, {i, Length@loopmoms}];
   CollectFlat[
-     expr*Times @@ (
-       Array[\[Lambda]PV, Length@loopmoms]^\[Delta]\[Delta]), \[Lambda]PV[_], 
+     expr*Times @@ (Array[\[Lambda]PV, 
+          Length@loopmoms]^\[Delta]\[Delta]), \[Lambda]PV[_], 
      Factor] /. 
     Times @@ Table[\[Lambda]PV[i]^patt[[i]], {i, Length@loopmoms}] -> 
      tph1[name - \[Delta]\[Delta]] /. tph1 -> tp3]

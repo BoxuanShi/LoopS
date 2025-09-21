@@ -19,7 +19,7 @@ CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch,
   process["loopmoms"], process["moms"], process["extmomsind"], 
   process["purePV"], opt]
 CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch, 
-   indices_List, loopmoms_List, moms_List, extmomsind_, purePV_, 
+   indices_List, loopmoms_List, moms_List, extmomsind_, purePV_String, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
  Module[{operatorRules0, operatorRules2, OPERAT, opelist, opttable, optnum, 
    tp0, tp1, tp1x, tp2, tp3, i, j},

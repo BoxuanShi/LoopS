@@ -14,7 +14,7 @@ AmplitudeReduce[amp_, loops_List : {}, familyLS_List : {{}, {}},
   process["extmomsind"], process["purePV"], process["kinematics"], opt]
 AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, 
    operatorRules_List | operatorRules_Dispatch, loopmoms_List, moms_List, 
-   extmomsind_List, purePV_, kinematics_List, opt : OptionsPattern[]] /; 
+   extmomsind_List, purePV_String, kinematics_List, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
  Module[{i, j, k, tpNumlist, tpDenolist, tpNumSPD, PowerCounting0, 
    PowerCounting, tp1, tp2, tp3, optnum, optFR, optAP, OPERAT, ophead, 

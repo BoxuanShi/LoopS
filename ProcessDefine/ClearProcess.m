@@ -7,9 +7,9 @@ ClearProcess[] := Module[{},
   ClearProcess /@ DefinedProcess;
   
   (*Distribute to CurrentProcess*)
-  CurrentProcess = 
-   CreateProcess[<|"ProcessName" -> "", "loopmoms" -> {}, "extmomsind" -> {}, 
-     "kinematics" -> {}|>];
+  CurrentProcess = <||>;
+   (* CreateProcess[<|"ProcessName" -> "", "loopmoms" -> {}, "extmomsind" -> {}, 
+     "kinematics" -> {}|>]; *)
   
   (*Distribute to CurrentAlgebras*)
   CurrentAlgebras = {};
