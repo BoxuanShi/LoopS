@@ -1,7 +1,7 @@
 ClearAll[ProcessPath, PVPath, FIREWorkPath, LoopSWorkDirectory, OPITeRWorkPath]
 LoopSWorkDirectory := 
   LoopSWorkDirectory = 
-   PathName@FileNameJoin[{ExpandFileName[NotebookDirectoryS[]], "LoopSFile","Processes"}];
+   PathName@FileNameJoin[{ExpandFileName[$NotebookDirectory], "LoopSFile","Processes"}];
 
 ProcessPath[process_String] := FileNameJoin[{LoopSWorkDirectory, process}]
 
