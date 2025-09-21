@@ -52,7 +52,7 @@ FIREPrepareCXX[Fslist_List, loops_List, family_List, rx_Integer : 0,
      "tThreads" -> Ceiling[OptionValue["FIRECXXKernels"]/2],
      "sThreads" -> Ceiling[OptionValue["FIRECXXKernels"]/2],
      "variables" -> (ToString[
-         Complement[Variables[family], Join[loops, extmomsind]]] // 
+         Complement[Variables[{family, kinematics[[All, 2]]}], Join[loops, extmomsind]]] // 
         StringTake[#, {2, -2}] &),
      "folder" -> PathName[FIREWorkPath],
      "familyName" -> (FIREFamilyName <> ToString[i]),
