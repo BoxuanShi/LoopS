@@ -108,6 +108,8 @@ TogetherExpand;
 ToStringHold;
 ToStringInput;
 
+DumpDistribute;
+
 
 (*DifferentialEquations*)
 GDerivative;
