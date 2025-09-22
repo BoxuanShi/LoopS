@@ -1,4 +1,8 @@
-$FeynCalcInstallPath = "FeynCalc`";
+(* $FeynCalcInstallPath = "FeynCalc`"; *)
+
+$FeynCalcInstallPath = FileNameJoin[{DirectoryName @ $InputFileName,
+      "LoadDependencies", "Dependencies", "FeynCalc", "FeynCalc.m"
+     }];
 
 $MultivariateApartInstallPath = FileNameJoin[{DirectoryName @ $InputFileName,
       "LoadDependencies", "Dependencies", "multivariateapart", "MultivariateApart.wl"
