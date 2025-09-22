@@ -1,9 +1,24 @@
-(*LoopSInformation*)
+BeginPackage["LoopS`"];
+
+
+(*for subkernels*)
+If[$KernelID =!= 0,
 $LoopSVersion="2025-09-22";
 $LoopSInstallPath = DirectoryName[$InputFileName];
-$NotebookDirectory = DirectoryName[NotebookFileName[]]
+$NotebookDirectory = LoopS`Private`nbd;
+];
 
 
+$ContextPath = Prepend[$ContextPath, "Global`"];
+$ContextPath = Prepend[$ContextPath, "FeynCalc`"];
+$ContextPath = Prepend[$ContextPath, "MultivariateApart`"];
+$ContextPath = Prepend[$ContextPath, "FIRE`"];
+
+
+Get[FileNameJoin[{$LoopSInstallPath, "Usage.m"}]];
+
+
+Begin["LoopS`Private`"];
 (*LoopSNeat2*)
 $Path = Union@Append[$Path, $LoopSInstallPath];
 (*ProcessDefine*)
@@ -38,3 +53,7 @@ LoopSWorkDirectory;
 (*Generate LoopS directory*)
 CreateDirectoryS[LoopSWorkDirectory];
 (*LoopSNeatEnd2*)
+End[];
+
+
+EndPackage[];

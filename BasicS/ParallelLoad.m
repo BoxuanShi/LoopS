@@ -1,3 +1,4 @@
-ParallelLoad[] := Module[{loadlist},
+(* ParallelLoad[] := Module[{loadlist},
   loadlist = Union@Flatten@DownValuesArguments@ParallelLoad;
-  ParallelLoad /@ loadlist]
+  ParallelLoad /@ loadlist] *)
+(*unused*)

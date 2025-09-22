@@ -5,7 +5,6 @@ Begin["LoopS`Private`"];
 
 
 (*Parallel`Kernels`Private`$clientCode*)
-(*SetSharedVariable[CurrentProcess];*)
 ClearAll[ParallelNeedS]
 ParallelNeedS[context_] := ParallelNeeds[context]
 ParallelNeedS[context_, filepath_String] := Module[{},

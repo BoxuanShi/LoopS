@@ -4,22 +4,22 @@ LoopSParallelKernels =
 Options[PrepareParallel] := 
   CreateOptions[{"Kernels" :> LoopSParallelKernels}, {ParallelEvaluate}];
 PrepareParallel[kernels0_Integer : 0, opt : OptionsPattern[]] := 
- Module[{kernels, deltaKernel, optE},
+ Module[{kernels, deltaKernel, dir},
+  
+  dir = Directory[];
   
   kernels = If[kernels0 == 0, OptionValue["Kernels"], kernels0];
   deltaKernel = kernels - $KernelCount;
-  Which[deltaKernel > 0, LaunchKernels[deltaKernel](*,deltaKernel<0,
-   CloseKernels[ParallelEvaluate[$KernelID][[deltaKernel;;-1]]]*)];
+  Which[deltaKernel > 0, LaunchKernels[deltaKernel]];
   
   ParallelEvaluate[
-   Block[{Monitor = (# &)},
-    ParallelLoad[];
-    Block[{Print = (# &)}, 
-     SetupProcess[Sequence @@ CurrentAlgebras, "CreateFiles" -> False]]]
-   , DistributedContexts :> OptionValue[DistributedContexts]
-   ];
+  Block[{Monitor = (# &), Print = (# &)},
+  SetupProcess[Sequence @@ CurrentAlgebras, "CreateFiles" -> False];
+  ];
+  SetDirectory[dir];
+  , DistributedContexts -> All];
   
   Print["Parallelization is prepared for ", kernels, " Kernels."];
-  Print["The default number of the kernel prepared is controlled by \
-LoopSParallelKernels."];
+  Print["The default number of the kernel prepared is controlled by LoopSParallelKernels."];
+
   ]
