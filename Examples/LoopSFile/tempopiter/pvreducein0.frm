@@ -3,7 +3,7 @@
 #include- opiter.frm
 Autodeclare Vector q;
 Off statistics;
-L F2=ext(q1,q2)*loop(p1)*p1(mu1)*p1(mu2);
+L F2=ext()*loop()*1;
 #call opiter
 .sort
 #call symmetrise
