@@ -20,18 +20,19 @@ FADToProps[expr_, head_ : List] :=
 
 
 ClearAll[PropsToFAD]
-PropsToFAD[props_List, loops_List, process_String : "CurrentProcess"] := 
- PropsToFAD[props, loops, ToExpression[process]]
-PropsToFAD[props_List, loops_List, process_Association] := 
- PropsToFAD[props, loops, process["kinematics"]]
-PropsToFAD[props_List, loops_List, kinematics_List] := Module[{LS, fadlist},
-  LS = props // propsToLS[#, loops, kinematics] &;
+PropsToFAD[props_List, process_String : "CurrentProcess"] := 
+ PropsToFAD[props, ToExpression[process]]
+PropsToFAD[props_List, process_Association] := 
+ PropsToFAD[props, process["loopmoms"], process["kinematics"]]
+PropsToFAD[props_List, loopmoms_List, kinematics_List] := 
+ Module[{LS, fadlist}, 
+  LS = props // propsToLS[#, loopmoms, kinematics] &;
   If[! FreeQ[LS, "Wrong propagator"], Return[$Failed]];
-  fadlist = (If[#[[1]] === #[[2]],
-       FAD[{#[[1]], (-#[[3]])^(1/2), #[[4]]}],
-       SFAD[{{0, Dot[#[[1]]] . #[[2]]}, {-#[[3]], 1}, #[[4]]}]] &) /@ LS;
-  Times @@ fadlist
-  ]
+  fadlist = (If[#[[1]] === #[[2]], 
+       FAD[{#[[1]], (-#[[3]])^(1/2), #[[4]]}], 
+       SFAD[{{0, Dot[#[[1]]] . #[[2]]}, {-#[[3]], 1}, #[[4]]}]] &) /@ 
+    LS;
+  Times @@ fadlist]
 
 
 ClearAll[GToProps]
