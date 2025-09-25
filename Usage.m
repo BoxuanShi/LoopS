@@ -272,13 +272,7 @@ MasterIntegralsS;
 
 
 (*LoadDependencies*)
-(* ParallelNeedS; *)
-
-
-(*MasterIntegralResults*)
-MIformlist;
-MIsollist;
-Global`\[Epsilon];
+(* ParallelNeedS; *)(*loaded before load Usage.m*)
 
 
 (*ProcessDefine*)

@@ -31,8 +31,8 @@ Get["FIREInterfaceLoad.m"];
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"AMFlowInterface"}]];
 Get["AMFlowInterfaceLoad.m"];
 (*MasterIntegralResults*)
-$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]];
-Get["MasterIntegralResultsLoad.m"];
+(* $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]]; *)
+(* Get["MasterIntegralResultsLoad.m"]; *)
 (*Unusual bug fix*)
 LoopSWorkDirectory;
 (*Generate LoopS directory*)
