@@ -387,3 +387,4 @@ SeparateFAD;
 ToSFAD;
 
 PowerCounting;
+PowerCountingPrintLeadingPower;
