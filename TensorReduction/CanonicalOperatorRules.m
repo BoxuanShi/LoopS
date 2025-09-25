@@ -25,7 +25,7 @@ CanonicalOperatorRules[operatorRules_List | operatorRules_Dispatch,
    tp0, tp1, tp1x, tp2, tp3, i, j},
   
   (*preprocessing*)
-  operatorRules0 = Union@Normal@operatorRules;
+  operatorRules0 = Union @ Normal @ operatorRules /. Pattern -> (# &) ;
   
   (*options*)
   opttable = FilterOptions[{opt}, TableS];
