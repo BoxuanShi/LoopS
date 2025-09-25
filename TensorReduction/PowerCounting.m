@@ -26,10 +26,13 @@ PowerCounting0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
     OptionValue["loopmoms"], OptionValue["moms"], 
     OptionValue["kinematics"]};
   
+  If[Length @ ord === 3 && ord[[2]] =!= 0, Print["PowerCounting: only support expansion around 0."]];
+  If[Length @ ord === 2, ord = Insert[ord, 0, {2}]];
+
   powerfunc = 
    If[MatchQ[ord, {__, "Leading"}], 
     Asymptotic[#, Evaluate[ord[[1]] -> 0]] &, 
-    Normal[Series[#, _ord]] &];
+    Normal[Series[#, ord]] &];
   
   tp1 = expr // FeynAmpDenominatorExplicit // 
      ExpandMomentum[#, moms] & // ExpandDirac;
