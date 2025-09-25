@@ -18,55 +18,64 @@ FamilyClassify[propslistlist_, loops_, process_Association,
 
 FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_, 
    moms_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, j, x, y, tp0, tp1, tp2, tp3, tp4, tp5, num, familyLS, sym,
-    optLS, RDQ, tpf}, 
+ Module[{i, j, x, y, tp2, tp4, tp5, num, familyLS, RDQ, tpf}, 
+
   Print["CompleteBasis is: ", 
    CompleteProps[{}, loops, 
     Evaluate@FilterOptions[{opt}, CompleteProps]]];
-  tp1 = If[! FreeQ[propslistlist, FAD | SFAD | FeynAmpDenominator], 
-    tp0 = GetFeynInt[{propslistlist}, loops, moms, kinematics, 
+
+  $familyclassifytp1 = If[! FreeQ[propslistlist, FAD | SFAD | FeynAmpDenominator], 
+    $familyclassifytp0 = GetFeynInt[{propslistlist}, loops, moms, kinematics, 
       Evaluate@FilterOptions[{opt}, GetFeynInt]];
+  If[OptionValue["Parallelization"], DumpDistribute[{$familyclassifytp0}]];
     TableS[
-     propsToLS[FADToProps[tp0[[i]], List], loops, kinematics], {i, 
-      Length@tp0}, Method -> Automatic, 
+     propsToLS[FADToProps[$familyclassifytp0[[i]], List], loops, kinematics], {i, 
+      Length@$familyclassifytp0}, Method -> Automatic, DistributedContexts -> None, 
      Evaluate@FilterOptions[{opt}, TableS]], 
     propsToLS /@ propslistlist];
-  optLS = FilterOptions[{opt}, CanonicalLoops];
+
+  $familyclassifyoptLS = FilterOptions[{opt}, CanonicalLoops];
+  If[OptionValue["Parallelization"], DumpDistribute[{$familyclassifytp1, $familyclassifyoptLS}]];
   tp2 = TableS[
-    CanonicalLoops[tp1[[i]], loops, moms, kinematics, 
-      Evaluate@optLS][[1]], {i, Length@tp1}, Method -> Automatic, 
+    CanonicalLoops[$familyclassifytp1[[i]], loops, moms, kinematics, 
+      Evaluate@$familyclassifyoptLS][[1]], {i, Length@$familyclassifytp1}, Method -> Automatic, DistributedContexts -> None, 
     Evaluate@FilterOptions[{opt}, TableS]];
-  tp3 = tp2 // 
+
+  $familyclassifytp3 = tp2 // 
      UnionS[#, #1[[All, 1 ;; 3]] === #2[[All, 1 ;; 3]] &] & // 
     SortBy[#, OptionValue["FamilyClassifySortRules"]] &;
-  tp3[[All, All, 4]] = 1;
-  tp4 = LSToprops[#, kinematics] & /@ tp3;
+  
+  $familyclassifytp3[[All, All, 4]] = 1;
+
+  tp4 = LSToprops[#, kinematics] & /@ $familyclassifytp3;
   
   
   RDQ = OptionValue["RemoveRedundancy"];
   If[RDQ,
-   sym = 
+   $familyclassifysym = 
     DeleteCases[OptionValue["Symmetry"]["Rules"], 
      x_ /; AllTrue[x, #[[1]] === #[[2]] &]];
+
+  If[OptionValue["Parallelization"], DumpDistribute[{$familyclassifytp3, $familyclassifysym}]];
    tp5 = 
-    TableS[tp3[[i]] /. sym[[j]] // 
+    TableS[$familyclassifytp3[[i]] /. $familyclassifysym[[j]] // 
        CanonicalLoops[#, loops, moms, kinematics, 
-          Evaluate@optLS][[1]] &, {i, Length@tp3}, {j, Length@sym}, 
-      Method -> Automatic, Evaluate@FilterOptions[{opt}, TableS]] // 
+          Evaluate @ $familyclassifyoptLS][[1]] &, {i, Length@$familyclassifytp3}, {j, Length@$familyclassifysym}, 
+      Method -> Automatic, DistributedContexts -> None, Evaluate @ FilterOptions[{opt}, TableS]] // 
      Flatten[#, 1] &;
-   tp5 = Join[tp5, tp3]];
+   tp5 = Join[tp5, $familyclassifytp3]];
   
   
   familyLS = 
    GenerateFamilyLS[OptionValue["UserDefinedFamily"], loops, moms, 
-    kinematics, Evaluate@FilterOptions[{opt}, GenerateFamilyLS]];
+    kinematics, Evaluate @ FilterOptions[{opt}, GenerateFamilyLS]];
   If[RDQ, 
    familyLS[[2]] = 
     DeleteCases[familyLS[[2]], x_ /; ! MemberQ[tp5, x[[1]]], {2}]];
   
   
   Block[{Print = # &}, Monitor[
-    For[num = 1, num <= Length@tp4, num++, 
+    For[num = 1, num <= Length @ tp4, num++, 
      If[FindfamilyG[tp4[[num]], familyLS, loops, moms, kinematics, 
         "FindfamilyGFailedReturn" -> Return[False], 
         "FindfamilyGMode" -> "FamilyExistQ", 
@@ -82,6 +91,9 @@ FamilyClassify[propslistlist_, loops_, kinematics_, extmomsind_,
       AppendTo[familyLS[[2]], tpf];
       ]
      ], {num, Length@tp4}]];
+
+  Clear[$familyclassifyoptLS, $familyclassifysym, $familyclassifytp0, $familyclassifytp1, $familyclassifytp3];
+  If[OptionValue["Parallelization"], ParallelEvaluate[Clear[$familyclassifyoptLS, $familyclassifysym, $familyclassifytp0, $familyclassifytp1, $familyclassifytp3]]];
   
   {familyLS, familyLS[[1]]}]
 

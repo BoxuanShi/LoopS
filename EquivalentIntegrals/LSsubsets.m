@@ -38,14 +38,14 @@ Options[GenerateFamilyLS] := CreateOptions[{}, {LSsubsets, TableS}];
 GenerateFamilyLS[family_List, loops_List, 
   CurrentProcess_String : "CurrentProcess", opt : OptionsPattern[]] :=
   GenerateFamilyLS[family, loops, ToExpression@CurrentProcess, 
-  Evaluate@opt]
+  Evaluate @ opt]
 GenerateFamilyLS[family_List, loops_List, CurrentProcess_Association, 
   opt : OptionsPattern[]] := 
  GenerateFamilyLS[family, loops, CurrentProcess["moms"], 
   CurrentProcess["kinematics"], Evaluate@opt]
 GenerateFamilyLS[family_List, loops_List, moms_List, kinematics_List, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, tp1, tp2, tp3, opttable},
+ Module[{i, tp1},
   tp1 = TableS[
     LSsubsets[family[[i]], loops, moms, kinematics], {i, 
      Length@family}, Evaluate@FilterOptions[{opt}, TableS]];

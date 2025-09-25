@@ -9,11 +9,18 @@ GetFeynInt[amp_, loops_List, process_Association, opt : OptionsPattern[]] /;
 
 GetFeynInt[amp_List, loops_List, moms_List, kinematics_List, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{amp2, opttable, i, tp1, tp2},
-  amp2 = Union@Flatten@amp;
+ Module[{opttable, i, res},
+
+  $getfeynintamp2 = Union @ Flatten @ amp;
+  
   opttable = FilterOptions[{opt}, TableS];
-  TableS[GetFeynInt[amp2[[i]], loops, moms, kinematics], {i, Length@amp2}, 
-     Evaluate@opttable] // Flatten // Union]
+  If[OptionValue["Parallelization"], DumpDistribute[$getfeynintamp2]];
+  res = TableS[GetFeynInt[$getfeynintamp2[[i]], loops, moms, kinematics], {i, Length @ $getfeynintamp2}, DistributedContexts -> None, Evaluate @ opttable] // Flatten // Union;
+  
+  Clear[$getfeynintamp2]; If[OptionValue["Parallelization"], ParallelEvaluate[Clear[$getfeynintamp2]]];
+
+  res
+]
 
 GetFeynInt[amp_, loops_List, moms_List, kinematics_List] := 
  Module[{i, patt, tp0, tp1},
