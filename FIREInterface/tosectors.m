@@ -1,4 +1,4 @@
-ClearAll[tosector, samesectorQ, subsectorQ, propNumG, MasterIntegralsS]
+ClearAll[tosector, samesectorQ, subsectorQ, propNumG, FIREMasterIntegrals]
 
 
 tosector[Gs_] := 
@@ -22,4 +22,4 @@ propNumG[Gs_] := Select[Gs[[2]], # > 0 &] // Length
 SetAttributes[propNumG, Listable]
 
 
-MasterIntegralsS[] := G @@@ MasterIntegrals[]
+FIREMasterIntegrals[] := FIREEvaluate[G @@@ MasterIntegrals[]]
