@@ -13,7 +13,6 @@ Replacements = `Replacements`;
 PrepareIBP[];
 Prepare[AutoDetectRestrictions\[Rule]True,LI\[Rule]True];
 SaveStart[ToString[`family`]];
-Pause[1];
 Quit[];
 "],
    

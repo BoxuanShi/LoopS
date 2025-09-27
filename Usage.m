@@ -322,6 +322,8 @@ operatorRules;
 
 (*TensorReduction*)
 AbbreviateOperators;
+AbbreviateOperatorsHead;
+AbbreviateOperatorsName;
 
 getdummyindices2;
 CanonicalOperatorRules;

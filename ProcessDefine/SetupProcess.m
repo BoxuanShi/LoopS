@@ -78,10 +78,10 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
   
   (*CreateFiles*)
   If[OptionValue["CreateFiles"],
-   str = StringJoin @@@ Table["N", {i, 0, Length@loopmoms}, {j, i}];
+   (* str = StringJoin @@@ Table["N", {i, 0, Length@loopmoms}, {j, i}];
    Do[
     CreateDirectoryS[FileNameJoin[{ProcessPath[process], str[[i]] <> "LO"}]];
-    , {i, Length@str}];
+    , {i, Length@str}]; *)
    CreateDirectoryS[PVPath[process]];
    CreateDirectoryS[FIREWorkPath[process]]
    ];
