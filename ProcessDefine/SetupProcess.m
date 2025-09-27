@@ -25,24 +25,21 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
   Block[{Print = (# &)}, ClearProcess[]];
   
   (*check*)
-  processA = ToExpression@process;
-  If[Head@processA =!= Association, 
-   Print["Define the process " <> process <> " firstly."]; Abort[]];
-  Quiet[If[ToExpression[process]["ProcessName"] =!= process, 
-    Print[process <> "[\"ProcessName\"] should be the same as \"" <> process <>
-       "\"."]; Abort[]]];
+  processA = ToExpression @ process;
+  If[Head @ processA =!= Association, Print["Define the process " <> process <> " firstly."]; Abort[]];
+  Quiet[If[ToExpression[process]["ProcessName"] =!= process, Print[process <> "[\"ProcessName\"] should be the same as \"" <> process <> "\"."]; Abort[]]];
 
+  (* If[$KernelID === 0, *)
   (*distribute to CurrentProcess*)
-  CurrentProcess := ToExpression[process];
+  ToExpression[process, InputForm, Function[{x1}, CurrentProcess := x1, HoldAll]];
   Print["CurrentProcess have been set as " <> process, "."];
-  
   (*distribute to DefinedProcess*)
   Unprotect[DefinedProcess];
   DefinedProcess = Append[DefinedProcess, process] // Union;
-
   (*distribute to CurrentAlgebras*)
   CurrentAlgebras = {process, b};
   Print["CurrentAlgebras have been set as: " <> ToString @ CurrentAlgebras, "."];
+  (* ]; *)
   
   (*Distribute to some global variables*)
   Unprotect[ProcessName, moms, loopmoms, extmoms, extmomsind, extramoms, 
@@ -57,7 +54,7 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
   
   (*setshared*)
   If[$KernelID == 0, 
-   "SetSharedVariable[" <> processA["ProcessName"] <> "]" // ToExpression;
+   (* "SetSharedVariable[" <> processA["ProcessName"] <> "]" // ToExpression; *)
    "SetSharedVariable[" <> processA["purePV"] <> "]" // ToExpression;
    ];
   Print[processA["ProcessName"] <> " and " <> processA["purePV"] <> " are shared for subkernels."];

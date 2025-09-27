@@ -4,20 +4,23 @@ LoopS::usage =
   "LoopS is an association that saves some defined global object used by \
 LoopS. Run Keys[LoopS] to see them.";
 LoopS = <|
-   "CurrentProcess" :> CurrentProcess,
-   "LoopSWorkDirectory" :> LoopSWorkDirectory,
-   "CurrentAlgebras" :> CurrentAlgebras,
-   "DefinedProcess" :> DefinedProcess,
-   "SimplifyS" :> SimplifyS,
-   "DiracPattern" :> DiracPattern,
-   "OperatorPattern" :> OperatorPattern,
-   "AmplitudePattern" :> AmplitudePattern,
-   "LoopSParallelKernels" :> LoopSParallelKernels
-   |>;
+  "LoopSWorkDirectory" :> LoopSWorkDirectory,
+  "CurrentProcess" :> CurrentProcess,
+  "CurrentAlgebras" :> CurrentAlgebras,
+  "AlgebrasDefinition" :> AlgebrasDefinition,
+  "ClearProcess" :> ClearProcess,
+  "DefinedProcess" :> DefinedProcess,
+  "SimplifyS" :> SimplifyS,
+  "DiracPattern" :> DiracPattern,
+  "OperatorPattern" :> OperatorPattern,
+  "AmplitudePattern" :> AmplitudePattern,
+  "LoopSParallelKernels" :> LoopSParallelKernels
+|>;
 
 SimplifyS = If[ToString[SimplifyS] === "SimplifyS", Factor, SimplifyS];
 
 DiracPattern =  _Dot | _DiracTrace | _Spinor | _GAD | _GSD;
+
 OperatorPattern = 
   If[ToString@OperatorPattern === "OperatorPattern", DiracPattern, 
    OperatorPattern];

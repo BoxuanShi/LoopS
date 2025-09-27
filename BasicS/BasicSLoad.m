@@ -37,3 +37,4 @@ Get["PathName.m"];
 Get["DropZeroByNumerics.m"];
 Get["AbbreviateFactor.m"];
 Get["DumpDistribute.m"];
+Get["DistributeAssociation.m"];

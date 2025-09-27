@@ -1,10 +1,12 @@
 (*AMFlowInterface*)
 GToj;
 jToG;
-amfConventionTrans
+amfConventionTrans;
 
 
 (*BasicS*)
+Global`\[Epsilon];
+
 FactorFlat;
 FactorFlat2;
 FactorListRev;
@@ -110,6 +112,8 @@ ToStringInput;
 
 DumpDistribute;
 
+DistributeAssociation;
+DistributeString;
 
 (*DifferentialEquations*)
 GDerivative;
