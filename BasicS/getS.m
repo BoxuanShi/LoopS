@@ -1,6 +1,6 @@
 ClearAll[getS];
-getS[expr_] := Variables@Cases[{expr}, _, Infinity]
-getS[expr_, patt_, opt : OptionsPattern[]] := Cases[{expr}, patt, Infinity] // Union
+getS[expr_] := Variables @ Cases[expr, _, {0, Infinity}]
+getS[expr_, patt_, opt : OptionsPattern[]] := Cases[expr, patt, {0, Infinity}] // Union
 (* If[
   FreeQ[patt, Blank | BlankSequence | BlankNullSequence | Alternatives]
   ,
