@@ -75,12 +75,14 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
   
   (*CreateFiles*)
   If[OptionValue["CreateFiles"],
-   (* str = StringJoin @@@ Table["N", {i, 0, Length@loopmoms}, {j, i}];
-   Do[
+    (* str = StringJoin @@@ Table["N", {i, 0, Length@loopmoms}, {j, i}];
+    Do[
     CreateDirectoryS[FileNameJoin[{ProcessPath[process], str[[i]] <> "LO"}]];
     , {i, Length@str}]; *)
-   CreateDirectoryS[PVPath[process]];
-   CreateDirectoryS[FIREWorkPath[process]]
+
+    Put[processA, FileNameJoin[{ProcessPath[processA["ProcessName"]], processA["ProcessName"]}]];
+    CreateDirectoryS[PVPath[process]];
+    CreateDirectoryS[FIREWorkPath[process]]
    ];
   
   Print["LoopS work directory is LoopSWorkDirectory -> ", LoopSWorkDirectory, 
