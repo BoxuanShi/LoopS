@@ -15,16 +15,15 @@ PreparePV[process_String, nL_Integer : 3, opt : OptionsPattern[]] /;
     , {i, Length@partition}, Evaluate @ FilterOptions[{opt}, TableS]];
 
   Table[
-    ToExpression[processA["purePV"] <> "[" <> ToStringInput[partition[[i]]] <> "]=" <> ToStringInput[tp1[[i]]]]
+    (* ToExpression[processA["purePV"] <> "[" <> ToStringInput[partition[[i]]] <> "]=" <> ToStringInput[tp1[[i]]]] *)
+    ToExpression[processA["purePV"], StandardForm, Function[x1, x1[partition[[i]]] = tp1[[i]], HoldAll]]
   , {i, Length@partition}];
 
   (*unsetshared*)
-  (* "UnsetShared[" <> processA["purePV"] <> "]" // ToExpression; *)
   ToExpression[processA["purePV"], StandardForm, Function[x1, UnsetShared[x1], HoldAll]];
   Print[processA["purePV"] <> " is unshared for subkernels."];
 
   (*distribute*)
-  (* "DistributeDefinitions[" <> processA["purePV"] <> "]" // ToExpression; *)
   DistributeAssociation[Evaluate[processA["purePV"]]];
   Print[processA["purePV"] <> " is distributed for subkernels."];
 

@@ -19,7 +19,7 @@ SetupProcess["CurrentProcess", ___] :=
 your process."]
 
 SetupProcess[process_String, b___, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{x, i, j, keys, str, outerSPD, processA},
+  OptRestrict[opt] := Module[{x, i, j, outerSPD, processA},
 
   (*ClearProcess*)
   Block[{Print = (# &)}, ClearProcess[]];
