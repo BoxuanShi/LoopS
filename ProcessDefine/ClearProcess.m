@@ -11,9 +11,6 @@ ClearProcess[] := Module[{tp1, tp2, tp3, a, b, x1},
   FCClearScalarProducts[];
   DataType[__, _] := False;
 
-  (*Clear user defined - special*)
-  ClearProcess /@ DefinedProcess;
-  
   (*Distribute to CurrentProcess*)
   CurrentProcess = <||>;
    (* CreateProcess[<|"ProcessName" -> "", "loopmoms" -> {}, "extmomsind" -> {}, 
@@ -21,6 +18,9 @@ ClearProcess[] := Module[{tp1, tp2, tp3, a, b, x1},
   
   (*Distribute to CurrentAlgebras*)
   CurrentAlgebras = {};
+
+  (*Clear user defined - special*)
+  ClearProcess /@ DefinedProcess;
   
   Print["The current process have been cleared."];
   ]
