@@ -1,0 +1,6 @@
+<|"ProcessName" -> "ZHR", "loopmoms" -> {l1h}, "extmomsind" -> {n, nb}, 
+ "kinematics" -> {n^2 -> 0, nb^2 -> 0, n*nb -> 2}, 
+ "extmoms" -> {k, kh, l1hc, n, nb, p, v}, 
+ "moms" -> {l1h, k, kh, l1hc, n, nb, p, v}, 
+ "extramoms" -> {k, kh, l1hc, p, v}, "indices" -> {}, 
+ "purePV" -> "purePVZHR", "operatorRules" -> {}|>

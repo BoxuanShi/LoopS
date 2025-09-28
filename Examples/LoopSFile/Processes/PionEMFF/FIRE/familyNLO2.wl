@@ -6,5 +6,4 @@ Replacements = {p^2 -> 0, pp^2 -> 0, p*pp -> 1/2};
 PrepareIBP[];
 Prepare[AutoDetectRestrictions->True,LI->True];
 SaveStart[ToString["/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/FIRE/familyNLO2"]];
-Pause[1];
 Quit[];

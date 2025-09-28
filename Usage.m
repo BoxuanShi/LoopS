@@ -388,3 +388,4 @@ ToSFAD;
 
 PowerCounting;
 PowerCountingPrintLeadingPower;
+LeadingPower;
