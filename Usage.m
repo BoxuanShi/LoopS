@@ -83,6 +83,7 @@ ParallelTableS;
 PathName;
 
 PolynomialCollect;
+PolynomialCollectOperation;
 
 sameSetQ;
 
