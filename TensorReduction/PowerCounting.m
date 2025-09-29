@@ -47,7 +47,7 @@ LeadingPower[expr_, para_, moms_] :=
 Options[LeadingPower0] = {"para" -> "para", "moms" -> "moms"};
 SetAttributes[LeadingPower0, Listable];
 LeadingPower0[expr_, opt : OptionsPattern[]] := 
- Module[{para, moms, powerfunc, tp1, ord, max},
+ Module[{para, moms, tp1},
   {para, moms} = {OptionValue["para"], OptionValue["moms"]};
   tp1 = expr // FeynAmpDenominatorExplicit // 
      ExpandMomentum[#, moms] & // ExpandDirac;

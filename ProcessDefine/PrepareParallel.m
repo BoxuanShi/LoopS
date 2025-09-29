@@ -4,18 +4,20 @@
   Options[PrepareParallel] := 
     CreateOptions[{"Kernels" :> LoopSParallelKernels}, {ParallelEvaluate}];
   PrepareParallel[kernels0_Integer : 0, opt : OptionsPattern[]] := 
-  Module[{kernels, deltaKernel, dir, keystring},
+  Module[{kernels, deltaKernel, dir},
     
     kernels = If[kernels0 == 0, OptionValue["Kernels"], kernels0];
     deltaKernel = kernels - $KernelCount;
     Which[deltaKernel > 0, LaunchKernels[deltaKernel]];
     
+    (* DistributeString[ProcessName]; *)
     DistributeAssociation[Evaluate[ProcessName]];
     
     dir = Directory[];
-    keystring = Keys @ LoopS;
     DistributeDefinitions[dir];
-    DistributeString[Evaluate[keystring]];
+    
+    (* DistributeString[Keys @ LoopS]; *)
+    DistributeAssociation[LoopS];
 
     ParallelEvaluate[
       Block[{Monitor = (# &), Print = (# &)},

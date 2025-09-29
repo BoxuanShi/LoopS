@@ -10,9 +10,7 @@ DistributeAssociation[symbol_String]:= (
 DistributeAssociation[symbol___] := DistributeAssociation[{symbol}]
 
 
-SetAttributes[DistributeString, {Listable, HoldFirst}];
+SetAttributes[DistributeString, {Listable}];
 DistributeString[str_String]:= (
     ToExpression[str, StandardForm, Function[x1, DistributeDefinitions[x1], HoldAll]];
 )
-DistributeString[str_Symbol]:= DistributeDefinitions[str]
-DistributeString[str___]:=  DistributeString[{str}]
