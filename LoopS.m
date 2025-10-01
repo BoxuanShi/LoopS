@@ -2,7 +2,7 @@ BeginPackage["LoopS`"];
 
 
 (*LoopSInformation*)
-$LoopSVersion="2025-09-28";
+$LoopSVersion="2025-10-01";
 $LoopSInstallPath = DirectoryName[$InputFileName];
 $NotebookDirectory = DirectoryName[NotebookFileName[]]
 

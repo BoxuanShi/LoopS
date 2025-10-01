@@ -5,7 +5,7 @@ AMFlowCalcG[target_List,{Numeric_,goal_Integer,epsorder_Integer},loops_List,fami
 
 AMFlowCalcG[target_List,{Numeric_,goal_Integer,epsorder_Integer},loops_List,family_List,process_Association,opt:OptionsPattern[]]/;OptRestrict[opt]:=AMFlowCalcG[target,{Numeric,goal,epsorder},loops,family,AMFlowWorkPath[process["ProcessName"]],AMFlowSaveName[loops],process["extmomsind"],process["kinematics"],opt]
 
-AMFlowCalcG[target0_List,{Numeric0_,goal_Integer,epsorder_Integer},loops_List,family_List,WorkPath_String,SaveName_String,extmomsind_List,kinematics_,opt:OptionsPattern[]]/;OptRestrict[opt]:=Module[{i,target,Numeric,amfinstall,solve,NThread,output,save,res,log},
+AMFlowCalcG[target0_List,{Numeric0_,goal_Integer,epsorder_Integer},loops_List,family_List,WorkPath_String,SaveName_String,extmomsind_List,kinematics_,opt:OptionsPattern[]]/;OptRestrict[opt]:=Module[{i,target,Numeric,amfinstall,solve,NThread,output,save,res},
 
 CreateDirectoryS[WorkPath];
 
@@ -18,9 +18,9 @@ save=Table[FileNameJoin[{WorkPath,SaveName<>ToString[i]}],{i,Length@family}];
 Numeric=Rationalize@Numeric0;
 
 
-Print["Thread used is \"AMFlowThread\" -> ",NThread];
+Print["Thread used is \"AMFlowThread\" -> ",NThread,"."];
 Print["An overall factor Exp[Length[loops]*\[Epsilon]*EulerGamma] is multiplied in the result."];
-Print["logs are saved in ", WorkPath];
+Print["logs are saved in ", WorkPath,"."];
 
 
 If[!FreeQ[{Head/@Numeric[[All,2]],getS[Numeric,_Complex]/. Complex[a_,b_]:>{a,b}&},Real],Print[Numeric0," should be rational complex number after applying Rationalize."];Abort[]];

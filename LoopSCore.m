@@ -3,7 +3,7 @@ BeginPackage["LoopS`"];
 
 (*for subkernels*)
 If[$KernelID =!= 0,
-$LoopSVersion="2025-09-28";
+$LoopSVersion="2025-10-01";
 $LoopSInstallPath = DirectoryName[$InputFileName];
 $NotebookDirectory = LoopS`Private`nbd;
 ];
