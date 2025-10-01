@@ -2,10 +2,17 @@
 GToj;
 jToG;
 amfConventionTrans;
-
+AMFlowCalcG;
+AMFTemplate;
+AMFlowWorkPath;
+AMFlowSaveName;
+AMFlowThread;
+AMFlowReducer;
 
 (*BasicS*)
-Global`\[Epsilon];
+Protect[Global`\[Epsilon]];
+Protect[Global`eps];
+Protect[Global`j];
 
 FactorFlat;
 FactorFlat2;
@@ -390,3 +397,6 @@ ToSFAD;
 PowerCounting;
 PowerCountingPrintLeadingPower;
 LeadingPower;
+
+ShiftToRegionForm;
+RegionBasis;

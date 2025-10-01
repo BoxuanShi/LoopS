@@ -13,3 +13,5 @@ $FIREInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependenci
 
 $OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
       "Dependencies", "opiter", "opiter"}];
+
+$AMFlowInstallPath = "AMFlow`";

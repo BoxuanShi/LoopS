@@ -80,9 +80,9 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] /;
     CreateDirectoryS[FileNameJoin[{ProcessPath[process], str[[i]] <> "LO"}]];
     , {i, Length@str}]; *)
 
-    Put[processA, FileNameJoin[{ProcessPath[processA["ProcessName"]], processA["ProcessName"]}]];
     CreateDirectoryS[PVPath[process]];
-    CreateDirectoryS[FIREWorkPath[process]]
+    CreateDirectoryS[FIREWorkPath[process]];
+    Put[processA, FileNameJoin[{ProcessPath[processA["ProcessName"]], processA["ProcessName"]}]];
    ];
   
   Print["LoopS work directory is LoopSWorkDirectory -> ", LoopSWorkDirectory, 
