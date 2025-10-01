@@ -20,7 +20,7 @@ patt."]; Abort[]];
        Length@varsf] // ReleaseHold;
     tpRules = Dispatch@Thread[(Verbatim /@ varsf) -> tpvalues];
     tpf1 = exprf /. tpRules;
-    tpf1 // CollectS[#, patt, Chop[Expand[#], 10^-5] &] & // 
+    tpf1 // CollectS[#, patt, Chop[TogetherExpand[#], 10^-5] &] & // 
      getS[#, patt] &];
   vars = tp1[[1]] // Variables;
   poly2 = Check[func1[expr, vars], $Failed] // Quiet;
