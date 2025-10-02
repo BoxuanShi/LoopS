@@ -3,7 +3,7 @@ FADToProps[FAD[l1,l1+p,{l1+nb,m,1}]]==={l1^2,(l1+p)^2,-m^2+(l1+nb)^2}*)
 
 ClearAll[FADToProps];
 FADToProps[expr_, head_ : List] := 
- Module[{x, head2, tp1, tp2, SFADToProps, pFADToProps},
+ Module[{x, head2, SFADToProps, pFADToProps},
   
   SFADToProps[sfad_SFAD] := Module[{i, tpt1, tpt2, trans},
     trans = 
@@ -13,10 +13,9 @@ FADToProps[expr_, head_ : List] :=
     (*tpt1=Table[ConstantArray[(sfad[[i,1,1]]^2+(sfad[[i,1,2]]/.Dot->Times)-
     sfad[[i,2,1]])^Sign[sfad[[i,3]]],Abs@sfad[[i,3]]],{i,Length@sfad}];*)
     tpt2 = head2 @@ Flatten@tpt1];
-  
-  pFADToProps[fad_FAD] := fad // ToSFAD // FCES // SFADToProps;
-  FCES@expr /. {SFAD[x___] :> SFADToProps@SFAD[x], 
-     FAD[x___] :> pFADToProps@FAD[x]} /. head2 -> head]
+    pFADToProps[fad_FAD] := fad // ToSFAD // FCES // SFADToProps;
+    FCES @ expr /. {SFAD[x___] :> SFADToProps@SFAD[x], FAD[x___] :> pFADToProps@FAD[x]} /. head2 -> head
+    ]
 
 
 ClearAll[PropsToFAD]
@@ -35,6 +34,17 @@ PropsToFAD[props_List, loopmoms_List, kinematics_List] :=
   Times @@ fadlist]
 
 
+ClearAll[LSToFAD]
+LSToFAD[propsLS_List] := 
+ Module[{fadlist},
+  fadlist = (
+    If[#[[1]] === #[[2]], 
+      FAD[{#[[1]], (-#[[3]])^(1/2), #[[4]]}], 
+      SFAD[{{0, Dot[#[[1]]] . #[[2]]}, {-#[[3]], 1}, #[[4]]}]
+      ] &) /@ propsLS;
+  Times @@ fadlist]
+  
+  
 ClearAll[GToProps]
 GToProps[expr_, familylist_, head_ : List] := 
  Module[{i}, 

@@ -1,0 +1,208 @@
+Intel MKL WARNING: Support of Intel(R) Streaming SIMD Extensions 4.2 (Intel(R) SSE4.2) enabled only processors has been deprecated. Intel oneAPI Math Kernel Library 2025.0 will require Intel(R) Advanced Vector Extensions (Intel(R) AVX) instructions.
+--------------------------------------------------
+AMFlow: package loaded
+Author: Xiao Liu and Yan-Qing Ma
+Current version: 1.1
+Release date: 5-Jun-2022
+--------------------------------------------------
+SetAMFOptions -> {AMFMode -> {Prescription, Mass, Propagator}, EndingScheme -> {Tradition, Cutkosky, SingleMass}, D0 -> 4, WorkingPre -> 100, ChopPre -> 20, XOrder -> 100, ExtraXOrder -> 20, LearnXOrder -> -1, TestXOrder -> 5, RationalizePre -> 100}
+SetReductionOptions -> {IBPReducer -> FiniteFlow+LiteRed, BlackBoxRank -> 3, BlackBoxDot -> 0, ComplexMode -> True, DeleteBlackBoxDirectory -> False}
+CheckDep: dependencies of current reducer:
+FiniteFlow.m -> False
+fflowmlink.so or fflowmlink.dylib -> False
+LiteIBP.m -> False
+LiteRed.m -> False
+SetReducerOptions -> {ExcludeLevel -> 0, CriticalMasters -> 1000, MaxPrime -> 200, MaxDegree -> 1000, EMSymmetry -> False}
+--------------------------------------------------
+To start evaluating a family of loop integrals, you need to define:
+ - AMFlowInfo["Family"] as the name of the family (should be a symbol)
+ - AMFlowInfo["Loop"] as a list of loop momenta like {l1, l2}
+ - AMFlowInfo["Leg"] as a list of external legs like {p1, p2, p3}
+ - AMFlowInfo["Conservation"] as a replacement rule of momentum conservation like {p3 -> -p1-p2}
+ - AMFlowInfo["Replacement"] as a list of complete replacement rules for scalar products among external legs like {p1^2 -> 0, p2^2 -> 0, p3^2 -> s} 
+ - AMFlowInfo["Propagator"] as a list of complete inverse propagators like {l1^2-msq, l2^2, (l1+l2+p1)^2, ...}
+ - AMFlowInfo["Numeric"] as a list of replacement rules for involved mass scales like {s -> 100, msq -> 1}
+ - AMFlowInfo["NThread"] as the number of threads in use
+For phase-space integrations, you also need to define:
+ - AMFlowInfo["Prescription"] as a list with the same length as AMFlowInfo["Loop"], each element being 1, -1 or 0 specifying the Feynman prescription of the corresponding loop, where 1 means +i0, -1 means -i0 and 0 means no prescription at all
+ - AMFlowInfo["Cut"] as a list with the same length as AMFlowInfo["Propagator"], each element being 1 or 0 specifying whether the corresponding propagator is on cut or not
+--------------------------------------------------
+Please keep clear of these global variables during computations:
+ - eps, which serves as the dimensional regulator
+ - eta, which serves as the auxiliary mass parameter
+ - j, which serves as the Head of integrals
+--------------------------------------------------
+SetReductionOptions -> {IBPReducer -> FIRE+LiteRed, BlackBoxRank -> 3, BlackBoxDot -> 0, ComplexMode -> True, DeleteBlackBoxDirectory -> False}
+CheckDep: dependencies of current reducer:
+FIRE6.m -> True
+FIRE6 executable -> True
+LiteRed.m -> True
+SetReducerOptions -> {EMSymmetry -> False}
+SolveIntegrals: please note that the option value of "WorkingPre" and "XOrder" will not affect this function at all.
+SolveIntegrals: started.
+SolveIntegrals: integrals will be evaluated at 12 different eps values {101/3162200, 51/1581100, 103/3162200, 13/395275, 21/632440, 53/1581100, 107/3162200, 27/790550, 109/3162200, 11/316220, 111/3162200, 14/395275}.
+SolveIntegrals: working precision is 126 and truncated order is 252.
+BlackBoxAMFlow: started.
+BlackBoxAMFlow: target integrals split into in 2 parts.
+BlackBoxAMFlow: computing part 1.
+BlackBoxAMFlowSingle: started.
+BlackBoxAMFlowSingle: working directory is "/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/AMFlow/cache/AMFfamilyNLO4_amflow".
+BlackBoxAMFlowSingle: reducing target integrals.
+IBPSystem: generating ibp system with rank 3 and dot 0.
+IBPSystem: ibp system generated in 11s.
+AnalyticReduction: reducing 1 target integrals.
+AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
+BlackBoxAMFlowSingle: target integrals reduced in 14s.
+BlackBoxAMFlowSingle: constructing amflow systems.
+------------------------------
+AMFSystemSetup: setting up system 1.
+---------------
+Family -> AMFfamilyNLO4
+Loop -> {l1}
+Leg -> {p, pp}
+Conservation -> {}
+Replacement -> {p^2 -> 0, pp^2 -> 0, p*pp -> 1/2}
+Propagator -> {l1^2, -eta + (l1 + p/3)^2, (l1 - p/4 + (27*pp)/182)^2}
+Numeric -> {x1 -> 1/3, x2 -> 1/4, y1 -> 1/13, y2 -> 1/14}
+NThread -> 4
+---------------
+AMFSystemDifferentialEquation: preparing differential equations for system 1.
+IBPSystem: generating ibp system with rank 3 and dot 1.
+IBPSystem: ibp system generated in 11s.
+DifferentialEquation: constructing differential equations with respect to {eta}.
+AnalyticReduction: reducing 2 target integrals.
+AnalyticReduction: target integrals reduced to 2 master integrals in 4s.
+DifferentialEquation: differential equations constructed with 2 master integrals in 4s.
+AMFSystemDifferentialEquation: differential equations for system 1 prepared in 14s.
+---------------
+AMFSystemBoundaryOrder: determining boundary orders for system 1.
+AMFSystemBoundaryOrder: boundary orders for system 1 determined in 2s.
+---------------
+AMFSystemBoundaryCondition: preparing boundary integrals for system 1.
+AMFSystemBoundaryCondition: 1 possible integration regions near the Infinity.
+AMFSystemBoundaryCondition: region 1 with transformation {l1 -> Sqrt[eta]*l1}.
+IBPSystem: generating ibp system with rank 3 and dot 0.
+IBPSystem: ibp system generated in 11s.
+AnalyticReduction: reducing 1 target integrals.
+AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
+AMFSystemBoundaryCondition: region 1 finished.
+AMFSystemBoundaryCondition: boundary integrals for system 1 prepared in 14s.
+---------------
+AMFSystemDirection: direction of continuation for system 1 is "NegIm".
+---------------
+AMFSystemSetup: system 1 set up in 30s.
+------------------------------
+AMFSystemSetup: setting up system 2.
+---------------
+Family -> AMFfamilyNLO4
+Loop -> {}
+Leg -> {l1}
+Conservation -> {}
+Replacement -> {l1^2 -> -1}
+Propagator -> {}
+Numeric -> {}
+NThread -> 4
+---------------
+AMFSystemSetup: this is an ending system.
+---------------
+AMFSystemSetup: system 2 set up in 1s.
+BlackBoxAMFlowSingle: amflow systems constructed in 30s.
+BlackBoxAMFlowSingle: solving amflow systems.
+------------------------------
+AMFSystemSolution: solving system 1.
+AMFSystemSolution: boundary integrals of system 1 will be obtained from solutions of subsystems.
+AMFSystemSolution: subsystems of system 1 are {{2}}.
+AMFSystemSolution: now dealing with subsystems {2} of system 1.
+------------------------------
+AMFSystemSolution: solving system 2.
+AMFSystemSolution: boundary integrals of system 2 are trivial.
+AMFSystemSolution: system 2 solved in 1s.
+AMFSystemSolution: subsystems {2} of system 1 done.
+AMFSystemSolution: all subsystems of system 1 done, solving differential equations.
+AMFSystemSolution: differential equations of system 1 solved.
+AMFSystemSolution: system 1 solved in 8s.
+BlackBoxAMFlowSingle: amflow systems solved in 8s.
+BlackBoxAMFlowSingle: finished in 50s.
+BlackBoxAMFlow: part 1 done.
+BlackBoxAMFlow: computing part 2.
+BlackBoxAMFlowSingle: started.
+BlackBoxAMFlowSingle: working directory is "/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/AMFlow/cache/AMFfamilyNLO4_amflow".
+BlackBoxAMFlowSingle: reducing target integrals.
+IBPSystem: generating ibp system with rank 3 and dot 0.
+IBPSystem: ibp system generated in 11s.
+AnalyticReduction: reducing 1 target integrals.
+AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
+BlackBoxAMFlowSingle: target integrals reduced in 14s.
+BlackBoxAMFlowSingle: constructing amflow systems.
+------------------------------
+AMFSystemSetup: setting up system 3.
+---------------
+Family -> AMFfamilyNLO4
+Loop -> {l1}
+Leg -> {p, pp}
+Conservation -> {}
+Replacement -> {p^2 -> 0, pp^2 -> 0, p*pp -> 1/2}
+Propagator -> {-eta + l1^2, (l1 + p/3)^2, (l1 - p/4 + (27*pp)/182)^2}
+Numeric -> {x1 -> 1/3, x2 -> 1/4, y1 -> 1/13, y2 -> 1/14}
+NThread -> 4
+---------------
+AMFSystemDifferentialEquation: preparing differential equations for system 3.
+IBPSystem: generating ibp system with rank 3 and dot 1.
+IBPSystem: ibp system generated in 11s.
+DifferentialEquation: constructing differential equations with respect to {eta}.
+AnalyticReduction: reducing 2 target integrals.
+AnalyticReduction: target integrals reduced to 2 master integrals in 3s.
+DifferentialEquation: differential equations constructed with 2 master integrals in 4s.
+AMFSystemDifferentialEquation: differential equations for system 3 prepared in 14s.
+---------------
+AMFSystemBoundaryOrder: determining boundary orders for system 3.
+AMFSystemBoundaryOrder: boundary orders for system 3 determined in 2s.
+---------------
+AMFSystemBoundaryCondition: preparing boundary integrals for system 3.
+AMFSystemBoundaryCondition: 1 possible integration regions near the Infinity.
+AMFSystemBoundaryCondition: region 1 with transformation {l1 -> Sqrt[eta]*l1}.
+IBPSystem: generating ibp system with rank 3 and dot 0.
+IBPSystem: ibp system generated in 11s.
+AnalyticReduction: reducing 1 target integrals.
+AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
+AMFSystemBoundaryCondition: region 1 finished.
+AMFSystemBoundaryCondition: boundary integrals for system 3 prepared in 14s.
+---------------
+AMFSystemDirection: direction of continuation for system 3 is "NegIm".
+---------------
+AMFSystemSetup: system 3 set up in 29s.
+------------------------------
+AMFSystemSetup: setting up system 4.
+---------------
+Family -> AMFfamilyNLO4
+Loop -> {}
+Leg -> {l1}
+Conservation -> {}
+Replacement -> {l1^2 -> -1}
+Propagator -> {}
+Numeric -> {}
+NThread -> 4
+---------------
+AMFSystemSetup: this is an ending system.
+---------------
+AMFSystemSetup: system 4 set up in 1s.
+BlackBoxAMFlowSingle: amflow systems constructed in 29s.
+BlackBoxAMFlowSingle: solving amflow systems.
+------------------------------
+AMFSystemSolution: solving system 3.
+AMFSystemSolution: boundary integrals of system 3 will be obtained from solutions of subsystems.
+AMFSystemSolution: subsystems of system 3 are {{4}}.
+AMFSystemSolution: now dealing with subsystems {4} of system 3.
+------------------------------
+AMFSystemSolution: solving system 4.
+AMFSystemSolution: boundary integrals of system 4 are trivial.
+AMFSystemSolution: system 4 solved in 1s.
+AMFSystemSolution: subsystems {4} of system 3 done.
+AMFSystemSolution: all subsystems of system 3 done, solving differential equations.
+AMFSystemSolution: differential equations of system 3 solved.
+AMFSystemSolution: system 3 solved in 8s.
+BlackBoxAMFlowSingle: amflow systems solved in 8s.
+BlackBoxAMFlowSingle: finished in 50s.
+BlackBoxAMFlow: part 2 done.
+BlackBoxAMFlow: finished in 100s.
+SolveIntegrals: finished in 100s.
