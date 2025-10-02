@@ -7,7 +7,7 @@ DumpDistribute[vars_] :=
   DumpSave[str, vars];
   DistributeDefinitions[str];
   ParallelEvaluateS[
-   Get[str]; Hold[vars];, DistributedContexts -> None];
+   ClearAll[vars]; Get[str]; Hold[vars];, DistributedContexts -> None];
   DeleteFile[str];]
 
 DumpDistribute[vars___] := DumpDistribute[{vars}]
