@@ -1,6 +1,6 @@
 (*no clear here*)
-ParallelLoad["OffSolvesavrs"] := Off[Solve::svars];
-ParallelLoad["OffSolvesavrs"];
+Off[Solve::svars];
+
 
 Options[FullSimplifyS] := CreateOptions[{}, {FullSimplify}]
 FullSimplifyS[expr_, opt : OptionsPattern[], asm_ : $Assumptions] /; 

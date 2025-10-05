@@ -17,8 +17,8 @@ Mul0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
 SetAttributes[Mul0, Listable]
 
 
-ParallelLoad["$ApartTemporaryDirectory"] := Module[{},
-  ClearAll[$ApartTemporaryDirectory];
-  $ApartTemporaryDirectory := "tempmul/" <> "mul" <> ToString[$KernelID]
-  ]
-ParallelLoad["$ApartTemporaryDirectory"]
+
+ClearAll[$ApartTemporaryDirectory];
+$ApartTemporaryDirectory := "tempmul/" <> "mul" <> ToString[$KernelID]
+
+

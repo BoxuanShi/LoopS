@@ -26,7 +26,7 @@
       SetDirectory[dir];
     , DistributedContexts -> None];
     
-    Print["Parallelization is prepared for ", kernels, " Kernels."];
+    Print["Parallelization is prepared for ", Length @ Kernels[], " Kernels."];
     Print["The default number of the kernel prepared is controlled by LoopSParallelKernels."];
 
     ]

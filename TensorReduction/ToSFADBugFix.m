@@ -1,6 +1,6 @@
 Begin["Global`"];
 
-ParallelLoad["ToSFAD"] := Module[{},
+
 ClearAll[ToSFAD];
 Options[ToSFAD] = {
 	EtaSign 	-> Automatic,
@@ -85,7 +85,7 @@ toSFAD[PropagatorDenominator[a_,b_]]:=
 
 toSFAD[PropagatorDenominator[a_,b_]]:=
 	StandardPropagatorDenominator[a, 0, -b^2,{1, 1}]/; FreeQ[a,Complex] && optEtaSign===Automatic;
-  ]
-ParallelLoad["ToSFAD"];
+  
+
 
 End[];
