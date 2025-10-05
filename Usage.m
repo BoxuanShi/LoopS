@@ -70,7 +70,6 @@ groupByRationalRatios2;
 
 ListS;
 
-ParallelLoad;
 FullSimplifyS;
 UnionS;
 FactorAll;
@@ -82,7 +81,7 @@ $NotebookDirectory;
 
 OptRestrict;
 
-ParallelLoad;
+Global`ParallelLoad;
 
 ParallelEvaluateS;
 ParallelTableS;

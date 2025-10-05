@@ -10,6 +10,9 @@
     deltaKernel = kernels - $KernelCount;
     Which[deltaKernel > 0, LaunchKernels[deltaKernel]];
     
+    (*ParallelLoad*)
+    ParallelEvaluate[ParallelLoad[]];
+
     (* DistributeString[ProcessName]; *)
     DistributeAssociation[Evaluate[ProcessName]];
     
