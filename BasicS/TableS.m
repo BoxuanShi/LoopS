@@ -17,8 +17,11 @@ ClearAll[TableS]
 Options[TableS] := 
   CreateOptions[{"Parallelization" -> False}, {ParallelTableS}];
 TableS[a_, b__List, word_String : "", opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{optPara},
-  If[$KernelID === 0,
+  OptRestrict[opt] := Module[{optPara, res},
+
+  Off[Part::pkspec1];
+
+  res = If[$KernelID === 0,
    If[OptionValue["Parallelization"],
     optPara = FilterOptions[{opt}, ParallelTableS];
     ParallelTableS[a, b, Evaluate[optPara]]
@@ -29,7 +32,12 @@ TableS[a_, b__List, word_String : "", opt : OptionsPattern[]] /;
     ]
    ,
    Table[a, b]
-   ]
+   ];
+
+  On[Part::pkspec1];
+
+  res
+
   ]
 SetAttributes[TableS, HoldAll]
 
