@@ -14,12 +14,17 @@ FIREReductionMMA[Fslist_List, loops_List, family_List, process_Association,
 FIREReductionMMA[Fslist_List, loops_List, family_List, extmomsind_List, 
    kinematics_List, FIREWorkPath_String, FIREFamilyName_String, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{tp1, opt1, opt2, opt3, firestart},
+ Module[{tp1, opt1, opt2, opt3, firestart, fireins},
   
   (* opt1 = FilterOptions[{opt}, OptionValue["FIREPrepareStart"]];
   Monitor[
    OptionValue["FIREPrepareStart"][loops, family, extmomsind, kinematics, 
     FIREWorkPath, FIREFamilyName, Evaluate@opt1], "FIREPrepareStart..."]; *)
+
+  fireins = $FIREInstallPath;
+  If[!FileExistsQ[$FIREInstallPath],
+  $FIREInstallPath = FileNameJoin[{$LoopSInstallPath, "LoadDependencies", "Dependencies", "fire", "FIRE6", "FIRE6.m"}]
+  ];
 
  (*FIREPrepareStart*)
   firestart = 
@@ -39,9 +44,13 @@ FIREReductionMMA[Fslist_List, loops_List, family_List, extmomsind_List,
   PrepareParallel];PrepareParallel[Evaluate@optpp]];*)
   
   opt3 = FilterOptions[{opt}, FIREGetGRules];
+
   tp1 = Monitor[
     FIREGetGRules[Fslist, loops, family, extmomsind, kinematics, 
-     Evaluate@opt3, "FIREReductionVerbose" -> False], "FIREGetGRules..."];
-  
+     Evaluate@opt3, "FIREReductionVerbose" -> False]
+     , "FIREGetGRules..."];
+  $FIREInstallPath = fireins;
+
+
   tp1
   ]
