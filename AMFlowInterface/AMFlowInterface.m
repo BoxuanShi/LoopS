@@ -20,7 +20,17 @@ AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer},
    extmomsind_List, kinematics_, opt : OptionsPattern[]] /; 
   OptRestrict[opt] := 
  Module[{i, target, Numeric, amfinstall, solve, NThread, output, save,
-    varsneed, res}, CreateDirectoryS[WorkPath];
+    varsneed, res}, 
+  
+  If[
+    If[$AMFlowInstallPath === "AMFlow`",
+        Flatten[FileNames["AMFlow*"] & /@ $Path] === {},
+        ! FileExistsQ[$AMFlowInstallPath]
+    ],
+    Print["AMFlow is not avaliable."]; Abort[]
+  ];
+
+  CreateDirectoryS[WorkPath];
   target = 
    target0 // GatherGInFamily[#, family] & // GToj[#, SaveName] &;
   amfinstall = $AMFlowInstallPath;
