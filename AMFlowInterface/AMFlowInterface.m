@@ -35,19 +35,17 @@ AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer},
    target0 // GatherGInFamily[#, family] & // GToj[#, SaveName] &;
   amfinstall = $AMFlowInstallPath;
   solve = 
-   If[#, "SolveIntegralsGaugeLink", 
-      "SolveIntegrals"] & /@ (LinearPropsExistQ[#, loops] & /@ family);
+   If[#, "SolveIntegralsGaugeLink", "SolveIntegrals"] & /@ (LinearPropsExistQ[#, loops] & /@ family);
   NThread = OptionValue["AMFlowThread"];
   output = 
    Table[FileNameJoin[{WorkPath, 
-      SaveName <> ToString[i] <> ".wl"}], {i, Length@family}];
+      SaveName <> "S" <> ToString[i] <> ".wl"}], {i, Length@family}];
   save = 
-   Table[FileNameJoin[{WorkPath, SaveName <> ToString[i]}], {i, 
+   Table[FileNameJoin[{WorkPath, SaveName <> "S" <> ToString[i]}], {i, 
      Length@family}];
   Numeric = Rationalize@Numeric0;
   Print["Thread used is \"AMFlowThread\" -> ", NThread, "."];
-  Print["An overall factor Exp[Length[loops]*\[Epsilon]*EulerGamma] \
-is multiplied in the result."];
+  Print["An overall factor Exp[Length[loops]*\[Epsilon]*EulerGamma] is multiplied in the result."];
   Print["logs are saved in ", WorkPath, "."];
   If[! FreeQ[{Head /@ Numeric[[All, 2]], 
       getS[Numeric, _Complex] /. Complex[a_, b_] :> {a, b} &}, Real], 
@@ -62,13 +60,13 @@ is multiplied in the result."];
    Abort[]];
   TableS[
    If[target[[i]] =!= {}, 
-    If[ValueQ@Evaluate@ToExpression[(SaveName <> ToString[i])], 
-     Print[(SaveName <> ToString[i]), 
+    If[ValueQ@Evaluate@ToExpression[(SaveName <> "S" <> ToString[i])], 
+     Print[(SaveName <> "S" <> ToString[i]), 
       " is already defined. Please Clear it firstly."]; Abort[]];
     FileTemplateApply[
      AMFTemplate, <|"AMFlow" -> ToStringInput@amfinstall, 
-      "IBPReducer" -> ToStringInput["FIRE+LiteRed"], 
-      "Family" -> (SaveName <> ToString[i]), 
+      "IBPReducer" -> ToStringInput[OptionValue["AMFlowReducer"]], 
+      "Family" -> (SaveName <> "S" <> ToString[i]), 
       "loops" -> ToStringInput@loops, 
       "extmomsind" -> ToStringInput@extmomsind, 
       "kinematics" -> ToStringInput@kinematics, 
@@ -112,7 +110,7 @@ res>>`save`;
 ClearAll[GToj, jToG];
 GToj[expr_, SaveName_String] := 
  expr /. G[a_, b_] :> 
-   j[SaveName <> ToString[a] // ToExpression, Sequence @@ b]
+   j[SaveName <> "S" <> ToString[a] // ToExpression, Sequence @@ b]
 jToG[expr_] := 
  expr /. j[a_, b___] :> 
    G[StringCases[ToString[a], NumberString][[-1]] // ToExpression, {b}]
