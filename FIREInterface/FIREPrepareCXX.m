@@ -8,9 +8,7 @@ GatherGInFamily[Glist_List, family_List] := Module[{Glist2, Glist3},
 
 ClearAll[FIREPrepareCXX]
 Options[FIREPrepareCXX] := 
- CreateOptions[{"compressor" -> "none", 
-   "FIRECXXKernels" :> 
-    LoopSParallelKernels}, {FindCompleteGList}]; FIRECXXKernels;
+ CreateOptions[{"compressor" -> "none", "FIRECXXKernels" :> LoopSParallelKernels}, {FindCompleteGList}]; FIRECXXKernels;
 FIREPrepareCXX[Fslist_List, loops_List, family_List, rx_Integer : 0, 
    sx_List : {0, 2}, dx_List : {0, 1}, process_String : "CurrentProcess", 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 
@@ -70,7 +68,7 @@ FIREPrepareCXX[Fslist_List, loops_List, family_List, rx_Integer : 0,
   Export[FileNameJoin[{FIREWorkPath, "FIRERun.txt"}],
    StringJoin @@ 
     Table[FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", 
-        FileNameTake@$FIREInstallPath}] <> " -c " <> 
+        StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}] <> " -c " <> 
       FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i]}] <> ";", {i, 
       Length@family}]
    , "Text"];
