@@ -46,18 +46,18 @@ BlackBoxAMFlow: started.
 BlackBoxAMFlow: target integrals split into in 2 parts.
 BlackBoxAMFlow: computing part 1.
 BlackBoxAMFlowSingle: started.
-BlackBoxAMFlowSingle: working directory is "/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/AMFlow/cache/AMFfamilyNLO2_amflow".
+BlackBoxAMFlowSingle: working directory is "/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/AMFlow/cache/AMFfamilyNLOS2_amflow".
 BlackBoxAMFlowSingle: reducing target integrals.
 IBPSystem: generating ibp system with rank 3 and dot 0.
-IBPSystem: ibp system generated in 11s.
+IBPSystem: ibp system generated in 12s.
 AnalyticReduction: reducing 1 target integrals.
 AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
-BlackBoxAMFlowSingle: target integrals reduced in 14s.
+BlackBoxAMFlowSingle: target integrals reduced in 15s.
 BlackBoxAMFlowSingle: constructing amflow systems.
 ------------------------------
 AMFSystemSetup: setting up system 1.
 ---------------
-Family -> AMFfamilyNLO2
+Family -> AMFfamilyNLOS2
 Loop -> {l1}
 Leg -> {p, pp}
 Conservation -> {}
@@ -68,33 +68,33 @@ NThread -> 4
 ---------------
 AMFSystemDifferentialEquation: preparing differential equations for system 1.
 IBPSystem: generating ibp system with rank 3 and dot 1.
-IBPSystem: ibp system generated in 11s.
+IBPSystem: ibp system generated in 13s.
 DifferentialEquation: constructing differential equations with respect to {eta}.
 AnalyticReduction: reducing 2 target integrals.
-AnalyticReduction: target integrals reduced to 2 master integrals in 3s.
+AnalyticReduction: target integrals reduced to 2 master integrals in 4s.
 DifferentialEquation: differential equations constructed with 2 master integrals in 4s.
-AMFSystemDifferentialEquation: differential equations for system 1 prepared in 14s.
+AMFSystemDifferentialEquation: differential equations for system 1 prepared in 16s.
 ---------------
 AMFSystemBoundaryOrder: determining boundary orders for system 1.
-AMFSystemBoundaryOrder: boundary orders for system 1 determined in 2s.
+AMFSystemBoundaryOrder: boundary orders for system 1 determined in 3s.
 ---------------
 AMFSystemBoundaryCondition: preparing boundary integrals for system 1.
 AMFSystemBoundaryCondition: 1 possible integration regions near the Infinity.
 AMFSystemBoundaryCondition: region 1 with transformation {l1 -> Sqrt[eta]*l1}.
 IBPSystem: generating ibp system with rank 3 and dot 0.
-IBPSystem: ibp system generated in 11s.
+IBPSystem: ibp system generated in 13s.
 AnalyticReduction: reducing 1 target integrals.
 AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
 AMFSystemBoundaryCondition: region 1 finished.
-AMFSystemBoundaryCondition: boundary integrals for system 1 prepared in 14s.
+AMFSystemBoundaryCondition: boundary integrals for system 1 prepared in 16s.
 ---------------
 AMFSystemDirection: direction of continuation for system 1 is "NegIm".
 ---------------
-AMFSystemSetup: system 1 set up in 29s.
+AMFSystemSetup: system 1 set up in 33s.
 ------------------------------
 AMFSystemSetup: setting up system 2.
 ---------------
-Family -> AMFfamilyNLO2
+Family -> AMFfamilyNLOS2
 Loop -> {}
 Leg -> {l1}
 Conservation -> {}
@@ -106,7 +106,7 @@ NThread -> 4
 AMFSystemSetup: this is an ending system.
 ---------------
 AMFSystemSetup: system 2 set up in 1s.
-BlackBoxAMFlowSingle: amflow systems constructed in 29s.
+BlackBoxAMFlowSingle: amflow systems constructed in 33s.
 BlackBoxAMFlowSingle: solving amflow systems.
 ------------------------------
 AMFSystemSolution: solving system 1.
@@ -120,24 +120,24 @@ AMFSystemSolution: system 2 solved in 1s.
 AMFSystemSolution: subsystems {2} of system 1 done.
 AMFSystemSolution: all subsystems of system 1 done, solving differential equations.
 AMFSystemSolution: differential equations of system 1 solved.
-AMFSystemSolution: system 1 solved in 8s.
-BlackBoxAMFlowSingle: amflow systems solved in 8s.
-BlackBoxAMFlowSingle: finished in 50s.
+AMFSystemSolution: system 1 solved in 9s.
+BlackBoxAMFlowSingle: amflow systems solved in 9s.
+BlackBoxAMFlowSingle: finished in 56s.
 BlackBoxAMFlow: part 1 done.
 BlackBoxAMFlow: computing part 2.
 BlackBoxAMFlowSingle: started.
-BlackBoxAMFlowSingle: working directory is "/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/AMFlow/cache/AMFfamilyNLO2_amflow".
+BlackBoxAMFlowSingle: working directory is "/Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/AMFlow/cache/AMFfamilyNLOS2_amflow".
 BlackBoxAMFlowSingle: reducing target integrals.
 IBPSystem: generating ibp system with rank 3 and dot 0.
-IBPSystem: ibp system generated in 11s.
+IBPSystem: ibp system generated in 13s.
 AnalyticReduction: reducing 1 target integrals.
 AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
-BlackBoxAMFlowSingle: target integrals reduced in 14s.
+BlackBoxAMFlowSingle: target integrals reduced in 16s.
 BlackBoxAMFlowSingle: constructing amflow systems.
 ------------------------------
 AMFSystemSetup: setting up system 3.
 ---------------
-Family -> AMFfamilyNLO2
+Family -> AMFfamilyNLOS2
 Loop -> {l1}
 Leg -> {p, pp}
 Conservation -> {}
@@ -148,33 +148,33 @@ NThread -> 4
 ---------------
 AMFSystemDifferentialEquation: preparing differential equations for system 3.
 IBPSystem: generating ibp system with rank 3 and dot 1.
-IBPSystem: ibp system generated in 11s.
+IBPSystem: ibp system generated in 12s.
 DifferentialEquation: constructing differential equations with respect to {eta}.
 AnalyticReduction: reducing 2 target integrals.
 AnalyticReduction: target integrals reduced to 2 master integrals in 4s.
 DifferentialEquation: differential equations constructed with 2 master integrals in 4s.
-AMFSystemDifferentialEquation: differential equations for system 3 prepared in 14s.
+AMFSystemDifferentialEquation: differential equations for system 3 prepared in 16s.
 ---------------
 AMFSystemBoundaryOrder: determining boundary orders for system 3.
-AMFSystemBoundaryOrder: boundary orders for system 3 determined in 2s.
+AMFSystemBoundaryOrder: boundary orders for system 3 determined in 3s.
 ---------------
 AMFSystemBoundaryCondition: preparing boundary integrals for system 3.
 AMFSystemBoundaryCondition: 1 possible integration regions near the Infinity.
 AMFSystemBoundaryCondition: region 1 with transformation {l1 -> Sqrt[eta]*l1}.
 IBPSystem: generating ibp system with rank 3 and dot 0.
-IBPSystem: ibp system generated in 12s.
+IBPSystem: ibp system generated in 13s.
 AnalyticReduction: reducing 1 target integrals.
-AnalyticReduction: target integrals reduced to 1 master integrals in 3s.
+AnalyticReduction: target integrals reduced to 1 master integrals in 4s.
 AMFSystemBoundaryCondition: region 1 finished.
-AMFSystemBoundaryCondition: boundary integrals for system 3 prepared in 15s.
+AMFSystemBoundaryCondition: boundary integrals for system 3 prepared in 16s.
 ---------------
 AMFSystemDirection: direction of continuation for system 3 is "NegIm".
 ---------------
-AMFSystemSetup: system 3 set up in 30s.
+AMFSystemSetup: system 3 set up in 33s.
 ------------------------------
 AMFSystemSetup: setting up system 4.
 ---------------
-Family -> AMFfamilyNLO2
+Family -> AMFfamilyNLOS2
 Loop -> {}
 Leg -> {l1}
 Conservation -> {}
@@ -186,7 +186,7 @@ NThread -> 4
 AMFSystemSetup: this is an ending system.
 ---------------
 AMFSystemSetup: system 4 set up in 1s.
-BlackBoxAMFlowSingle: amflow systems constructed in 30s.
+BlackBoxAMFlowSingle: amflow systems constructed in 33s.
 BlackBoxAMFlowSingle: solving amflow systems.
 ------------------------------
 AMFSystemSolution: solving system 3.
@@ -200,9 +200,9 @@ AMFSystemSolution: system 4 solved in 1s.
 AMFSystemSolution: subsystems {4} of system 3 done.
 AMFSystemSolution: all subsystems of system 3 done, solving differential equations.
 AMFSystemSolution: differential equations of system 3 solved.
-AMFSystemSolution: system 3 solved in 8s.
-BlackBoxAMFlowSingle: amflow systems solved in 8s.
-BlackBoxAMFlowSingle: finished in 51s.
+AMFSystemSolution: system 3 solved in 9s.
+BlackBoxAMFlowSingle: amflow systems solved in 9s.
+BlackBoxAMFlowSingle: finished in 57s.
 BlackBoxAMFlow: part 2 done.
-BlackBoxAMFlow: finished in 101s.
-SolveIntegrals: finished in 101s.
+BlackBoxAMFlow: finished in 112s.
+SolveIntegrals: finished in 112s.
