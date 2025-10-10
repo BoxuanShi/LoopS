@@ -24,7 +24,7 @@ AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer},
   
   If[
     If[$AMFlowInstallPath === "AMFlow`",
-        Flatten[FileNames["AMFlow*"] & /@ $Path] === {},
+        Flatten[FileNames["AMFlow", #] & /@ $Path] === {},
         ! FileExistsQ[$AMFlowInstallPath]
     ],
     Print["AMFlow is not avaliable."]; Abort[]

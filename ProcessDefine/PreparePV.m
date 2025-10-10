@@ -21,11 +21,11 @@ PreparePV[process_String, nL_Integer : 3, opt : OptionsPattern[]] /;
 
   (*unsetshared*)
   ToExpression[processA["purePV"], StandardForm, Function[x1, UnsetShared[x1], HoldAll]];
-  (* Print[processA["purePV"] <> " is unshared for subkernels."]; *)
+  Print[processA["purePV"] <> " is unshared for subkernels."];
 
   (*distribute*)
   DistributeAssociation[Evaluate[processA["purePV"]]];
-  (* Print[processA["purePV"] <> " is distributed for subkernels."]; *)
+  Print[processA["purePV"] <> " is distributed for subkernels."];
 
   ]
 
