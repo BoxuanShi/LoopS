@@ -23,10 +23,8 @@ ClearAll[AbbreviateDeno];
 Protect[AbbrD];
 Options[AbbreviateDeno] = {"AbbreviateDenoName" -> AbbrD};
 AbbreviateDeno[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{tp1, tp2, tp3, abbr},
+ Module[{tp1, tp2, abbr},
   tp1 = DistributeToPolyND[expr];
   tp2 = AbbreviateDenominators[tp1, {}, InverseSymbol -> abbr];
-  {tp2[[1]], Thread[tp2[[3]] -> 1/tp2[[2]]]} /. 
-   Dispatch[Thread[
-     tp2[[3]] -> Array[OptionValue["AbbreviateDenoName"], Length@tp2[[3]]]]]
+  {tp2[[1]], Thread[tp2[[3]] -> 1/tp2[[2]]]} /. Dispatch @ Thread[tp2[[3]] -> Array[OptionValue["AbbreviateDenoName"], Length @ tp2[[3]]]]
   ]

@@ -1,6 +1,5 @@
 ClearAll[AMFlowCalcG]
-Options[AMFlowCalcG] = {"AMFlowThread" :> LoopSParallelKernels, 
-   "AMFlowReducer" :> "FIRE+LiteRed"};
+Options[AMFlowCalcG] = {"AMFlowThread" :> LoopSParallelKernels, "AMFlowReducer" :> "FIRE+LiteRed"};
 
 AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, 
    loops_List, family_List, process_String : "CurrentProcess", 

@@ -18,7 +18,7 @@ This package includes the following third-party modules or interfaces:
 
 All these modules are licensed under GPL-3.0.
 
-Additionally, some functions are copied and modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
+Additionally, some functions are modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
 
 
 **Note:** 
