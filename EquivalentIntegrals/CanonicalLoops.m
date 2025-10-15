@@ -1,8 +1,7 @@
 ClearAll[CanonicalLoops]
 Options[CanonicalLoops] = {"DiscVariables" -> {}};
 DiscVariables;
-CanonicalLoops[props0_List, loops_List, process_String : "CurrentProcess", 
-   opt : OptionsPattern[]] /; OptRestrict[opt] := 
+CanonicalLoops[props0_List, loops_List, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := 
  CanonicalLoops[props0, loops, ToExpression[process], Evaluate@opt]
 CanonicalLoops[props0_List, loops_List, process_Association, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 

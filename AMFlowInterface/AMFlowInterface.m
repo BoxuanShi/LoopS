@@ -1,67 +1,47 @@
 ClearAll[AMFlowCalcG]
 Options[AMFlowCalcG] = {"AMFlowThread" :> LoopSParallelKernels, "AMFlowReducer" :> "FIRE+LiteRed"};
 
-AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, 
-   loops_List, family_List, process_String : "CurrentProcess", 
-   opt : OptionsPattern[]] /; OptRestrict[opt] := 
- AMFlowCalcG[target, {Numeric, goal, epsorder}, loops, family, 
-  ToExpression@process, opt]
+AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, loops_List, family_List, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := AMFlowCalcG[target, {Numeric, goal, epsorder}, loops, family, ToExpression@process, opt]
 
-AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, 
-   loops_List, family_List, process_Association, 
-   opt : OptionsPattern[]] /; OptRestrict[opt] := 
- AMFlowCalcG[target, {Numeric, goal, epsorder}, loops, family, 
-  AMFlowWorkPath[process["ProcessName"]], AMFlowSaveName[loops], 
-  process["extmomsind"], process["kinematics"], opt]
+AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, loops_List, family_List, process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := AMFlowCalcG[target, {Numeric, goal, epsorder}, loops, family, AMFlowWorkPath[process["ProcessName"]], AMFlowSaveName[loops], process["extmomsind"], process["kinematics"], opt]
 
-AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer},
-    loops_List, family_List, WorkPath_String, SaveName_String, 
-   extmomsind_List, kinematics_, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := 
- Module[{i, target, Numeric, amfinstall, solve, NThread, output, save,
-    varsneed, res}, 
+AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer}, loops_List, family_List, WorkPath_String, SaveName_String, extmomsind_List, kinematics_, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{i, target, Numeric, amfinstall, solve, NThread, output, save, varsneed, res}, 
   
   If[
     If[$AMFlowInstallPath === "AMFlow`",
-        Flatten[FileNames["AMFlow", #] & /@ $Path] === {},
-        ! FileExistsQ[$AMFlowInstallPath]
+      Flatten[FileNames["AMFlow", #] & /@ $Path] === {},
+      !FileExistsQ[$AMFlowInstallPath]
     ],
     Print["AMFlow is not avaliable."]; Abort[]
   ];
 
   CreateDirectoryS[WorkPath];
-  target = 
-   target0 // GatherGInFamily[#, family] & // GToj[#, SaveName] &;
+  target = target0 // GatherGInFamily[#, family] & // GToj[#, SaveName] &;
   amfinstall = $AMFlowInstallPath;
-  solve = 
-   If[#, "SolveIntegralsGaugeLink", "SolveIntegrals"] & /@ (LinearPropsExistQ[#, loops] & /@ family);
+  solve = If[#, "SolveIntegralsGaugeLink", "SolveIntegrals"] & /@ (LinearPropsExistQ[#, loops] & /@ family);
   NThread = OptionValue["AMFlowThread"];
-  output = 
-   Table[FileNameJoin[{WorkPath, 
-      SaveName <> "S" <> ToString[i] <> ".wl"}], {i, Length@family}];
-  save = 
-   Table[FileNameJoin[{WorkPath, SaveName <> "S" <> ToString[i]}], {i, 
-     Length@family}];
+  output = Table[FileNameJoin[{WorkPath, SaveName <> "S" <> ToString[i] <> ".wl"}], {i, Length@family}];
+  save = Table[FileNameJoin[{WorkPath, SaveName <> "S" <> ToString[i]}], {i, Length@family}];
   Numeric = Rationalize@Numeric0;
   Print["Thread used is \"AMFlowThread\" -> ", NThread, "."];
   Print["An overall factor Exp[Length[loops]*\[Epsilon]*EulerGamma] is multiplied in the result."];
   Print["logs are saved in ", WorkPath, "."];
-  If[! FreeQ[{Head /@ Numeric[[All, 2]], 
-      getS[Numeric, _Complex] /. Complex[a_, b_] :> {a, b} &}, Real], 
-   Print[Numeric0, 
-    " should be rational complex number after applying Rationalize."];
+
+  If[!FreeQ[{Head /@ Numeric[[All, 2]], 
+    getS[Numeric, _Complex] /. Complex[a_, b_] :> {a, b} &}, Real], 
+    Print[Numeric0, " should be rational complex number after applying Rationalize."];
     Abort[]];
-  If[! SubsetQ[Numeric[[All, 1]], 
-     varsneed = 
-      Complement[Variables[family], 
-       Flatten[{loops, Variables@Normal[kinematics][[All, 1]]}]]], 
-   Print[Numeric0, " is not complete. Need: ", varsneed, "."]; 
-   Abort[]];
+
+  If[!SubsetQ[Numeric[[All, 1]], 
+    varsneed = Complement[Variables[{family, kinematics[[All,2]]}], 
+    Flatten[{loops, Variables@Normal[kinematics][[All, 1]]}]]], 
+    Print[Numeric0, " is not complete. Need: ", varsneed, "."]; Abort[]];
+
   TableS[
    If[target[[i]] =!= {}, 
     If[ValueQ@Evaluate@ToExpression[(SaveName <> "S" <> ToString[i])], 
      Print[(SaveName <> "S" <> ToString[i]), 
-      " is already defined. Please Clear it firstly."]; Abort[]];
+     " is already defined. Please Clear it firstly."]; Abort[]];
     FileTemplateApply[
      AMFTemplate, <|"AMFlow" -> ToStringInput@amfinstall, 
       "IBPReducer" -> ToStringInput[OptionValue["AMFlowReducer"]], 
@@ -77,14 +57,12 @@ AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer},
       "epsorder" -> ToStringInput@epsorder, 
       "SolveIntegralsGaugeLink" -> solve[[i]], 
       "save" -> ToStringInput[save[[i]]]|>, output[[i]]];
-    Export[FileNameJoin[{WorkPath, "log" <> ToString[i] <> ".txt"}], 
-     RunProcess[{"wolframscript", "-file", output[[i]]}][
-       "StandardOutput"] // StringSplit[#, "\n"] &, "Text"];, 
+    Export[FileNameJoin[{WorkPath, "log" <> ToString[i] <> ".txt"}], RunProcess[{"wolframscript", "-file", output[[i]]}]["StandardOutput"] // StringSplit[#, "\n"] &, "Text"];, 
     None], {i, Length@family}];
-  res = Table[
-    If[target[[i]] =!= {}, Get[save[[i]]], Nothing], {i, 
-     Length@family}];
-  Flatten@res // amfConventionTrans[#, loops, epsorder] &]
+
+  res = Table[If[target[[i]] =!= {}, Get[save[[i]]], Nothing], {i, Length@family}];
+  Flatten@res // amfConventionTrans[#, loops, epsorder] &
+  ]
 
 
 AMFTemplate = "
