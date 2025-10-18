@@ -13,9 +13,12 @@ Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
 ];
 Print[
 Style["See ",FontFamily->"Arial",FontSize->14,FontColor->Black],
-Style[Hyperlink["https://github.com/BoxuanShi/LoopS","https://github.com/BoxuanShi/LoopS"],FontFamily->"Arial",FontSize->14,FontColor->Black],
-Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black]
-]
+Style[Hyperlink["Github","https://github.com/BoxuanShi/LoopS"],FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[" for more information.",FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style["If you use LoopS in your research, please cite it by",FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[Hyperlink["Zenodo","https://doi.org/10.5281/zenodo.17383900"],FontFamily->"Arial",FontSize->14,FontColor->Black],
+Style[".",FontFamily->"Arial",FontSize->14,FontColor->Black]
+];
 
 Get[FileNameJoin[{$LoopSInstallPath, "Config.m"}]];
 

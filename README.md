@@ -45,3 +45,9 @@ versions included here are redistributed under GPL-3.0.
 - LoopS relies on the current notebook directory (`NotebookDirectory[]`) for certain operations.
   If your notebook has not been saved, `NotebookDirectory[]` will return `$Failed`, and some 
   functions may not work as expected. Please **save your notebook before loading LoopS**.
+
+
+## Citation
+
+If you use LoopS in your research, please cite it as:
+Shi, Bo-Xuan. LoopS: A Mathematica package for Feynman amplitudes reduction. Zenodo, 2025. DOI: [10.5281/zenodo.17383900](https://doi.org/10.5281/zenodo.17383900)
