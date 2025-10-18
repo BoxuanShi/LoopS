@@ -279,7 +279,7 @@ tosector
 samesectorQ;
 subsectorQ;
 propNumG
-MasterIntegralsS;
+FIREMasterIntegrals;
 
 
 (*LoadDependencies*)
