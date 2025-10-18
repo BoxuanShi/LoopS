@@ -6,7 +6,7 @@ AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, loops_List,
 AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, loops_List, family_List, process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := AMFlowCalcG[target, {Numeric, goal, epsorder}, loops, family, AMFlowWorkPath[process["ProcessName"]], AMFlowSaveName[loops], process["extmomsind"], process["kinematics"], opt]
 
 AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer}, loops_List, family_List, WorkPath_String, SaveName_String, extmomsind_List, kinematics_, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{i, target, Numeric, amfinstall, solve, NThread, output, save, varsneed, res}, 
-  
+  (*check avalible.*)
   If[
     If[$AMFlowInstallPath === "AMFlow`",
       Flatten[FileNames["AMFlow", #] & /@ $Path] === {},
