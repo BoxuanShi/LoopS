@@ -94,6 +94,9 @@ PolynomialCollectOperation;
 sameSetQ;
 
 Separate;
+SeparateHead;
+SeparateDropOne;
+SeparatePattMatch;
 SeparatePoly;
 SeparateOperation;
 
@@ -333,6 +336,7 @@ operatorRules;
 
 (*TensorReduction*)
 AbbreviateOperators;
+AbbreviateOperators2;
 AbbreviateOperatorsHead;
 AbbreviateOperatorsName;
 

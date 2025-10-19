@@ -1,25 +1,17 @@
 ClearAll[getS];
 getS[expr_] := Variables @ Cases[expr, _, {0, Infinity}]
 getS[expr_, patt_, opt : OptionsPattern[]] := Cases[expr, patt, {0, Infinity}] // Union
-(* If[
-  FreeQ[patt, Blank | BlankSequence | BlankNullSequence | Alternatives]
-  ,
-  Cases[{expr}, Alternatives @@ (Blank /@ Flatten[{patt}]), Infinity] // 
-   Union
-  ,
-  Cases[{expr}, patt, Infinity] // Union
-  ] *)
-
 
 ClearAll[getV]
 getV[expr_] := Variables[expr]
-getV[expr_, patt_] := If[
+getV[expr_, patt_] := Variables[expr] // Select[#, !FreeQ[#, patt] &] &
+(*If[
   FreeQ[patt, Blank | BlankSequence | BlankNullSequence | Alternatives]
   ,
   Variables[expr] // Select[#, MemberQ[Flatten@{patt}, Head@#] &] &
   ,
-  Variables[expr] // Select[#, ! FreeQ[#, patt] &] &
-  ]
+  Variables[expr] // Select[#, !FreeQ[#, patt] &] &
+  ]*)
 
 
 ClearAll[getDo]
