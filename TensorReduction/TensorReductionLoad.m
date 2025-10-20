@@ -18,3 +18,4 @@ Get["GeneratePVMMA.m"];
 Get["PVRules.m"];
 
 Get["PowerCounting.m"];
+Get["ShiftToRegionForm.m"];

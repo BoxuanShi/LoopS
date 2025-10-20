@@ -1,2 +1,2 @@
 ClearAll[OptRestrict]
-OptRestrict[opt___] := opt =!= {} || Length@Flatten@{opt} =!= 0
+OptRestrict[opt___] := opt =!= {} || Length @ Flatten @ {opt} =!= 0

@@ -1,53 +1,27 @@
-ClearAll[Separate, Separate0, Separate1, SeparatePoly, SeparatePoly0];
-SeparateHead;
-SeparateDropOne;
-Separate::usage = 
-  "1. Separate[expr, patt] separate polynomials consitituted by patt.
+ClearAll[Separate, SeparatePoly];
+Separate::usage = "1. Separate[expr, patt] separate polynomials consitituted by patt.
 2. Option SeparateHead replace the default head List.
 3. Separate has attribute Listable for the first argument.";
 
-Options[Separate] := CreateOptions[{}, {Separate1}];
-Separate[expr_, patt_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Separate0[expr, "patt" -> patt, 
-  Evaluate@FilterOptions[{opt}, Separate1]]
-Options[Separate0] := CreateOptions[{"patt" -> "patt"}, {Separate1}]
-SetAttributes[Separate0, Listable];
-Separate0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Separate1[expr, OptionValue["patt"], 
-  Evaluate@FilterOptions[{opt}, Separate1]]
+Options[Separate] := CreateOptions[{"SeparatePattMatch" -> getS}, {SeparatePoly}];
+Separate[expr_List, patt_, opt : OptionsPattern[]] := Separate[#, patt, opt] & /@ expr;
+Separate[expr : Except[_List], patt_List, opt : OptionsPattern[]] := Module[{coe, patt2},
+  {coe, patt2} = Separate[expr, Alternatives @@ patt0];
+  patt2 = (ListS[#, {}, Times] &) /@ patt2;
+  patt2 = (Table[Select[#, MatchQ[# /. a_^b_ :> a, patt0[[i]]] &], {i, Length @ patt0}] &) /@ patt2;
+  patt2 = (Times @@@ # &) /@ patt2;
+  patt2 = Transpose @ patt2;
+  OptionValue["SeparateHead"] @@ {coe, Sequence @@ patt2}]
+Separate[expr : Except[_List], patt : Except[_List], opt : OptionsPattern[]] := Module[{vars}, 
+  vars = OptionValue["SeparatePattMatch"][{expr}, patt];
+  SeparatePoly[expr, vars, Evaluate @ FilterOptions[{opt}, SeparatePoly]]]
 
-Options[Separate1] := CreateOptions[{}, {SeparatePoly}];
-Separate1[expr_, patt_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
-  Module[{vars}, vars = getS[{expr}, patt];
-  SeparatePoly[expr, vars, 
-   Evaluate@FilterOptions[{opt}, SeparatePoly]]]
-
-Separate1[expr_, patt0_List, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{coe, patt},
-  {coe, patt} = Separate[expr, Alternatives @@ patt0];
-  patt = (ListS[#, {}, Times] &) /@ patt;
-  patt = (Table[
-       Select[#, MatchQ[# /. a_^b_ :> a, patt0[[i]]] &], {i, 
-        Length@patt0}] &) /@ patt;
-  patt = (Times @@@ # &) /@ patt;
-  patt = Transpose@patt;
-  OptionValue["SeparateHead"] @@ {coe, Sequence @@ patt}]
-
-Options[SeparatePoly] = {"SeparateHead" -> List, 
-   "SeparateDropOne" -> False, "SeparateOperation" -> Times};
-SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := SeparatePoly0[expr, "vars" -> vars, Evaluate@opt]
-
-Options[SeparatePoly0] := 
-  CreateOptions[{"vars" -> "vars"}, {SeparatePoly}];
-SetAttributes[SeparatePoly0, Listable];
-SeparatePoly0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{vars, sa, ar, ltop, tp1, opr},
-
+Options[SeparatePoly] = {"SeparateHead" -> List, "SeparateDropOne" -> False, "SeparateOperation" -> Times};
+SeparatePoly[expr_List, vars_List, opt : OptionsPattern[]] := SeparatePoly[#, vars, opt] & /@ expr;
+SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, tp1, opr},
   opr = OptionValue["SeparateOperation"];
-  vars = OptionValue["vars"];
   If[expr === 0, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
-  If[vars === {}, 
+  If[vars === {},
     If[OptionValue["SeparateDropOne"], 
      Return[OptionValue["SeparateHead"] @@ {{}, {}}],
      Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]]
@@ -57,6 +31,5 @@ SeparatePoly0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   ltop[list_] := opr @@ (vars[[#]] & /@ list);
   tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
   tp1 = SortBy[tp1, Last];
-  If[sa[[1]] =!= 0 && ! OptionValue["SeparateDropOne"], 
-   PrependTo[tp1, {sa[[1]], opr @@ {1}}], Nothing];
+  If[sa[[1]] =!= 0 && ! OptionValue["SeparateDropOne"], PrependTo[tp1, {sa[[1]], opr @@ {1}}], Nothing];
   OptionValue["SeparateHead"] @@ Transpose[tp1]]
