@@ -9,15 +9,12 @@ CreateDirectoryS[sym_] := If[! DirectoryQ[sym], CreateDirectory[sym]]
 
 
 ClearAll[FilterOptions]
-FilterOptions[opts_List, name_] := 
- Sequence @@ FilterRules[opts, Flatten[Options /@ Flatten@{name}]]
+FilterOptions[opts_List, name_] := Sequence @@ FilterRules[opts, Flatten[Options /@ Flatten@{name}]]
 
 
 ClearAll[TableS]
-Options[TableS] := 
-  CreateOptions[{"Parallelization" -> False}, {ParallelTableS}];
-TableS[a_, b__List, word_String : "", opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := Module[{optPara, res},
+Options[TableS] := CreateOptions[{"Parallelization" -> False}, {ParallelTableS}];
+TableS[a_, b__List, word : Except[_Rule|_RuleDelayed, _String] : "", opt : OptionsPattern[]] := Module[{optPara, res},
 
   Off[Part::pkspec1];
 
@@ -26,9 +23,7 @@ TableS[a_, b__List, word_String : "", opt : OptionsPattern[]] /;
     optPara = FilterOptions[{opt}, ParallelTableS];
     ParallelTableS[a, b, Evaluate[optPara]]
     ,
-    Monitor[Table[a, b], 
-     Refresh[DeleteCases[{word, b}, ""], UpdateInterval -> 0.25, 
-      TrackedSymbols -> {}]]
+    Monitor[Table[a, b], Refresh[DeleteCases[{word, b}, ""], UpdateInterval -> 0.25, TrackedSymbols -> {}]]
     ]
    ,
    Table[a, b]
@@ -43,12 +38,8 @@ SetAttributes[TableS, HoldAll]
 
 
 ClearAll[DoS]
-DoS[a_, b__List] := 
- If[$KernelID === 0, 
-  Monitor[Do[a, b], 
-   Refresh[{b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], Do[a, b]]
-DoS[a_, b__List, word_String] := 
- If[$KernelID === 0, 
-  Monitor[Do[a, b], 
-   Refresh[{word, b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], Do[a, b]]
+DoS[a_, b__List] := If[$KernelID === 0, Monitor[Do[a, b], Refresh[{b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], Do[a, b]]
+DoS[a_, b__List, word_String] := If[$KernelID === 0, 
+  Monitor[Do[a, b], Refresh[{word, b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], 
+  Do[a, b]]
 SetAttributes[DoS, HoldAll]

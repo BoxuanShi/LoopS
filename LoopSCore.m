@@ -39,6 +39,9 @@ Get["FeynmanIntegralsClassificationLoad.m"];
 (*EquivalentIntegrals*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"EquivalentIntegrals"}]];
 Get["EquivalentIntegralsLoad.m"];
+(*IBPReduction*)
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"IBPReduction"}]];
+Get["IBPReductionLoad.m"];
 (*FIREInterface*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]];
 Get["FIREInterfaceLoad.m"];
@@ -49,9 +52,9 @@ Get["AMFlowInterfaceLoad.m"];
 (* $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]]; *)
 (* Get["MasterIntegralResultsLoad.m"]; *)
 (*Unusual bug fix*)
-LoopSWorkDirectory;
+(* LoopSWorkDirectory; *)
 (*Generate LoopS directory*)
-CreateDirectoryS[LoopSWorkDirectory];
+(* CreateDirectoryS[LoopSWorkDirectory]; *)
 (*LoopSNeatEnd2*)
 End[];
 

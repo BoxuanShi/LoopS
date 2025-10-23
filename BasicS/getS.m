@@ -5,14 +5,6 @@ getS[expr_, patt_, opt : OptionsPattern[]] := Cases[expr, patt, {0, Infinity}] /
 ClearAll[getV]
 getV[expr_] := Variables[expr]
 getV[expr_, patt_] := Variables[expr] // Select[#, !FreeQ[#, patt] &] &
-(*If[
-  FreeQ[patt, Blank | BlankSequence | BlankNullSequence | Alternatives]
-  ,
-  Variables[expr] // Select[#, MemberQ[Flatten@{patt}, Head@#] &] &
-  ,
-  Variables[expr] // Select[#, !FreeQ[#, patt] &] &
-  ]*)
-
 
 ClearAll[getDo]
 getDo[expr_, patt_, func_] := Module[{tp1, tp2, tp3},

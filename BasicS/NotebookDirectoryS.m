@@ -1,3 +1,2 @@
 ClearAll[NotebookDirectoryS];
-NotebookDirectoryS[] := 
- DirectoryName[If[$FrontEnd === Null, $InputFileName, NotebookFileName[]]]
+NotebookDirectoryS[] := DirectoryName[If[$FrontEnd === Null, $InputFileName, NotebookFileName[]]]

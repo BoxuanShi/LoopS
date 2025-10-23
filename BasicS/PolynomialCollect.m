@@ -1,6 +1,6 @@
 ClearAll[PolynomialCollect, PolynomialCollect0]
 Options[PolynomialCollect] = {"PolynomialCollectOperation" -> Times};
-PolynomialCollect[expr_, patt0_, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{vars, patt},
+PolynomialCollect[expr_, patt0_, opt : OptionsPattern[]] := Module[{vars, patt},
   patt = Alternatives @@ Flatten[{patt0}];
   vars = getS[{expr}, patt];
   PolynomialCollect0[expr, vars, opt]
@@ -8,14 +8,14 @@ PolynomialCollect[expr_, patt0_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
 
 Options[PolynomialCollect0] := CreateOptions[{}, {PolynomialCollect}];
 
-PolynomialCollect0[expr_List, vars_List, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{tp1, tp2},
+PolynomialCollect0[expr_List, vars_List, opt : OptionsPattern[]] := Module[{tp1, tp2},
   If[vars === {}, Return[{}]];
   tp1 = Flatten@{expr};
   tp2 = (PolynomialCollect0[#, vars, opt] &) /@ tp1;
   Union @ Flatten[tp2, 1]
   ]
 
-PolynomialCollect0[expr_, vars_List, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{sa, ar, ltop, tp1},
+PolynomialCollect0[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, tp1},
   If[expr === 0, Return[{}]];
   If[vars === {}, Return[{}]];
   sa = CoefficientArrays[expr, vars];

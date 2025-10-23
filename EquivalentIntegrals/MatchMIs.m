@@ -1,7 +1,7 @@
 ClearAll[MatchMIs];
 Options[MatchMIs] := 
   CreateOptions[{"SimplifyMatchMIs" :> (CollectFlat[#, {\[Epsilon]| ToExpression["_G"] | _Log \
-| _PolyLog | ToExpression["_HPL"]}, SimplifyS, Simplify] &)}, {matchFI, TableS}];
+| _PolyLog | ToExpression["_HPL"]}, SimplifyS, Simplify] &)}, {MatchFI, TableS}];
 MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, 
   process_String : "CurrentProcess", opt : OptionsPattern[]] := 
  MatchMIs[MIs, MIformlist, MIsollist, loops, family, 
@@ -11,11 +11,11 @@ MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List,
  Module[{i, props, MFs, Msols, opt1, opttable},
   props = GToProps[MIs, family, List];
   
-  opt1 = FilterOptions[{opt}, matchFI];
+  opt1 = FilterOptions[{opt}, MatchFI];
   
   opttable = FilterOptions[{opt}, TableS];
   MFs = TableS[
-    matchFI[props[[i]], MIformlist, loops, kinematics, Evaluate@opt1], {i, 
+    MatchFI[props[[i]], MIformlist, loops, kinematics, Evaluate@opt1], {i, 
      Length@props}, "MatchFI...", Evaluate@opttable];
   
   If[MIsollist === {}, Return[Thread[MIs -> MFs]]];

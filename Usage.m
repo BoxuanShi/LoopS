@@ -139,7 +139,7 @@ LSsubsets;
 LSsubsetsSortQ;
 GenerateFamilyLS;
 
-matchFI;
+MatchFI;
 countProps;
 EiknolPermutation;
 MissMatch;
@@ -152,7 +152,7 @@ MFrelease;
 propsToLS;
 LSToprops;
 
-sameFIQ;
+SameFIQ;
 
 SymanzikIndepentVars;
 
@@ -223,6 +223,16 @@ zeroSectorQ;
 
 
 (*FIREInterface*)
+FIREPrepareIBP;
+FIREcompressor;
+IBPKernels;
+FIREUseMMA;
+FIRERunIBP;
+FIRELoadIBP;
+FIREIBPReduction;
+IBPReduction;
+
+
 FindCompleteGList;
 SubSectors;
 FindTopSectors;
@@ -249,10 +259,13 @@ FIREVerbose;
 FIRELoadTable;
 FIREVerbose;
 
+FIREPrepareIBP;
 FIREPrepareCXX;
 GatherGInFamily;
 compressor;
 FIRECXXKernels;
+FIREIBPKernels;
+FIREcompressor;
 
 FIREPrepareStart;
 FIREVerbose;
@@ -278,12 +291,15 @@ PossibleMIsInSector;
 PossibleDAction;
 PossibleIntForDEInSector;
 
-tosector
+
+(*IBPReduction*)
+tosector;
 samesectorQ;
 subsectorQ;
-propNumG
-FIREMasterIntegrals;
-
+propNumG;
+GatherGInFamily;
+ApplyIBPRules;
+FamilyMerge;
 
 (*LoadDependencies*)
 (* ParallelNeedS; *)(*loaded before load Usage.m*)
@@ -294,7 +310,7 @@ ClearProcess;
 
 CreateProcess;
 
-ProcessPaths;
+ProcessPath;
 PVPath;
 FIREWorkPath;
 FIREFamilyName;

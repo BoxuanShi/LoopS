@@ -24,6 +24,9 @@ Get["FeynmanIntegralsClassificationLoad.m"];
 (*EquivalentIntegrals*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"EquivalentIntegrals"}]];
 Get["EquivalentIntegralsLoad.m"];
+(*IBPReduction*)
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"IBPReduction"}]];
+Get["IBPReductionLoad.m"];
 (*FIREInterface*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]];
 Get["FIREInterfaceLoad.m"];

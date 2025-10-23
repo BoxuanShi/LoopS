@@ -1,3 +1,5 @@
+OPITeRWorkPath := FileNameJoin[{ParentDirectory@LoopSWorkDirectory, "tempopiter"}]
+
 ClearAll[GeneratePVOPITeR];
 GeneratePVOPITeR[nLlist_List, extmomsind_List] /; (OrderedQ@Reverse@nLlist) :=
   Module[{i, x, loopsPV, loopsOPITeR, loopRules, inds, indsRules, extOPITeR, 
