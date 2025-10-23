@@ -1,9 +1,9 @@
 ClearAll[FindRulesComplete]
 FindRulesComplete::usage = "FindRulesComplete[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List}, kinematics_List, extmomsind_List, opt : OptionsPattern[]].
 Depending options: {findrules2}";
-Options[FindRulesComplete] := DeleteCases[CreateOptions[{}, {findrules2}], x_ /; x[[1]] === "LinearPropagatorQ", {1}];
-FindRulesComplete[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List}, process_Association : CurrentProcess, opt : OptionsPattern[]] := FindRulesComplete[family, MI0, loops, {ibprules, ibpgAndMI}, process["kinematics"], process["extmomsind"], opt]
-FindRulesComplete[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List}, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{x, liq, tp1, tp2, tp3},
+Options[FindRulesComplete] := CreateOptions[{}, {findrules2}];
+FindRulesComplete[family_List, MI0_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FindRulesComplete[family, MI0, {ibprules, ibpgAndMI}, loops, process["kinematics"], process["extmomsind"], opt]
+FindRulesComplete[family_List, MI0_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{x, liq, tp1, tp2, tp3},
   liq = (! FreeQ[linearPropsQ[#, loops] & /@ Flatten[family], True]);
   If[
    liq
