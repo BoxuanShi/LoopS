@@ -1,1 +1,0 @@
-/Users/balth/Library/Mathematica/Applications/fire/FIRE6/bin/FIRE6 -c /Users/balth/Downloads/LoopS-Mine/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/FIRE/familyNNLO1;

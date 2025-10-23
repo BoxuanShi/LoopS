@@ -1,0 +1,2 @@
+/home/balth/Documents/fire7/FIRE7/bin/FIRE7 -c /media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/IBPReduction/FIRE/familyNNLO1;
+wolframscript -file /media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/IBPReduction/FIRE/familyNNLO1save.wl;

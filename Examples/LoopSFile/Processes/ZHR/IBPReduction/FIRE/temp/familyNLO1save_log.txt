@@ -1,0 +1,131 @@
+FIRE, version 6.5.2
+Initial data loaded
+EVALUATING {1, {0, 1, 1}}
+Working in sector 2/4: {1,{-1,1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{0, 0}}
+{1, 1}
+Preparing points, symmetries and 21 IBP's: 0.004255`4.08044455791658 seconds.
+16 new relations produced: 0.054342`5.186680611622377 seconds.
+IRREDUCIBLE INTEGRAL: {1, {0, 1, 1}}
+Sector complete
+Total time: 0.060994`5.236832108915721 seconds
+EVALUATING {1, {1, 1, 1}}
+Working in sector 1/4: {1,{1,1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{0, 0}}
+{1, 1}
+Preparing points, symmetries and 13 IBP's: 0.003143`3.9488893745135556 seconds.
+3 new relations produced: 0.006599`4.271023121858093 seconds.
+Sector complete
+Working in sector 2/4: {1,{-1,1,1}}
+Sector complete
+Working in sector 3/4: {1,{1,-1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{1, 0}}
+{1, 1}
+Preparing points, symmetries and 21 IBP's: 0.004271`4.082074564922799 seconds.
+1 new relations produced: 0.000905`3.4081935727011743 seconds.
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{1, 0}}
+{1, 1}
+Preparing points, symmetries and 21 IBP's: 0.003957`4.048911043761999 seconds.
+14 new relations produced: 0.028513`4.906587907575051 seconds.
+IRREDUCIBLE INTEGRAL: {1, {0, 0, 1}}
+Sector complete
+SORTING THE LIST OF 9 INTEGRALS: 0.000025`1.8494850021680107 seconds.
+Substituting 9 values: 0.003301`3.970190517826287 seconds.
+Total time: 0.056988`5.2073284091256165 seconds
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+Total time: 0.000397`3.050335500259088 seconds
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.229696243879617*^-6 seconds.
+Substituting 2 values: 0.000036`2.0078474942632623 seconds.
+Total time: 0.00042`3.0747942838938713 seconds
+EVALUATING {1, {1, 0, 1}}
+Working in sector 3/4: {1,{1,-1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{0, 0}}
+{1, 1}
+Preparing points, symmetries and 20 IBP's: 0.00317`3.9526042557137244 seconds.
+3 new relations produced: 0.004302`4.085215399547419 seconds.
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 4 INTEGRALS: 0.000012`1.5307262395435983 seconds.
+Substituting 4 values: 0.000541`3.1847422586025407 seconds.
+Total time: 0.008835`4.397751547338758 seconds
+Working in sector 3/4: {1,{1,-1,1}}
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 5 INTEGRALS: 0.000013`1.5654883458028115 seconds.
+Substituting 5 values: 0.00051`3.1591151695939073 seconds.
+Total time: 0.001173`3.5208430056115048 seconds
+Working in sector 3/4: {1,{1,-1,1}}
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796128*^-6 seconds.
+Substituting 2 values: 0.000031`1.9429066873302476 seconds.
+Total time: 0.00058`3.21497298705891 seconds
+Working in sector 2/4: {1,{-1,1,1}}
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 11 INTEGRALS: 0.000032`1.956694971815881 seconds.
+Substituting 11 values: 0.003307`3.9709791884096783 seconds.
+Total time: 0.004235`4.078398408162698 seconds
+Working in sector 2/4: {1,{-1,1,1}}
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 4 INTEGRALS: 0.000012`1.5307262395435983 seconds.
+Substituting 4 values: 0.000599`3.2289718158852865 seconds.
+Total time: 0.001304`3.566822584891872 seconds
+EVALUATING {1, {2, 1, 1}}
+Working in sector 1/4: {1,{1,1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{1, 0}}
+{1, 1}
+Preparing points, symmetries and 9 IBP's: 0.002073`3.768144295589836 seconds.
+3 new relations produced: 0.006307`4.251367824489293 seconds.
+Sector complete
+Working in sector 2/4: {1,{-1,1,1}}
+Sector complete
+Working in sector 3/4: {1,{1,-1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{2, 0}}
+{1, 1}
+Preparing points, symmetries and 17 IBP's: 0.002959`3.9226899586566084 seconds.
+1 new relations produced: 0.002037`3.7605360224961353 seconds.
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 8 INTEGRALS: 0.000021`1.7737642882298925 seconds.
+Substituting 8 values: 0.003206`3.9575085115140967 seconds.
+Total time: 0.018071`4.708527179397546 seconds
+Working in sector 1/4: {1,{1,1,1}}
+Sector complete
+Working in sector 2/4: {1,{-1,1,1}}
+Sector complete
+Working in sector 3/4: {1,{1,-1,1}}
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 9 INTEGRALS: 0.00003`1.9286662482156374 seconds.
+Substituting 9 values: 0.0031669999999999999`3.952193056867887 seconds.
+Total time: 0.004377`4.092721540109089 seconds
+Working in sector 1/4: {1,{1,1,1}}
+Sector complete
+Working in sector 2/4: {1,{-1,1,1}}
+Sector complete
+Working in sector 4/4: {1,{-1,-1,1}}
+Sector complete
+SORTING THE LIST OF 4 INTEGRALS: 0.000012`1.5307262395435983 seconds.
+Substituting 4 values: 0.000756`3.3300667889971796 seconds.
+Total time: 0.001609`3.6581010375950025 seconds

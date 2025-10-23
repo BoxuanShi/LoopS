@@ -56,7 +56,6 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
     |>;
   templateC2 = TemplateApply[templateC, rulesC];
   FileTemplateApply[templateC2, FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".config"}]];
-  If[OptionValue["FIREUseMMA"], DeleteFile[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".config"}]]];
   (*save file*)
   templateS = FIRETemplate["Reduction"];
   rulesS = <|
@@ -74,7 +73,7 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
   Do[
     If[FileExistsQ[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> ".config"}]], 
       WriteString[stream, FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}] <> " -c " <> FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i]}] <> ";\n"];
-      WriteString[stream, "wolframscript -file " <> FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> "save.wl"}] <> ";\n"],
+      WriteString[stream, "wolframscript -file " <> FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}] <> ";\n"],
       Break[]]
     , {i, Infinity}];
   Close[stream];
@@ -83,11 +82,14 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
 
 ClearAll[FIRERunIBP]
 FIRERunIBP::usage = "FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}].";
-FIRERunIBP[problem_Integer, loops_List, process_Association : CurrentProcess] := FIRERunIBP[problem, loops, {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}]
-FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}] := Module[{logrun, logsave},
+Options[FIRERunIBP] = {"FIREUseMMA" -> False};
+FIRERunIBP[problem_Integer, loops_List, process_Association : CurrentProcess, opt:OptionsPattern[]] := FIRERunIBP[problem, loops, {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
+FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}, opt:OptionsPattern[]] := Module[{logrun, logsave},
   (*run cxx*)
+  If[!OptionValue["FIREUseMMA"],
   logrun = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}], "-c", FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}]}]["StandardOutput"];
   Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "run_log.txt"}], logrun, "Text"];
+  ];
   (*save*)
   logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]}]["StandardOutput"];
   Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"];
@@ -105,12 +107,12 @@ FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_St
 
 ClearAll[FIREIBPReduction]
 FIREIBPReduction::usage = "FIREIBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]].
-Depending options: {FIREPrepareIBP}";
-Options[FIREIBPReduction] := CreateOptions[{}, {FIREPrepareIBP}];
+Depending options: {FIREPrepareIBP, FIRERunIBP}";
+Options[FIREIBPReduction] := CreateOptions[{}, {FIREPrepareIBP, FIRERunIBP}];
 FIREIBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREIBPReduction[Fslist, {family, problem}, loops, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
 FIREIBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := (
   FIREPrepareIBP[Fslist, {family, problem}, loops, extmomsind, kinematics, {FIREWorkPath, FIREFamilyName}, Evaluate@FilterOptions[{opt}, FIREPrepareIBP]];
-  FIRERunIBP[problem, loops, {FIREWorkPath, FIREFamilyName}];
+  FIRERunIBP[problem, loops, {FIREWorkPath, FIREFamilyName}, Evaluate@FilterOptions[{opt}, FIRERunIBP]];
   FIRELoadIBP[problem, loops, {FIREWorkPath, FIREFamilyName}]
   )
 
@@ -150,3 +152,20 @@ tp1 >> `save`;
 Quit[];
 "
 |>;
+
+
+(*old-function*)
+ClearAll[FIREReductionMMA]
+Options[FIREReductionMMA] := CreateOptions[{}, {IBPReduction, FamilyMerge}];
+FIREReductionMMA[Fslist_List, loops_List, family_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREReductionMMA[Fslist, loops, family, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, opt];
+FIREReductionMMA[Fslist_List, loops_List, family_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]] := Module[{ibprules, ibpgAndMI},
+{ibprules, ibpgAndMI} = IBPReduction[Fslist, family, loops, extmomsind, kinematics, {WorkPath, FamilyName}, "FIREUseMMA" -> True, Evaluate@FilterOptions[{opt}, IBPReduction]];
+FamilyMerge[Fslist, family, {ibprules, ibpgAndMI}, loops, extmomsind, kinematics, Evaluate@FilterOptions[{opt}, FamilyMerge]]
+]
+ClearAll[FIREReductionCXX]
+Options[FIREReductionCXX] := CreateOptions[{}, {IBPReduction, FamilyMerge}];
+FIREReductionCXX[Fslist_List, loops_List, family_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREReductionCXX[Fslist, loops, family, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, opt];
+FIREReductionCXX[Fslist_List, loops_List, family_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]] := Module[{ibprules, ibpgAndMI},
+{ibprules, ibpgAndMI} = IBPReduction[Fslist, family, loops, extmomsind, kinematics, {WorkPath, FamilyName}, "FIREUseMMA" -> False, Evaluate@FilterOptions[{opt}, IBPReduction]];
+FamilyMerge[Fslist, family, {ibprules, ibpgAndMI}, loops, extmomsind, kinematics, Evaluate@FilterOptions[{opt}, FamilyMerge]]
+]

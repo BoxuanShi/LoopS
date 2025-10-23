@@ -1,0 +1,5 @@
+FIRE, version 6.5.2
+Prepared
+Dimension set to 3
+No symmetries
+Saving initial data

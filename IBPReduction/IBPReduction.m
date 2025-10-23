@@ -27,7 +27,8 @@ ApplyIBPRules[expr_, {ibprules_Dispatch, ibpgAndMI_List}] := Module[{tp1},
 
 
 ClearAll[IBPReduction]
-IBPReduction::usage = "IBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]].
+IBPReduction::usage = "IBPReduction[Fslist_List, family_List, loops_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]].
+\"IBPReductionRange\": _List|All : All -> determine which family to reduce.
 Depending options: {FIREIBPReduction, TableS}.
 WARN: Parallelization in MMA and in the external IBP program are independent. The total number of cores used equals their product.";
 Options[IBPReduction] := CreateOptions[{"IBPReducer" -> "FIRE", "IBPReductionRange" -> All}, {FIREIBPReduction, TableS}];
@@ -49,7 +50,8 @@ IBPReduction[Fslist_List, family_List, loops_List, extmomsind_List, kinematics_L
 
 
 ClearAll[FamilyMerge];
-FamilyMerge::usage = "FamilyMerge[Fslist0_List, loops_List, family_List, {ibprules_Dispatch, ibpgAndMI_List}, extmomsind_List, kinematics_List, opt : OptionsPattern[]].
+FamilyMerge::usage = "FamilyMerge find rules between sectors and families.
+FamilyMerge[Fslist0_List, family_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]].
 Depending options: {FindRulesComplete, TableS}";
 Options[FamilyMerge] := CreateOptions[{"PreferredMIs" -> {}, "FamilyMergeSimplify" :> SimplifyS}, {FindRulesComplete, TableS}];
 FamilyMerge[Fslist_List, family_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FamilyMerge[Fslist, family, {ibprules, ibpgAndMI}, loops, process["extmomsind"], process["kinematics"], Evaluate@opt]

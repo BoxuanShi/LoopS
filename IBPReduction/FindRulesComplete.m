@@ -18,6 +18,27 @@ FindRulesComplete[family_List, MI0_List, {ibprules_Dispatch, ibpgAndMI_List}, lo
   ]
 
 
+ClearAll[GenerateEiknolFamilies]
+GenerateEiknolFamilies[family_List, MIs_List, loops_List] := Module[{y, i, j, tpPermu, familyEiknol, nfamEki, signEki, tpMap, tpMapInv, tpInvRules, MIsEkinol, tp1, hd},
+  tpPermu = Table[EiknolPermutation[family[[i]], loops], {i, Length@family}];
+  signEki = Flatten[tpPermu, 1];
+  
+  familyEiknol = Table[family[[i]]*# & /@ tpPermu[[i]], {i, Length@family}];
+  nfamEki = Length /@ familyEiknol;
+  familyEiknol = Flatten[familyEiknol, 1];
+  
+  tpMap = Table[Total@nfamEki[[1 ;; i - 1]] + j, {i, Length@nfamEki}, {j, nfamEki[[i]]}];
+  tpMapInv = Table[Thread[tpMap[[i]] -> i], {i, Length@tpMap}] // Flatten;
+  tpInvRules = tpMapInv /. (a_ -> b_) :> {G[a, y_], hd[signEki[[a]], y]*G[b, y]};
+  tpInvRules = RuleDelayed @@@ tpInvRules;
+  tpInvRules = tpInvRules /. hd -> (Times @@ (#1^#2) &);
+  
+  tp1 = GatherGInFamily[MIs, family];
+  MIsEkinol = Table[tp1[[i]] /. Dispatch[G[x_, y_] :> G[tpMap[[i, j]], y]], {i, Length@tp1}, {j, nfamEki[[i]]}] // Flatten;
+  {familyEiknol, MIsEkinol, tpInvRules}
+  ]
+
+
 ClearAll[findrules];
 Options[findrules] := CreateOptions[{"Parallelization" -> False, "FIREVerbose" -> False}, {PrepareParallel, FIRE}];
 findrules[family2_List, MI2_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := findrules[family2, MI2, loops, process["kinematics"], process["extmomsind"], opt]
@@ -51,7 +72,7 @@ findrulesX[family_List, MIs_List, loops_List, kinematics_List, extmomsind_List, 
   MIRules = Block[{Print = (# &)}, findrules[familyEiknol, MIsEkinol, loops, kinematics, extmomsind, Evaluate@FilterOptions[{opt}, findrules]]];
   MIRules2 = MIRules /. Dispatch[tpInvRules];
   rt = Flatten[AtomizeRules /@ MIRules2] // DeleteCases[#, x_ /; x[[1]] === x[[2]]] &;
-  Print["Input: ", Length@MIs, ", output: ", MIs /. Dispatch@rt // getS[#, _G] & // Length];
+  (* Print["Input: ", Length@MIs, ", output: ", MIs /. Dispatch@rt // getS[#, _G] & // Length]; *)
   rt
   ]
 
