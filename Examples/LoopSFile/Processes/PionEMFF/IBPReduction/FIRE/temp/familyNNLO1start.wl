@@ -1,9 +1,0 @@
-Get["/home/balth/Documents/fire7/FIRE7/FIRE7.m"];
-Internal = {l1, l2}; 
-External = {p, pp}; 
-Propagators = {l1^2, (l1 - l2)^2, l2^2, (l2 + p*x1)^2, (l1 - l2 + p*x2)^2, (l1 + pp*y1 + pp*y2)^2, (l2 - p*x2 + pp*y1 + pp*y2)^2}; 
-Replacements = {p^2 -> 0, pp^2 -> 0, p*pp -> 1/2}; 
-PrepareIBP[];
-Prepare[AutoDetectRestrictions->True,LI->True];
-SaveStart["/media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/IBPReduction/FIRE/familyNNLO1"];
-Quit[];

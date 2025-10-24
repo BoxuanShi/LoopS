@@ -1,0 +1,81 @@
+FIRE 7.0
+Path: /home/balth/Documents/fire7/FIRE7/bin/
+Version: b4b51e16 docker instructions update
+Threads: 1
+Temporary databases will be cleaned after work
+Library threads: 1
+Using default #bucket value = 16
+Initialized flint as a library
+Compressor: none
+Database path: temp/db
+Creating temporary directory
+Created
+Tables will be saved to /media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/PionEMFF/IBPReduction/FIRE/familyNLO1.tables
+STARTING LEVEL 3.0
+Using default #bucket value = 16
+STARTING THREAD 0 for {1,{1,1,1}} 3
+Thread 0 requested: (1,1) 
+Thread 0 (sector 3): (1,1) 
+Thread 0 (sector 3): Equations: 9, used: 9, reduction time: 0.000865924
+Database 3 has size 0.000492828 GB and 20 entries (log = 4.32193)
+Thread (sector 3): saved 12 entries to disk
+Algerbra/total reduction time in sector 3: 0.000743/0.00120799
+Memory usage by sector 3 (virtual|resident): 48.11Mb | 10.62Mb
+FLAME time (3): 0.00145349
+FINISHED LEVEL 3.0: 0.00458306 seconds.
+Memory by main thread (virtual|resident): 55.15Mb | 12.66Mb
+Thread memory usage estimation by top 1 sectors (virtual|resident): 48.11Mb | 10.62Mb
+Requests copied to lower sectors: 0.000325395 seconds.
+STARTING LEVEL 2.0
+Using default #bucket value = 16
+STARTING THREAD 0 for {1,{-1,1,1}} 2
+Thread 0 requested: (1,1) (1,2) (2,1) (2,2) 
+Thread 0 (sector 2): (1,1) 
+Thread 0 (sector 2): Equations: 18, used: 18, reduction time: 0.000896016
+New master integral: {1,{0,1,1}}
+Thread 0 (sector 2): (1,2) (2,1) 
+Thread 0 (sector 2): Equations: 21, used: 18, reduction time: 0.00102279
+Database 2 has size 0.00049865 GB and 70 entries (log = 6.12928)
+Thread (sector 2): saved 20 entries to disk
+Algerbra/total reduction time in sector 2: 0.001611/0.00284362
+Memory usage by sector 2 (virtual|resident): 47.11Mb | 11.09Mb
+FLAME time (2): 0.00301152
+FINISHED LEVEL 2.0: 0.00630173 seconds.
+Memory by main thread (virtual|resident): 55.15Mb | 12.97Mb
+Thread memory usage estimation by top 1 sectors (virtual|resident): 47.11Mb | 11.09Mb
+Requests copied to lower sectors: 0.00014399 seconds.
+FINISHED LEVEL 1
+Copying results from lower sectors: 2.868e-05 seconds.
+Sector -2: using command line bucket value = 7
+THREAD 0: Substituting in {1,{-1,1,1}} 2
+Thread (sector 2): substituted 11 integrals (0.000202628 seconds).
+Memory by thread 0 (sector 2) on substitutions: 39.11Mb | 10.47Mb
+Thread (sector 2): saved 17 entries to disk (7.2641e-05 seconds).
+FLAME time (-2): 0.000427759
+Memory by main thread (virtual|resident): 55.15Mb | 12.97Mb
+Thread memory usage estimation by top 1 sectors (virtual|resident): 39.11Mb | 10.47Mb
+Time for the current level: 0.00314809 seconds.
+STARTING HIGHER SECTORS OF SAME LEVEL
+FINISHED LEVEL 2
+Copying results from lower sectors: 5.2469e-05 seconds.
+Sector -3: using command line bucket value = 6
+THREAD 0: Substituting in {1,{1,1,1}} 3
+Thread (sector 3): substituted 5 integrals (0.000134059 seconds).
+Memory by thread 0 (sector 3) on substitutions: 39.11Mb | 10.47Mb
+Thread (sector 3): saved 11 entries to disk (7.1366e-05 seconds).
+FLAME time (-3): 0.000348327
+Memory by main thread (virtual|resident): 55.15Mb | 12.97Mb
+Thread memory usage estimation by top 1 sectors (virtual|resident): 39.11Mb | 10.47Mb
+Time for the current level: 0.00400376 seconds.
+STARTING HIGHER SECTORS OF SAME LEVEL
+FINISHED LEVEL 3
+Totally substituted 35 points
+STATISTICS
+Total time: 0.018628
+Substitution time: 0.00726669
+Thread time: 0.017863
+Eqs (total/used): 48 | 45
+Maximal memory by the main process (virtual|resident): 55.15Mb | 12.97Mb
+Thread memory usage estimation by top 1 sectors (virtual|resident): 48.11Mb | 11.09Mb
+Master integrals: 1
+Saving tables

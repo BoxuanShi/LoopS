@@ -14,7 +14,9 @@ CreateProcess[expr__Association | expr__List | expr__Rule] := Module[{tp1, tp2, 
   tp1 = If[FreeQ[Keys[tp1], "indices"], Append[tp1, "indices" -> {}], tp1];
   tp1 = If[FreeQ[Keys[tp1], "moms"], Append[tp1, "moms" -> Join[tp1["loopmoms"], tp1["extmoms"]]], tp1];
   purePV = "purePV" <> tp1["ProcessName"];
-  If[ValueQ[Evaluate@ToExpression@purePV], Print[purePV." already exists. Please change ProcessName."]; Abort[]];
+  ToExpression[purePV, InputForm, Function[{x}, ClearAll[x], HoldAll]];
+  Print[purePV, " is cleared, and is used to save PV Reduction."];
+  Print["Set \"purePV\" -> symbol to custom the symbol used."];
   tp1 = If[FreeQ[Keys[tp1], "purePV"], Append[tp1, "purePV" -> purePV], tp1];
   ToExpression[purePV, InputForm, Function[{x}, x = <||>, HoldAll]];
   ToExpression[purePV, InputForm, Function[{x}, x[{}] = 1, HoldAll]];

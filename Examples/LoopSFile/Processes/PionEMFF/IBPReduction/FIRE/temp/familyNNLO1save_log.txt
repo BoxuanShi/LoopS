@@ -1,2 +1,0 @@
-FIRE, version 7.0
-Initial data loaded
