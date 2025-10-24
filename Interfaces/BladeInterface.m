@@ -5,9 +5,10 @@ BladeFamilyName[loops_List] := Module[{str}, str = StringJoin @@ Table["N", {i, 
 
 ClearAll[BladePrepareIBP];Protect[BL];
 BladePrepareIBP::usage = "BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {BladeWorkPath_String, BladeFamilyName_String}, opt : OptionsPattern[]].
-\"Bladecompressor\": _ : \"none\" : compressor in config file.
 \"IBPKernels\": _Integer : LoopSParallelKernels : fThreads in config file.
-\"BladeUseMMA\": (True|False) : False : use Mathematica or CXX to perform reduction.
+\"BLnumeric\".
+\"ExtraIntDerivDen\".
+\"ExtraIntDerivPara\".
 Depending options: {FindCompleteGList}";
 Options[BladePrepareIBP] := CreateOptions[{"IBPKernels" :> LoopSParallelKernels, "BLnumeric" -> {}, "ExtraIntDerivDen" -> {}, "ExtraIntDerivPara" -> {}}, {FindCompleteGList}];
 BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, BladePrepareIBP[Fslist, {familyi, problem}, loops, p["extmomsind"], p["kinematics"], {BladeWorkPath[p["ProcessName"]], BladeFamilyName[loops]}, Evaluate@opt]]
@@ -61,8 +62,7 @@ BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmom
 
 
 ClearAll[BladeRunIBP]
-BladeRunIBP::usage = "BladeRunIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}, opt:OptionsPattern[]].
-\"BladeUseMMA\": (True|False) : False : use Mathematica or CXX to perform reduction.";
+BladeRunIBP::usage = "BladeRunIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}, opt:OptionsPattern[]].";
 BladeRunIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProcess, opt:OptionsPattern[]] := Module[{p=ReleaseHold@process}, BladeRunIBP[problem, loops, {BladeWorkPath[p["ProcessName"]], BladeFamilyName[loops]}, Evaluate@opt]]
 BladeRunIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}, opt:OptionsPattern[]] := Module[{logsave},
   (*save*)
@@ -82,7 +82,7 @@ BladeLoadIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName
 
 ClearAll[BladeIBPReduction]
 BladeIBPReduction::usage = "BladeIBPReduction[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {BladeWorkPath_String, BladeFamilyName_String}, opt : OptionsPattern[]].
-Depending options: {BladePrepareIBP, BladeRunIBP}";
+Depending options: {BladePrepareIBP}";
 Options[BladeIBPReduction] := CreateOptions[{}, {BladePrepareIBP}];
 BladeIBPReduction[Fslist_List, {familyi_List, problem_Integer}, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, BladeIBPReduction[Fslist, {familyi, problem}, loops, p["extmomsind"], p["kinematics"], {BladeWorkPath[p["ProcessName"]], BladeFamilyName[loops]}, Evaluate@opt]]
 BladeIBPReduction[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {BladeWorkPath_String, BladeFamilyName_String}, opt : OptionsPattern[]] := (
