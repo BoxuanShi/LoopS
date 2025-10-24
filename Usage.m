@@ -230,7 +230,6 @@ FIREUseMMA;
 FIRERunIBP;
 FIRELoadIBP;
 FIREIBPReduction;
-IBPReduction;
 
 
 FindCompleteGList;
@@ -299,6 +298,7 @@ subsectorQ;
 propNumG;
 GatherGInFamily;
 ApplyIBPRules;
+ToIBPSystem;
 FamilyMerge;
 
 (*LoadDependencies*)

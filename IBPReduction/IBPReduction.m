@@ -19,62 +19,48 @@ propNumG[Gs_] := Select[Gs[[2]], # > 0 &] // Length
 SetAttributes[propNumG, Listable]
 
 
-Clear[ApplyIBPRules]
-ApplyIBPRules[expr_, {ibprules_Dispatch, ibpgAndMI_List}] := Module[{tp1},
-  If[(tp1 = Complement[getS[expr, _G], Flatten@ibpgAndMI]) =!= {}, Print["Unreduced target appear -> ", tp1]; Abort[]];
-  expr /. ibprules
+ClearAll[ApplyIBPRules]
+ApplyIBPRules::usage="ApplyIBPRules[expr_, ibpsystem : {_Dispatch, {_List, _List}}]: check whether all targets can be reduced and apply ibp rules from ibprules.";
+ApplyIBPRules[expr_, ibpsystem : {_Dispatch, {_List, _List}}] := Module[{tp1},
+  If[(tp1 = Complement[getS[expr, _G], Flatten@ibpsystem[[2]]]) =!= {}, Print["Unreduced target appear -> ", tp1]; Abort[]];
+  expr /. ibpsystem[[1]]
   ]
+ApplyIBPRules[expr_, rawrules_List] := ApplyIBPRules[expr, ToIBPSystem[rawrules]]
 
 
-ClearAll[IBPReduction]
-IBPReduction::usage = "IBPReduction[Fslist_List, family_List, loops_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]].
-\"IBPReductionRange\": _List|All : All -> determine which family to reduce.
-Depending options: {FIREIBPReduction, TableS}.
-WARN: Parallelization in MMA and in the external IBP program are independent. The total number of cores used equals their product.";
-Options[IBPReduction] := CreateOptions[{"IBPReducer" -> "FIRE", "IBPReductionRange" -> All}, {FIREIBPReduction, TableS}];
-IBPReduction[Fslist_List, family_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := (
-  Switch[OptionValue["IBPReducer"],
-    "FIRE",
-    IBPReduction[Fslist, family, loops, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
-    ]
-  )
-IBPReduction[Fslist_List, family_List, loops_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]] := Module[{i, rg, glistInfam, ibp1, ibprules, ibpgAndMI},
-  rg = OptionValue["IBPReductionRange"];
-  If[rg === All, rg = Range@Length@family];
-  glistInfam = GatherGInFamily[Fslist, family];
-  ibp1 = TableS[FIREIBPReduction[glistInfam[[i]], {family, i}, loops, extmomsind, kinematics, {WorkPath, FamilyName}, Evaluate@FilterOptions[{opt}, FIREIBPReduction]], {i, rg}, Evaluate@FilterOptions[{opt}, TableS]];
-  ibp1 = Flatten@ibp1;
-  {ibprules, ibpgAndMI} = {Dispatch@ibp1, {getS[ibp1[[All, 1]], _G], getS[ibp1[[All, 2]], _G]}};
-  {ibprules, ibpgAndMI}
-  ]
+ClearAll[ToIBPSystem];
+ToIBPSystem::usage="IBPSystem[rawrules_List] generate ibp system from a list of ibp reduction rules.";
+ToIBPSystem[ibpsystem : {_Dispatch, {_List, _List}}] := ibpsystem
+ToIBPSystem[rawrules_List] := {Dispatch@#, {getS[#[[All,1]], _G], getS[#[[All,2]], _G]}}& @Flatten@rawrules
 
 
 ClearAll[FamilyMerge];
 FamilyMerge::usage = "FamilyMerge find rules between sectors and families.
-FamilyMerge[Fslist0_List, family_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]].
+FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]].
 Depending options: {FindRulesComplete, TableS}";
 Options[FamilyMerge] := CreateOptions[{"PreferredMIs" -> {}, "FamilyMergeSimplify" :> SimplifyS}, {FindRulesComplete, TableS}];
-FamilyMerge[Fslist_List, family_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FamilyMerge[Fslist, family, {ibprules, ibpgAndMI}, loops, process["extmomsind"], process["kinematics"], Evaluate@opt]
-FamilyMerge[Fslist0_List, family_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, rules2, tpmi, tpeqs, tpmap},
+FamilyMerge[Fslist_List, family_List, rawibprules_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FamilyMerge[Fslist, family, rawibprules, loops, process["extmomsind"], process["kinematics"], Evaluate@opt]
+FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, rules2, tpmi, tpeqs, tpmap, ibpsystem},
+  ibpsystem = ToIBPSystem[rawibprules];
   pref = OptionValue["PreferredMIs"];
   Fslist = Join[Fslist0, pref];
   (*find rules*)
-  tp1 = Fslist // ApplyIBPRules[#, {ibprules, ibpgAndMI}]&;
+  tp1 = Fslist // ApplyIBPRules[#, ibpsystem]&;
   Gs = tp1 // getS[#, _G]&;
-  GsRules = Monitor[FindRulesComplete[family, Gs, {ibprules, ibpgAndMI}, loops, kinematics, extmomsind, Evaluate@FilterOptions[{opt}, FindRulesComplete]], "FamilyMerge: FindRulesComplete..."];
+  GsRules = Monitor[FindRulesComplete[Gs, family, ibpsystem, loops, kinematics, extmomsind, Evaluate@FilterOptions[{opt}, FindRulesComplete]], "FamilyMerge: FindRulesComplete..."];
   tp2 = tp1 /. Dispatch@GsRules;
   rules1 = Union@Join[Thread[Fslist -> tp2], GsRules];
   (*change MI basis*)
-  Monitor[
   rules2 = If[pref === {},
     rules1,
-    prefRed = (ApplyIBPRules[pref, {ibprules, ibpgAndMI}] /. Dispatch@rules1);
+    Monitor[
+    prefRed = (ApplyIBPRules[pref, ibpsystem] /. Dispatch@rules1);
     tpmi = prefRed // getS[#, _G]&;
     tpeqs = Thread[pref == prefRed];
     tpmap = Solve[tpeqs, tpmi][[1]];
     Thread[rules1[[All,1]] -> (rules1[[All,2]] /. Dispatch @ tpmap)]
-  ];
-  , "Transforming to the PreferredMIs..."];
+    ];
+    , "Transforming to the PreferredMIs..."];
   (*return*)
   TableS[rules2[[i]] // Collect[#, _G, OptionValue["FamilyMergeSimplify"]] &, {i, Length @ rules2}, "FamilyMerge: Simplifying with option \"FamilyMergeSimplify\".", Method -> Automatic, Evaluate@FilterOptions[{opt}, TableS]]
   ]

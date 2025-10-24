@@ -1,19 +1,20 @@
 ClearAll[FindRulesComplete]
-FindRulesComplete::usage = "FindRulesComplete[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List}, kinematics_List, extmomsind_List, opt : OptionsPattern[]].
+FindRulesComplete::usage = "FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]].
 Depending options: {findrules2}";
 Options[FindRulesComplete] := CreateOptions[{}, {findrules2}];
-FindRulesComplete[family_List, MI0_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FindRulesComplete[family, MI0, {ibprules, ibpgAndMI}, loops, process["kinematics"], process["extmomsind"], opt]
-FindRulesComplete[family_List, MI0_List, {ibprules_Dispatch, ibpgAndMI_List}, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{x, liq, tp1, tp2, tp3},
+FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FindRulesComplete[MI0, family, rawibprules, loops, process["kinematics"], process["extmomsind"], opt]
+FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{x, liq, tp1, tp2, tp3, ibpsystem},
+  ibpsystem = ToIBPSystem[rawibprules];
   liq = (! FreeQ[linearPropsQ[#, loops] & /@ Flatten[family], True]);
   If[
    liq
    ,
-   tp1 = findrules2[family, MI0, loops, {ibprules, ibpgAndMI}, kinematics, extmomsind, "LinearPropagatorQ" -> False, Evaluate@FilterOptions[{opt}, findrules2]];
+   tp1 = findrules2[family, MI0, loops, ibpsystem, kinematics, extmomsind, "LinearPropagatorQ" -> False, Evaluate@FilterOptions[{opt}, findrules2]];
    tp2 = getS[MI0 /. Dispatch[tp1], _G];
-   tp3 = findrules2[family, tp2, loops, {ibprules, ibpgAndMI}, kinematics, extmomsind, "LinearPropagatorQ" -> True, Evaluate@FilterOptions[{opt}, findrules2]];
+   tp3 = findrules2[family, tp2, loops, ibpsystem, kinematics, extmomsind, "LinearPropagatorQ" -> True, Evaluate@FilterOptions[{opt}, findrules2]];
    Thread[MI0 -> (MI0 /. Dispatch[tp1] /. Dispatch[tp3])] // DeleteCases[#, x_ /; x[[1]] === x[[2]]] &
    ,
-   findrules2[family, MI0, loops, {ibprules, ibpgAndMI}, kinematics, extmomsind, "LinearPropagatorQ" -> False, Evaluate @ FilterOptions[{opt}, findrules2]]
+   findrules2[family, MI0, loops, ibpsystem, kinematics, extmomsind, "LinearPropagatorQ" -> False, Evaluate @ FilterOptions[{opt}, findrules2]]
    ]
   ]
 
@@ -93,9 +94,9 @@ FamilyMergeSeed[sector_G] := Module[{tp1, tp2},
 ClearAll[findrules2]
 Options[findrules2] := CreateOptions[{"LinearPropagatorQ" -> False, "FindRulesCompleteMaxIt" -> 100}, {findrulesX, findrules, TableS}]
 (*findrules2 return the minimal MIs only when the masters in every families have been found completely...*)
-findrules2[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List}, process_Association : CurrentProcess, opt : OptionsPattern[]] := findrules2[family, MI0, loops, {ibprules, ibpgAndMI}, process["kinematics"], process["extmomsind"], opt]
-findrules2[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List}, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{sectors, fr, rulesSec, rulesOri, seedsNew, tp5, tp6, tp8, tp9, tp10, seedsfull, rulesCom, sol, num, num1, num2, MI, MINext, MINext2, opttable, optfr, MaxIt},
-  
+findrules2[family_List, MI0_List, loops_List, rawibprules_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := findrules2[family, MI0, loops, rawibprules, process["kinematics"], process["extmomsind"], opt]
+findrules2[family_List, MI0_List, loops_List, rawibprules_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{sectors, fr, rulesSec, rulesOri, seedsNew, tp5, tp6, tp8, tp9, tp10, seedsfull, rulesCom, sol, num, num1, num2, MI, MINext, MINext2, opttable, optfr, MaxIt, ibpsystem},
+  ibpsystem = ToIBPSystem@rawibprules;
   MaxIt = OptionValue["FindRulesCompleteMaxIt"];
   fr = If[OptionValue["LinearPropagatorQ"], findrulesX, findrules];
   optfr = FilterOptions[{opt}, fr];
@@ -131,16 +132,16 @@ findrules2[family_List, MI0_List, loops_List, {ibprules_Dispatch, ibpgAndMI_List
           ]]
     , {num, Length@MI}, Evaluate@opttable] // Flatten // Union;
 
-    seedsfull = {MI, seedsNew, seedsNew // ApplyIBPRules[#, {ibprules, ibpgAndMI}] &} // getS[#, _G] &;
+    seedsfull = {MI, seedsNew, seedsNew // ApplyIBPRules[#, ibpsystem] &} // getS[#, _G] &;
     rulesCom = Monitor[Dispatch@fr[family, seedsfull, loops, kinematics, extmomsind, Evaluate@optfr], "finding complete rules..."];
 
 
-    sol = sol /. rulesCom // ApplyIBPRules[#, {ibprules, ibpgAndMI}] &;
+    sol = sol /. rulesCom // ApplyIBPRules[#, ibpsystem] &;
     MINext2 = sol // getS[#, _G] &;
     Monitor[
       For[num2 = 1, MINext =!= MINext2 && num2 <= MaxIt, num2++,
         MINext = MINext2;
-        sol = sol /. rulesCom // ApplyIBPRules[#, {ibprules, ibpgAndMI}] &;
+        sol = sol /. rulesCom // ApplyIBPRules[#, ibpsystem] &;
         MINext2 = sol // getS[#, _G] &]
     ,{num2, MaxIt}];
   

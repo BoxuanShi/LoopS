@@ -4,14 +4,14 @@ FIREFamilyName[loops_List] := Module[{str}, str = StringJoin @@ Table["N", {i, L
 
 
 ClearAll[FIREPrepareIBP];
-FIREPrepareIBP::usage = "FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]].
+FIREPrepareIBP::usage = "FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]].
 \"FIREcompressor\": _ : \"none\" : compressor in config file.
 \"IBPKernels\": _Integer : LoopSParallelKernels : fThreads in config file.
 \"FIREUseMMA\": (True|False) : False : use Mathematica or CXX to perform reduction.
 Depending options: {FindCompleteGList}";
 Options[FIREPrepareIBP] := CreateOptions[{"FIREcompressor" -> "none", "IBPKernels" :> LoopSParallelKernels, "FIREUseMMA" -> False}, {FindCompleteGList}];
-FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREPrepareIBP[Fslist, {family, problem}, loops, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
-FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := Module[{i, x, Fslist2, FlistFamily, stream, startfile, template, rules, template2, startscript, templateC, rulesC, templateC2, templateS, rulesS, templateS2, log},
+FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREPrepareIBP[Fslist, {familyi, problem}, loops, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
+FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := Module[{i, x, Fslist2, FlistFamily, stream, startfile, template, rules, template2, startscript, templateC, rulesC, templateC2, templateS, rulesS, templateS2, log},
   (*check install*)
   If[!FileExistsQ[$FIREInstallPath] || !StringMatchQ[FileNameTake@$FIREInstallPath, "FIRE" ~~ __ ~~ ".m"], Print["$FIREInstallPath is wrong."]; Abort[]];
   (*create directories*)
@@ -24,7 +24,7 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
     "FIRE" -> ToStringInput@$FIREInstallPath,
     "Internal" -> ToStringInput@loops,
     "External" -> ToStringInput@extmomsind,
-    "Propagators" -> ToStringInput@family[[problem]],
+    "Propagators" -> ToStringInput@familyi,
     "Replacements" -> ToStringInput@kinematics,
     "family" -> ToStringInput@startfile
     |>;
@@ -38,7 +38,7 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
     ];
   (*target file*)
   Fslist2 = DeleteCases[Fslist, x_ /; x[[1]] =!= problem];
-  FlistFamily = FindCompleteGList[Fslist2, family, loops, kinematics, Evaluate@FilterOptions[{opt}, FindCompleteGList]];
+  FlistFamily = FindCompleteGList[Fslist2, ReplacePart[ConstantArray[{}, problem], -1 -> familyi], loops, kinematics, Evaluate@FilterOptions[{opt}, FindCompleteGList]];
   FlistFamily = FlistFamily /. G -> List;
   Export[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".m"}], FlistFamily];
   (*config file*)
@@ -48,7 +48,7 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
     "fThreads" -> OptionValue["IBPKernels"],
     "tThreads" -> Ceiling[OptionValue["IBPKernels"]/2],
     "sThreads" -> Ceiling[OptionValue["IBPKernels"]/2],
-    "variables" -> (ToString[Complement[Variables[{family[[problem]], kinematics[[All, 2]]}], Join[loops, extmomsind]]] // StringTake[#, {2, -2}] &),
+    "variables" -> (ToString[Complement[Variables[{familyi, kinematics[[All, 2]]}], Join[loops, extmomsind]]] // StringTake[#, {2, -2}] &),
     "folder" -> PathName[FIREWorkPath],
     "familyName" -> (FIREFamilyName <> ToString[problem]),
     "problem" -> problem,
@@ -81,7 +81,8 @@ FIREPrepareIBP[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsi
 
 
 ClearAll[FIRERunIBP]
-FIRERunIBP::usage = "FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}].";
+FIRERunIBP::usage = "FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}, opt:OptionsPattern[]].
+\"FIREUseMMA\": (True|False) : False : use Mathematica or CXX to perform reduction.";
 Options[FIRERunIBP] = {"FIREUseMMA" -> False};
 FIRERunIBP[problem_Integer, loops_List, process_Association : CurrentProcess, opt:OptionsPattern[]] := FIRERunIBP[problem, loops, {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
 FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}, opt:OptionsPattern[]] := Module[{logrun, logsave},
@@ -106,12 +107,12 @@ FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_St
 
 
 ClearAll[FIREIBPReduction]
-FIREIBPReduction::usage = "FIREIBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]].
+FIREIBPReduction::usage = "FIREIBPReduction[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]].
 Depending options: {FIREPrepareIBP, FIRERunIBP}";
 Options[FIREIBPReduction] := CreateOptions[{}, {FIREPrepareIBP, FIRERunIBP}];
-FIREIBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREIBPReduction[Fslist, {family, problem}, loops, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
-FIREIBPReduction[Fslist_List, {family_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := (
-  FIREPrepareIBP[Fslist, {family, problem}, loops, extmomsind, kinematics, {FIREWorkPath, FIREFamilyName}, Evaluate@FilterOptions[{opt}, FIREPrepareIBP]];
+FIREIBPReduction[Fslist_List, {familyi_List, problem_Integer}, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FIREIBPReduction[Fslist, {familyi, problem}, loops, process["extmomsind"], process["kinematics"], {FIREWorkPath[process["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]
+FIREIBPReduction[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := (
+  FIREPrepareIBP[Fslist, {familyi, problem}, loops, extmomsind, kinematics, {FIREWorkPath, FIREFamilyName}, Evaluate@FilterOptions[{opt}, FIREPrepareIBP]];
   FIRERunIBP[problem, loops, {FIREWorkPath, FIREFamilyName}, Evaluate@FilterOptions[{opt}, FIRERunIBP]];
   FIRELoadIBP[problem, loops, {FIREWorkPath, FIREFamilyName}]
   )
