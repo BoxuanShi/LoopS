@@ -22,7 +22,7 @@ Additionally, some functions are modified from the **[CalcLoop](https://gitlab.c
 
 
 **Note:** 
-- Users can also customize the paths of dependencies by editing the `Config.m` file
+- Users can also customize the paths of dependencies and interfaces by editing the `Config.m` file
   located in the main LoopS directory. This allows you to specify where external 
   packages (e.g., FeynCalc, FIRE, MultivariateApart, OPITeR) are installed on your system.
 - Direct downloads may not include OPITeR. If missing, LoopS will automatically notify you in Mathematica and provide instructions to install it.

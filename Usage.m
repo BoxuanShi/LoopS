@@ -1,3 +1,14 @@
+(*BladeInterface*)
+BladeWorkPath;
+BladeFamilyName;
+BladePrepareIBP;
+BL;
+BladeRunIBP;
+BladeLoadIBP;
+BladeIBPReduction;
+BladeTemplate;
+
+
 (*AMFlowInterface*)
 GToj;
 jToG;

@@ -15,3 +15,4 @@ $OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependen
       "Dependencies", "opiter", "opiter"}];
 
 $AMFlowInstallPath = "AMFlow`";
+$BladeInstallPath = "Blade`";

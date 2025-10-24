@@ -27,12 +27,9 @@ Get["EquivalentIntegralsLoad.m"];
 (*IBPReduction*)
 $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"IBPReduction"}]];
 Get["IBPReductionLoad.m"];
-(*FIREInterface*)
-$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"FIREInterface"}]];
-Get["FIREInterfaceLoad.m"];
-(*AMFlowInterface*)
-$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"AMFlowInterface"}]];
-Get["AMFlowInterfaceLoad.m"];
+(*Interfaces*)
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"Interfaces"}]];
+Get["InterfacesLoad.m"];
 (*MasterIntegralResults*)
 (* $Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"MasterIntegralResults"}]]; *)
 (* Get["MasterIntegralResultsLoad.m"]; *)
