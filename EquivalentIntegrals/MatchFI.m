@@ -1,5 +1,5 @@
 ClearAll[countProps]
-countProps[props_List, loops_List, process_Association : CurrentProcess] := countProps[props, loops, process["kinematics"]]
+countProps[props_List, loops_List, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, countProps[props, loops, p["kinematics"]]]
 countProps[props_List, loops_List, kinematics_List] := Module[{i, inv, props2},
   inv = Table[If[FreeQ[Denominator@Together@props[[i]],Alternatives@@loops],1,-1],{i,Length@props}];
   props2 = MapThread[List,{props^inv,inv}];
@@ -42,9 +42,7 @@ Protect[MF, MissMatch];
 MatchFI::missing = "target integral `1` is not matched in formlist.";
 Options[MatchFI] := CreateOptions[{"ExactMode" -> False, "MatchFIHead" -> MF, Assumptions -> $Assumptions}, {Solve}];
 
-MatchFI[target_List, formlist_List, loops_List, process_String : "CurrentProcess", opt : OptionsPattern[]] := MatchFI[target, formlist, loops, ToExpression[process], opt]
-
-MatchFI[target_List, formlist_List, loops_List, process_Association, opt : OptionsPattern[]] := MatchFI[target, formlist, loops, process["kinematics"], opt]
+MatchFI[target_List, formlist_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, MatchFI[target, formlist, loops, p["kinematics"], opt]]
 
 MatchFI[target0 : Except[_List], ___] := target0
 

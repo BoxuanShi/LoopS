@@ -1,7 +1,7 @@
 ClearAll[SameFIQ];
 Options[SameFIQ] := CreateOptions[{}, {MatchFI, Solve}];
 
-SameFIQ[target_List, formlist_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := SameFIQ[target, formlist, loops, process["kinematics"], opt]
+SameFIQ[target_List, formlist_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, SameFIQ[target, formlist, loops, p["kinematics"], opt]]
 
 SameFIQ[target0_List, formlist0_List, loops_List, kinematics_List, opt : OptionsPattern[]] := Module[{ctt, ctf, formlist, target, formi, num2, x, tp1, tp2, tp3, ord1, ord2, eqs, i},
 

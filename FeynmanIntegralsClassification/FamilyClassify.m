@@ -1,15 +1,8 @@
 ClearAll[FamilyClassify];
 (*the option "FamilyClassifySortRules" is to prevent inconsistencies \
 in the family classification caused by version updates.*)
-Options[FamilyClassify] := 
-  CreateOptions[{"RemoveRedundancy" -> True, 
-    "FamilyClassifySortRules" -> {-Length[#] &, #[[All, 1 ;; 3]] &}, 
-    "UserDefinedFamily" -> {}}, {FindfamilyG, LSsubsets, GetFeynInt, 
-    CompleteProps, TableS, CanonicalLoops, GenerateFamilyLS}];
-FamilyClassify[propslistlist_, loops_, 
-   process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := 
- FamilyClassify[propslistlist, loops, ToExpression[process], opt]
+Options[FamilyClassify] := CreateOptions[{"RemoveRedundancy" -> True, "FamilyClassifySortRules" -> {-Length[#] &, #[[All, 1 ;; 3]] &}, "UserDefinedFamily" -> {}}, {FindfamilyG, LSsubsets, GetFeynInt, CompleteProps, TableS, CanonicalLoops, GenerateFamilyLS}];
+FamilyClassify[propslistlist_, loops_, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := FamilyClassify[propslistlist, loops, ToExpression[process], opt]
 
 FamilyClassify[propslistlist_, loops_, process_Association, 
    opt : OptionsPattern[]] /; OptRestrict[opt] := 

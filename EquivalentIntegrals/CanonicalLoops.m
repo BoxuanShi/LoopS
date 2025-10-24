@@ -1,17 +1,8 @@
 ClearAll[CanonicalLoops]
 Options[CanonicalLoops] = {"DiscVariables" -> {}};
 DiscVariables;
-CanonicalLoops[props0_List, loops_List, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := 
- CanonicalLoops[props0, loops, ToExpression[process], Evaluate@opt]
-CanonicalLoops[props0_List, loops_List, process_Association, 
-   opt : OptionsPattern[]] /; OptRestrict[opt] := 
- CanonicalLoops[props0, loops, process["extmomsind"], process["kinematics"], 
-  Evaluate@opt]
-CanonicalLoops[props0_List, loops_List, extmomsind_List, kinematics_List, 
-   opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{i, x, props, tp1, tp1x1, sqpart0, lipart0, sqpart, lipart, lipart2, 
-   signs, tp2x1, pow, tp3, tp4, tp5, tp6, tp7, tp7x, tp7x2, tp7x3, tp8, tp9, 
-   pow1, pow2, momsind, DV, sortf},
+CanonicalLoops[props0_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, CanonicalLoops[props0, loops, p["extmomsind"], p["kinematics"], Evaluate@opt]]
+CanonicalLoops[props0_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{i, x, props, tp1, tp1x1, sqpart0, lipart0, sqpart, lipart, lipart2, signs, tp2x1, pow, tp3, tp4, tp5, tp6, tp7, tp7x, tp7x2, tp7x3, tp8, tp9, pow1, pow2, momsind, DV, sortf},
   
   momsind = Join[loops, extmomsind];
   props = props0(*//TogetherExpand*);

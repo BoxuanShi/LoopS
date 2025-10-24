@@ -2,7 +2,7 @@ ClearAll[AmplitudeReduce]
 AmplitudeReduce::usage = "AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _List|_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, kinematics_List, opt : OptionsPattern[]].
 \"AmplitudeReduceForm\": \"Expression\"|\"ListRules\"|\"List\"|\"ExpressionRules\" : \"Expression\" -> output control. \"List\" gives the complete information.";
 Options[AmplitudeReduce] := CreateOptions[{"AmplitudeReduceForm" -> "Expression", "PowerCounting" -> (# &), "AmplitudeReduceSimplify" -> (# &), "DropZeroByNumerics" -> True}, {NumeratorReduction, DenominatorToG}];
-AmplitudeReduce[amp_, loops_List : {}, familyLS_List : {{}, {}}, process_Association : CurrentProcess, opt : OptionsPattern[]] := AmplitudeReduce[amp, loops, familyLS, process["indices"], process["operatorRules"], process["loopmoms"], process["moms"], process["extmomsind"], process["purePV"], process["kinematics"], opt]
+AmplitudeReduce[amp_, loops_List : {}, familyLS_List : {{}, {}}, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, AmplitudeReduce[amp, loops, familyLS, p["indices"], p["operatorRules"], p["loopmoms"], p["moms"], p["extmomsind"], p["purePV"], p["kinematics"], opt]]
 AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _List|_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, kinematics_List, opt : OptionsPattern[]] := 
  Module[{i, j, k, tpNumlist, tpDenolist, tpNumSPD, PowerCounting0, PowerCounting, tp1, tp2, optnum, optFR, OPERAT, ophead, opttable},
   (*simple cases*)

@@ -1,5 +1,5 @@
 ClearAll[GDerivative, GDerivativeG, GDerivative0];
-GDerivative[expr_, var_, family_, process_Association : CurrentProcess] := GDerivative[expr, var, family, process["loopmoms"], process["kinematics"], process["moms"]]
+GDerivative[expr_, var_, family_, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process},  GDerivative[expr, var, family, p["loopmoms"], p["kinematics"], p["moms"]]]
 GDerivative[expr_, var_, family_, loopmoms_, kinematics_, moms_] := GDerivative0[expr, "var" -> var, "family" -> family,"loopmoms" -> loopmoms, "kinematics" -> kinematics, "moms" -> moms]
 SetAttributes[GDerivative0, Listable];
 Options[GDerivative0] = {"var" -> "var", "family" -> "family", "loopmoms" -> "loopmoms", "kinematics" -> "kinematics", "moms" -> "moms"};

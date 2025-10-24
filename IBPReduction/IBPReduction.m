@@ -39,7 +39,7 @@ FamilyMerge::usage = "FamilyMerge find rules between sectors and families.
 FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]].
 Depending options: {FindRulesComplete, TableS}";
 Options[FamilyMerge] := CreateOptions[{"PreferredMIs" -> {}, "FamilyMergeSimplify" :> SimplifyS}, {FindRulesComplete, TableS}];
-FamilyMerge[Fslist_List, family_List, rawibprules_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FamilyMerge[Fslist, family, rawibprules, loops, process["extmomsind"], process["kinematics"], Evaluate@opt]
+FamilyMerge[Fslist_List, family_List, rawibprules_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, FamilyMerge[Fslist, family, rawibprules, loops, p["extmomsind"], p["kinematics"], Evaluate@opt]]
 FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, rules2, tpmi, tpeqs, tpmap, ibpsystem},
   ibpsystem = ToIBPSystem[rawibprules];
   pref = OptionValue["PreferredMIs"];

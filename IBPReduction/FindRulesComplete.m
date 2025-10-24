@@ -2,7 +2,7 @@ ClearAll[FindRulesComplete]
 FindRulesComplete::usage = "FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]].
 Depending options: {findrules2}";
 Options[FindRulesComplete] := CreateOptions[{}, {findrules2}];
-FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FindRulesComplete[MI0, family, rawibprules, loops, process["kinematics"], process["extmomsind"], opt]
+FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, FindRulesComplete[MI0, family, rawibprules, loops, p["kinematics"], p["extmomsind"], opt]]
 FindRulesComplete[MI0_List, family_List, rawibprules_List, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{x, liq, tp1, tp2, tp3, ibpsystem},
   ibpsystem = ToIBPSystem[rawibprules];
   liq = (! FreeQ[linearPropsQ[#, loops] & /@ Flatten[family], True]);
@@ -42,7 +42,7 @@ GenerateEiknolFamilies[family_List, MIs_List, loops_List] := Module[{y, i, j, tp
 
 ClearAll[findrules];
 Options[findrules] := CreateOptions[{"Parallelization" -> False, "FIREVerbose" -> False}, {PrepareParallel, FIRE}];
-findrules[family2_List, MI2_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := findrules[family2, MI2, loops, process["kinematics"], process["extmomsind"], opt]
+findrules[family2_List, MI2_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, findrules[family2, MI2, loops, p["kinematics"], p["extmomsind"], opt]]
 findrules[family2_List, MI2_List, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := 
  Module[{nfam, family, MI, rules},
   Internal =.; External =.; Propagators =.; Replacements =.;
@@ -67,7 +67,7 @@ findrules[family2_List, MI2_List, loops_List, kinematics_List, extmomsind_List, 
 
 ClearAll[findrulesX]
 Options[findrulesX] := CreateOptions[{}, {findrules}]
-findrulesX[family_List, MIs_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := findrulesX[family, MIs, loops, process["kinematics"], process["extmomsind"], Evaluate@opt]
+findrulesX[family_List, MIs_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, findrulesX[family, MIs, loops, p["kinematics"], p["extmomsind"], Evaluate@opt]]
 findrulesX[family_List, MIs_List, loops_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{x, familyEiknol, MIsEkinol, tpInvRules, MIRules, MIRules2, rt},
   {familyEiknol, MIsEkinol, tpInvRules} = GenerateEiknolFamilies[family, MIs, loops];
   MIRules = Block[{Print = (# &)}, findrules[familyEiknol, MIsEkinol, loops, kinematics, extmomsind, Evaluate@FilterOptions[{opt}, findrules]]];
@@ -94,7 +94,7 @@ FamilyMergeSeed[sector_G] := Module[{tp1, tp2},
 ClearAll[findrules2]
 Options[findrules2] := CreateOptions[{"LinearPropagatorQ" -> False, "FindRulesCompleteMaxIt" -> 100}, {findrulesX, findrules, TableS}]
 (*findrules2 return the minimal MIs only when the masters in every families have been found completely...*)
-findrules2[family_List, MI0_List, loops_List, rawibprules_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := findrules2[family, MI0, loops, rawibprules, process["kinematics"], process["extmomsind"], opt]
+findrules2[family_List, MI0_List, loops_List, rawibprules_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, findrules2[family, MI0, loops, rawibprules, p["kinematics"], p["extmomsind"], opt]]
 findrules2[family_List, MI0_List, loops_List, rawibprules_List, kinematics_List, extmomsind_List, opt : OptionsPattern[]] := Module[{sectors, fr, rulesSec, rulesOri, seedsNew, tp5, tp6, tp8, tp9, tp10, seedsfull, rulesCom, sol, num, num1, num2, MI, MINext, MINext2, opttable, optfr, MaxIt, ibpsystem},
   ibpsystem = ToIBPSystem@rawibprules;
   MaxIt = OptionValue["FindRulesCompleteMaxIt"];

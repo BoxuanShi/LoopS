@@ -32,7 +32,7 @@ ClearAll[FindCompleteGList]
 FindCompleteGList::usage = "FindCompleteGList[topsec0_List, family_List, loops_List, kinematics_List, opt : OptionsPattern[]].
 \"PossibleMIsInSector\" : _ : {0, {0, 2}, {0, 1}} -> used as PossibleMIsInSector arguments to generate targets.";
 Options[FindCompleteGList] := CreateOptions[{"PossibleIntForDEInSector" -> False , "PossibleMIsInSector" -> {0, {0, 2}, {0, 1}}, "DropZeroSectorQ" -> True, "Parallelization" -> False}, {TableS, FindTopSectors}];
-FindCompleteGList[topsec0_List, family_List, loops_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := FindCompleteGList[topsec0, family, loops, process["kinematics"], Evaluate@opt]
+FindCompleteGList[topsec0_List, family_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, FindCompleteGList[topsec0, family, loops, p["kinematics"], Evaluate@opt]]
 FindCompleteGList[topsec0_List, family_List, loops_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, topsec, sectors, tp1, tp2, opttable, optFTS, PIFD, rx, sx, dx},
   {rx, sx, dx} = OptionValue["PossibleMIsInSector"];
   (* Print["{rx, sx, dx} -> ", {rx, sx, dx}];
