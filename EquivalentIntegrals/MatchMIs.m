@@ -1,6 +1,6 @@
 ClearAll[MatchMIs];
 Options[MatchMIs] := CreateOptions[{"SimplifyMatchMIs" :> (CollectFlat[#, {\[Epsilon]| ToExpression["_G"] | _Log | _PolyLog | ToExpression["_HPL"]}, SimplifyS, Simplify] &)}, {MatchFI, TableS}];
-MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, process_Association : CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, MatchMIs[MIs, MIformlist, MIsollist, loops, family, p["kinematics"], opt]]
+MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, MatchMIs[MIs, MIformlist, MIsollist, loops, family, p["kinematics"], opt]]
 MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, props, MFs, Msols, opt1, opttable},
   props = GToProps[MIs, family, List];
   opt1 = FilterOptions[{opt}, MatchFI];
