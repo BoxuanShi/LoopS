@@ -1,17 +1,16 @@
 ClearAll[FADToProps];
 FADToProps[expr_, head_ : List] := Module[{x, head2, SFADToProps, pFADToProps},
   SFADToProps[sfad_SFAD] := Module[{i, tpt1, tpt2, trans},
-    trans = ConstantArray[(#[[1, 1]]^2 + (#[[1, 2]] /. Dot -> Times) - #[[2, 1]]) ^ Sign[#[[3]]], Abs@#[[3]]] &;
-    tpt1 = trans /@ (List @@ sfad);
-    tpt2 = head2 @@ Flatten@tpt1];
+  trans = ConstantArray[(#[[1, 1]]^2 + (#[[1, 2]] /. Dot -> Times) - #[[2, 1]]) ^ Sign[#[[3]]], Abs@#[[3]]] &;
+  tpt1 = trans /@ (List @@ sfad);
+  tpt2 = head2 @@ Flatten@tpt1];
   pFADToProps[fad_FAD] := fad // ToSFAD // FCES // SFADToProps;
   FCES @ expr /. {SFAD[x___] :> SFADToProps@SFAD[x], FAD[x___] :> pFADToProps@FAD[x]} /. head2 -> head
 ]
 
 
 ClearAll[PropsToFAD]
-PropsToFAD[props_List, process_String : "CurrentProcess"] := PropsToFAD[props, ToExpression[process]]
-PropsToFAD[props_List, process_Association] := PropsToFAD[props, process["loopmoms"], process["kinematics"]]
+PropsToFAD[props_List, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, PropsToFAD[props, p["loopmoms"], p["kinematics"]]]
 PropsToFAD[props_List, loopmoms_List, kinematics_List] := Module[{LS, fadlist}, 
   LS = props // propsToLS[#, loopmoms, kinematics] &;
   If[! FreeQ[LS, "Wrong propagator"], Return[$Failed]];
@@ -23,7 +22,8 @@ ClearAll[LSToFAD]
 LSToFAD[propsLS_List] := Module[{fadlist},
   fadlist = (If[#[[1]] === #[[2]], 
     FAD[{#[[1]], (-#[[3]])^(1/2), #[[4]]}], 
-    SFAD[{{0, Dot[#[[1]]] . #[[2]]}, {-#[[3]], 1}, #[[4]]}]] &) /@ propsLS;
+    SFAD[{{0, Dot[#[[1]]] . #[[2]]}, {-#[[3]], 1}, #[[4]]}]
+    ] &) /@ propsLS;
   Times @@ fadlist]
   
   
@@ -33,8 +33,7 @@ GToProps[expr_, familylist_List, head_ : List] := Module[{i},
 
 
 ClearAll[PropsToSPD]
-PropsToSPD[expr_, head : Except[_String] : SPD, process_String : "CurrentProcess"] := PropsToSPD[expr, head, ToExpression[process]]
-PropsToSPD[expr_, head_ : SPD, process_Association] := PropsToSPD[expr, head, process["moms"]]
+PropsToSPD[expr_, head : Except[_Association] : SPD, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, PropsToSPD[expr, head, p["moms"]]]
 PropsToSPD[expr_, head_ : SPD, moms_List] := Module[{tp1},
   If[Head @ moms =!= List, Print["Define moms firstly."]; Abort[]];
   tp1 = ExpandNumerator @ ExpandDenominator @ expr;
@@ -43,12 +42,12 @@ PropsToSPD[expr_, head_ : SPD, moms_List] := Module[{tp1},
     a_^2 /; SubsetQ[moms, {a, a}] :> SPD[a, a], 
     (a_*b_)^-1 /; SubsetQ[moms, {a, b}] :> SPD[a, b]^-1, 
     a_^-2 /; SubsetQ[moms, {a, a}] :> SPD[a, a]^-1
-    } /. SPD -> head]
+    } /. SPD -> head
+  ]
 
 
 ClearAll[PropsToM]
-PropsToM[props_, loops_List, process_String : "CurrentProcess"] := PropsToM[props, loops, ToExpression[process]]
-PropsToM[props_, loops_List, process_Association] := PropsToM[props, loops, process["extmomsind"], process["kinematics"]]
+PropsToM[props_, loops_List, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, PropsToM[props, loops, p["extmomsind"], p["kinematics"]]]
 PropsToM[props_List, loops_List, extmomsind_List, kinematics_List] := PropsToM[#, loops, extmomsind, kinematics] & /@ props
 PropsToM[props_, loops_List, extmomsind_List, kinematics_List] := Module[{tp1},
   tp1 = CoefficientS[props, spdlist[loops, Times, extmomsind]];
@@ -60,11 +59,11 @@ LinearPropsExistQ[props_, loops_List] := !FreeQ[linearPropsQ[props, loops], True
 linearPropsQ[props_List, loops_List] := linearPropsQ[#, loops] & /@ props
 linearPropsQ[props_, loops_List] := Module[{tp1},
   tp1 = Max @ Exponent[props, loops];
-  Which[tp1 === 2, False, tp1 === 1, True, True, Print["linearPropsQ: False props form."]; Abort[]]]
+  Which[tp1 === 2, False, tp1 === 1, True, True, Print["linearPropsQ: False props form."]; Abort[]]
+  ]
 
 
 ClearAll[spdlist]
-spdlist::usage = "spdlist[loops_List,head_:SPD,extmomsind_List] gives the complete SPD basis.";
 spdlist[loops_List, head : Except[_String] : SPD, process_String : "CurrentProcess"] := spdlist[loops, head, ToExpression[process]]
 spdlist[loops_List, head_ : SPD, process_Association] := spdlist[loops, head, process["extmomsind"]]
 spdlist[loops_List, head_ : SPD, extmomsind_List] := spdlist[loops, head, extmomsind] = Module[{tp1, momss, condi},
@@ -94,4 +93,5 @@ CompleteProps[props_List, loops_List, extmomsind_List, opt : OptionsPattern[]] :
   prop = If[OptionValue["CompleteBasis"] === Automatic, spd /. a_*b_ :> (a + b)^2, OptionValue["CompleteBasis"]];
   tp1 = props ~ Join ~ prop;
   tp2 = (Coefficient[#, spd] &) /@ tp1;
-  tp1[[IndependentArray @ tp2]]]
+  tp1[[IndependentArray @ tp2]]
+  ]

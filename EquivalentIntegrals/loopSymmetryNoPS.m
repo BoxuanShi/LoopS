@@ -30,18 +30,11 @@ agree to comply with the terms of the GPL-3.0 license.
 ClearAll[loopSymmetryNoPS];
 MMATranspose = Transpose;
 Options[loopSymmetryNoPS] = {"PrintLog" -> False};
-loopSymmetryNoPS[props0_List, loopmoms_List, 
-   process_String : "CurrentProcess", opt : OptionsPattern[]] /; 
-  OptRestrict[opt] := 
- loopSymmetryNoPS[props0, loopmoms, ToExpression[process], opt]
-loopSymmetryNoPS[props0_List, loopmoms_List, process_Association, 
-   opt : OptionsPattern[]] /; OptRestrict[opt] := 
- loopSymmetryNoPS[props0, loopmoms, process["moms"], opt]
+loopSymmetryNoPS[props0_List, loopmoms_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := 
+Module[{p=ReleaseHold@process}, loopSymmetryNoPS[props0, loopmoms, p["moms"], opt]]
 loopSymmetryNoPS[props0_List, loopmoms_List, moms_, opt : OptionsPattern[]] /;
     OptRestrict[opt] := Module[
-   	{i, props, nl, extmoms, ne, x, propshape, sgns, cycextedg, branches, 
-    reducycedg, branchpropstd, reduLB, fullLB,
-    		LBrules, propsnew, sgns2, canonicalProps, ruleList},
+   	{i, props, nl, extmoms, ne, x, propshape, sgns, cycextedg, branches, reducycedg, branchpropstd, reduLB, fullLB, LBrules, propsnew, sgns2, canonicalProps, ruleList},
    	
    	props = props0 // TogetherExpand;
    	nl = Length@loopmoms;
@@ -49,29 +42,19 @@ loopSymmetryNoPS[props0_List, loopmoms_List, moms_, opt : OptionsPattern[]] /;
    	(*** find out external momenta ***)
    	extmoms = Select[Variables@props[[All, 1]], MemberQ[moms, #] &];
    	(*** check ***)
-   	If[Union@Exponent[#, x] =!= {1} || Union[# /. x -> 0] =!= {0},
-      		Print["Propagators are not  homogeneous linear in momenta: ", 
-       props0];
-      		Abort[];
-      	] &@(props[[All, 1]] /. Thread[extmoms -> x*extmoms]);
+   	If[Union@Exponent[#, x] =!= {1} || Union[# /. x -> 0] =!= {0}, Print["Propagators are not  homogeneous linear in momenta: ", props0]; Abort[];] &@(props[[All, 1]] /. Thread[extmoms -> x*extmoms]);
    	extmoms = Complement[extmoms, loopmoms];
    	ne = Length@extmoms;
    	
-   	(*** shape of each propagator: {0, mass} or {n,mass}, 
-   where n can be the gauge link direction ***)
-   	propshape = 
-    If[#[[1]] === #[[2]], {0, #[[3]]}, {#[[2]], #[[3]]}] & /@ props;
+   	(*** shape of each propagator: {0, mass} or {n,mass}, where n can be the gauge link direction ***)
+   	propshape = If[#[[1]] === #[[2]], {0, #[[3]]}, {#[[2]], #[[3]]}] & /@ props;
    	
 
    	(*** check loop momenta dependence ***)
-   	If[Or @@ (FreeQ[#[[1]], 
-          Alternatives @@ loopmoms] || #[[1]] =!= #[[2]] && ! 
-           FreeQ[#[[2]], Alternatives @@ loopmoms] & /@ props),
-    		Print[
-     "Incorrect input for LoopSymmetry. Please check loop momenta \
-dependence."]; 
-    		Print["Propagators are given by: ", {props0, loopmoms}];
-    		Abort[];
+   	If[Or @@ (FreeQ[#[[1]], Alternatives @@ loopmoms] || #[[1]] =!= #[[2]] && ! FreeQ[#[[2]], Alternatives @@ loopmoms] & /@ props),
+		Print["Incorrect input for LoopSymmetry. Please check loop momenta dependence."]; 
+		Print["Propagators are given by: ", {props0, loopmoms}];
+    	Abort[];
     	];
    	
    	(*** Step 1: 

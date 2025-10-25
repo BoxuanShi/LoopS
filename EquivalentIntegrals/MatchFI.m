@@ -7,23 +7,6 @@ countProps[props_List, loops_List, kinematics_List] := Module[{i, inv, props2},
   props2 = {#[[1,1]],Total@#[[All,2]]}&/@props2;
   Transpose@props2
   ]
-(* countProps[props_List, loops_List] := Module[{i, x, props1, props2, inv, ct, largePowPos, largePowProps},
-  props1 = Union @ props;
-  inv = Table[If[FreeQ[Denominator @ props1[[i]], Alternatives @@ loops], 1, -1], {i, Length @ props1}];
-  ct = Count[TogetherExpand[props - #], 0] & /@ props1;
-  props2 = props1^inv;
-  (*in the case high power of linear propagator appear, treat them as indepdent ones.*)
-  largePowPos = Position[ct, x_ /; Abs[x] > 1] // Flatten;
-  largePowProps = props2[[largePowPos]];
-  If[! FreeQ[linearPropsQ[#, loops] & /@ largePowProps, True],
-   props1 = props;
-   inv = Table[If[FreeQ[Denominator @ props1[[i]], Alternatives @@ loops], 1, -1], {i, Length @ props1}];
-   ct = ConstantArray[1, Length @ props1];
-   props2 = props1^inv;
-   ];
-  If[Total @ ct =!= Length @ props, Print["countProps: count wrong."]; Abort[]];
-  {props2, ct*inv}
-  ] *)
 
 
 ClearAll[EiknolPermutation]
