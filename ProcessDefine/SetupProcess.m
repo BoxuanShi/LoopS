@@ -65,9 +65,10 @@ SetupProcess[process_String, b___, opt : OptionsPattern[]] := Module[{x, i, j, o
   outerSPD = Outer[SPD, extramoms, extramoms] // ExpandMomentum // ExpandDirac // getS[#, x : _SPD /; FreeQ[x, Alternatives @@ loopmoms]] &;
   If[outerSPD =!= {}, Message[SetupProcess::spddefine, outerSPD]];
 
+
+  ProcessPath = FileNameJoin[{LoopSWorkDirectory, process}];
   (*CreateFiles*)
   If[OptionValue["CreateFiles"], 
-    ProcessPath = FileNameJoin[{LoopSWorkDirectory, process}];
     CreateDirectoryS[ProcessPath];
     Put[processA, FileNameJoin[{ProcessPath, process}]]];
 
