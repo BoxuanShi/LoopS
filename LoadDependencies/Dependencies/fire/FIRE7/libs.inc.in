@@ -1,0 +1,1 @@
+FUEL_OPTIONS = --enable-symbolica --enable-flint --enable-ginac --prebuilt-mpfr --prebuilt-gmp --prebuilt-flint --mpfr-required --fermat7 

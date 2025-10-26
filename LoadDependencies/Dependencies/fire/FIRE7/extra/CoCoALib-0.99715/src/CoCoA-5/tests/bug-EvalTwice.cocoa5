@@ -1,0 +1,126 @@
+-----------------------------------------------------------------------
+-- double evaluation: https://cocoa.dima.unige.it/redmine/issues/946
+-----------------------------------------------------------------------
+TestCount := 0;
+PrintInfo := false;
+
+define TEST_ASSERT(A,B)
+  toplevel TestCount;
+  toplevel PrintInfo;
+  TestCount := TestCount+1;
+  If A<>B Then
+    error("TEST: " + Sprint(A) + " <> " + Sprint(B));
+  endif;
+  if PrintInfo then print "."; EndIf;
+enddefine; -- TEST_ASSERT
+
+use R ::= QQ[x,y];
+define f(x)
+  TopLevel COUNT;
+  incr(ref COUNT);
+  return x;
+enddefine; -- f
+
+COUNT := 0;
+I1 := ideal(R, GBasis(ideal(R, [f(x)]))); -- was OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := ideal(GBasis(ideal([f(x)]))); -- used to give 4
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := ideal(GBasis(ideal(f(x),x,x))); -- used to give 4
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := len([f(x)]); -- used to give 4
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := syz([f(x)]); -- used to give 2
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := homog([f(x)], x); -- used to give 4
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := gcd([f(x),x]); -- used to give 2
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := lcm(f(x),x);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := SyzOfGens(ideal(f(x),x));  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := apply(CanonicalHom(ZZ,QQ), [6,5,f(3)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := CoefficientsWRT(x+x^2, [f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := elim([x,f(x)], ideal(x));  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+R3 := NewFreeModuleForSyz([x,f(x),1]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := SyzOfGens(R3, ideal(f(x),x,x-1));  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := ContentWRT(x, [f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := CoprimeFactorBasis([f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := lcm([f(x),x]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 :=  ElimMat([f(3)], mat([[1,5,2]]));  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+I1 := ElimMat([2], f(3));   -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+M := IdentityMat(R, 2);
+SetCol(ref M, 1, [x-1,f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+phi := PolyAlgebraHom(R, R, [x-1,f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+phi := PolyRingHom(R, R, CoeffEmbeddingHom(R), [x-1,f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+phi := PolyAlgebraHom(R, R, "1,3")([x-1, f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+COUNT := 0;
+v := ModuleElem(R3, [x-1,0,f(x)]);  -- OK
+TEST_ASSERT(COUNT, 1);
+
+--  TO BE FIXED ------------------------------------------------------------
+
+COUNT := 0;
+//I1 := submodule([ModuleElem(R3, [x-1,0,f(x)])]);  -- error -- gives 2  see submodule
+//TEST_ASSERT(COUNT, 1);
+

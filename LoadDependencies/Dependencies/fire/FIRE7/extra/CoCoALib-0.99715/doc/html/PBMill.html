@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.sf.net">
+<LINK REL="stylesheet" TYPE="text/css" HREF="cocoalib-doc.css">
+<TITLE>      JBMill</TITLE>
+</HEAD><BODY BGCOLOR="white" TEXT="black">
+<P ALIGN="center"><CENTER><H1>      JBMill</H1>
+<FONT SIZE="4">
+<I>      &copy;  2014-2015 Pierre Pytlik, Mario Albert</I><BR>
+      GNU Free Documentation License, Version 1.2
+</FONT></CENTER>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+    <UL>
+    <LI><A HREF="#examples">Examples</A>
+      <UL>
+      <LI><A HREF="#toc2">Computing a Pommaret Basis</A>
+      </UL>
+    <LI><A HREF="#toc3">Maintainer documentation for PBMill and StabilityAlgorithm</A>
+      <UL>
+      <LI><A HREF="#toc4">PBMill</A>
+        <UL>
+        <LI><A HREF="#toc5">PBMill</A>
+        <LI><A HREF="#toc6">PBMill::Builder</A>
+        <LI><A HREF="#toc7">PBMill::Converter</A>
+        <LI><A HREF="#toc8">PBMill::Transformator</A>
+        <LI><A HREF="#toc9">PBMill::DeltaRegularTransformator</A>
+        <LI><A HREF="#toc10">PBMill::StableLTITransformator</A>
+        <LI><A HREF="#toc11">PBMill::StronglyStableLTITransformator</A>
+        </UL>
+      <LI><A HREF="#toc12">StabilityAlgorithm</A>
+        <UL>
+        <LI><A HREF="#toc13">StabilityAlgorithm</A>
+        <LI><A HREF="#toc14">DeltaRegular</A>
+        <LI><A HREF="#toc15">DeltaRegularAll</A>
+        <LI><A HREF="#toc16">StableLTI</A>
+        <LI><A HREF="#toc17">StableLTIAll</A>
+        <LI><A HREF="#toc18">StronglyStableLTI</A>
+        <LI><A HREF="#toc19">StronlyStableLTIAll</A>
+        <LI><A HREF="#toc20">Problems&amp;Ideas related to StabilityAlgorithm</A>
+        </UL>
+      </UL>
+    </UL>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+<P>
+      <center><a href="index.html">CoCoALib Documentation Index</a></center>
+</P>
+<A NAME="examples"></A>
+<H2>Examples</H2>
+<UL>
+<LI><A HREF="../../examples/index.html#ex-Pommaret1.C">ex-Pommaret1.C</A>
+<LI><A HREF="../../examples/index.html#ex-Pommaret2.C">ex-Pommaret2.C</A>
+<P></P>
+== User documentation for PBMill ==
+<P></P>
+The files <CODE>PBMill.H</CODE>, <CODE>StabilityAlgorithm.H</CODE> introduce several classes for computing and working with <B>Pommaret Basis</B>.
+The normal user should only use the classes <CODE>Involutive::PBMill</CODE> and <CODE>Involutive::PBMill::Builder</CODE> to interact with Pommaret bases.
+</UL>
+
+<A NAME="toc2"></A>
+<H3>Computing a Pommaret Basis</H3>
+<P>
+To compute a Pommaret basis the user should use subclasses of <CODE>Involutive::PBMill::Builder</CODE>.
+The user can choose between four subclasses:
+</P>
+<UL>
+<LI><CODE>Converter</CODE> -- It takes a Janet basis and casts it to a Pommaret basis. This builder object does not perform a coordinate transformation.
+<LI><CODE>DeltaRegularTransformator</CODE> -- It takes a generating set and transforms it to a delta-regular Pommaret basis via coordinate transformations.
+<LI><CODE>StableLTITransformator</CODE> -- It takes a generating set and transforms it to a Pommaret basis via coordinate transformations, such that the leading ideal is stable.
+<LI><CODE>StronglyStableLTITransformator</CODE> -- It takes a generating set and transforms it to a  Pommaret basis via coordinate transformations, such that the leading ideal is strongly stable.
+<P></P>
+==== Using Involutive::PBMill::Converter ====
+<P></P>
+To construct a <CODE>Involutive::PBMill::Converter</CODE> object the user has to use the standard constructor.
+The only configuration method is <CODE>setJBMill(mill)</CODE> where <CODE>mill</CODE> is a <CODE>JBMill</CODE>.
+It sets the <CODE>JBMill</CODE> which should be transformed to a <CODE>PBMill</CODE>.
+If <CODE>builder</CODE> is a configured <CODE>Converter</CODE> object the user can construct a new <CODE>PBMill</CODE> with <CODE>PBMill(builder)</CODE>.
+<P></P>
+==== Using Involutive::PBMill::DeltaRegularTransformator ====
+<P></P>
+To construct a <CODE>Involutive::PBMill::DeltaRegularTransformator</CODE> object the user has to use the standard constructor.
+For configuration of the building process there are several methods:
+<P></P>
+<LI><CODE>setInput(v)</CODE> -- <CODE>v</CODE> must be a <CODE>vector&lt;RingElem&gt;</CODE>. It sets the generating set of the ideal to <CODE>v</CODE>.
+<LI><CODE>setInput(cBegin, cEnd)</CODE> -- <CODE>cBegin</CODE> and <CODE>cEnd</CODE> must be a <CODE>vector&lt;RingElem&gt;::const_iterator</CODE> and must define a range of <CODE>RingElem</CODE>. The method sets the generating set of the ideal to this range.
+<LI><CODE>setJanetStrategy(strat)</CODE> -- <CODE>strat</CODE> must be a <CODE>Involutive::StrategyFlag</CODE>. Possible enums are <CODE>TQDegree</CODE>, <CODE>TQBlockHigh</CODE>, <CODE>TQBlockLow</CODE> (default) or <CODE>GBCompletion</CODE>. During the computation we compute Janet bases. This Flag controls which algorithm should be used to compute these Janet bases.
+<LI><CODE>setStrategy(strat)</CODE> -- <CODE>strat</CODE> must be a <CODE>Involutive::DeltaRegularTransformator::StrategyFlag</CODE>. Possible enums are <CODE>SingleWithPermutation</CODE>, <CODE>SingleWithoutPermutation</CODE>, <CODE>AllWithPermutation</CODE> and <CODE>AllWithoutPermutation</CODE>. It defines the algorithm which should be used to compute delta-regular coordinates. If this method is not called the Builder object uses the <CODE>SingleWithoutPermutation</CODE> strategy.
+<P></P>
+If <CODE>builder</CODE> is a configured <CODE>DeltaRegularTransformator</CODE> object the user can construct a new <CODE>PBMill</CODE> with <CODE>PBMill(builder)</CODE>.
+The computation of delta-regular coordinates will be done during the construction of <CODE>PBMill</CODE>.
+<P></P>
+==== Using Involutive::PBMill::StableLTITransformator and Involutive::PBMill::StronglyStableLTITransformator====
+<P></P>
+The construction and usage of <CODE>StableLTITransformator</CODE> and <CODE>StronglyStableLTITransformator</CODE> is nearly the same than for the <CODE>DeltaRegularTransformator</CODE>. The only difference is the method <CODE>setStrategy(strat)</CODE>. There are only two possible enums of type <CODE>StableLTITransformator</CODE> (or <CODE>StronglyStableLTITransformator</CODE>): <CODE>Single</CODE> (default) or <CODE>All</CODE>.
+<P></P>
+The methods are chainable, e.g. the user can do the following: <CODE>builder.setInput(input).setStrategy(Single)</CODE>. If the user calls a method more than one time only the input of the last method call is taken into account.
+<P></P>
+=== Using the PBMill ===
+<P></P>
+In addition to the methods of the baseclass <CODE>JBMill</CODE> the class <CODE>PBMill</CODE> defines the following methods. Let I be the ideal generated by the Pommaret basis:
+<P></P>
+<LI><CODE>myReturnPB()</CODE> -- returns the minimal Pommaret basis as <CODE>vector&lt;RingElem&gt;</CODE>
+<LI><CODE>myDepth()</CODE> -- returns the depth of I as <CODE>long</CODE>.
+<LI><CODE>myProjDim()</CODE> -- returns the projective dimension of I as <CODE>long</CODE>.
+<LI><CODE>mySocle()</CODE> -- returns the socle of I as <CODE>vector&lt;RingElem&gt;</CODE>.
+<LI><CODE>myExtremalBettiNumbers()</CODE> -- returns the extremal betti numbers of I as <CODE>map&lt;pair&lt;long, long&gt;, long&gt;</CODE>.
+<LI><CODE>myMaxStronglyIndependentSet()</CODE> -- returns the unique maximal strongly independent set of P/I as <CODE>vector&lt;RingElem&gt;</CODE>.
+<LI><CODE>IamCohenMacaulay()</CODE> -- tests if I is Cohen-Macaulay. Returns a <CODE>bool</CODE>.
+<LI><CODE>myRegularity()</CODE> -- returns the regularity of I as <CODE>long</CODE>.
+<LI><CODE>mySatiety()</CODE> -- returns the satiety of I as <CODE>long</CODE>.
+<LI><CODE>mySaturation()</CODE> -- returns the saturation of I as <CODE>vector&lt;RingElem&gt;</CODE>.
+</UL>
+
+<A NAME="toc3"></A>
+<H2>Maintainer documentation for PBMill and StabilityAlgorithm</H2>
+<P>
+The Pommaret basis is always a Janet basis, too. Therefore the datastructures for represententing a Pommaret basis are the same than for the Janet bases. Everything of the following lives in the namespace <CODE>CoCoA::Involutive</CODE>.
+</P>
+<A NAME="toc4"></A>
+<H3>PBMill</H3>
+<P>
+This file defines all necessary things for dealing with Pommaret bases.
+</P>
+<A NAME="toc5"></A>
+<H4>PBMill</H4>
+<P>
+This class has as base class <CODE>JBMill</CODE>. It does not introduce new data members, because the representation of a Pommaret basis is the same than for a Janet basis. The main differnce between these to classes is that <CODE>PBMill</CODE> only accept generating sets in delta-regular coordinates. In addition to that it implements some methods which are only appliccable when we have a Pommaret basis.
+</P>
+<A NAME="toc6"></A>
+<H4>PBMill::Builder</H4>
+<P>
+This class is designed to construct a Pommaret basis.
+The goal of this class is to separate the construction of the <CODE>PBMill</CODE> from its representation.
+The 'Gang of Four' (Gamma, Helm, Johnson, Vlissides - Design Patterns) served
+as template for the construction.
+The corresponding pattern is called Building Pattern.
+This class is purley virtual. The real implementation is in the subclasses.
+To construct a <CODE>PBMill</CODE> out of the builder object the user can call a constructor of <CODE>PBMill</CODE> with a configured builder object.
+</P>
+<A NAME="toc7"></A>
+<H4>PBMill::Converter</H4>
+<P>
+This class is a subclass of <CODE>PBMill::Builder</CODE>. It trys convert a <CODE>JBMill</CODE> direclty to a <CODE>PBMill</CODE>, without changing coordinates.
+</P>
+<A NAME="toc8"></A>
+<H4>PBMill::Transformator</H4>
+<P>
+This class is a subclass of <CODE>PBMill::Builder</CODE>. It is again a purley virtual class. It acts as base class for all Builder-classes which applying coordinate transformations to get a specific stability position.
+</P>
+<A NAME="toc9"></A>
+<H4>PBMill::DeltaRegularTransformator</H4>
+<P>
+This class is a subclass of <CODE>PBMill::Transformator</CODE>. It transforms a Janet basis to a Pommaret basis with delta-regular coordinates. The user can choose between four different strategies which are definied in the enum <CODE>PBMill::DeltaRegularTransformator::StrategyFlag</CODE>.
+</P>
+<A NAME="toc10"></A>
+<H4>PBMill::StableLTITransformator</H4>
+<P>
+This class is a subclass of <CODE>PBMill::Transformator</CODE>. It transforms a Janet basis to a Pommaret basis with stable leading ideal. The user can choose between two different strategies which are definied in the enum <CODE>PBMill::StableLTITransformator::StrategyFlag</CODE>.
+</P>
+<A NAME="toc11"></A>
+<H4>PBMill::StronglyStableLTITransformator</H4>
+<P>
+This class is a subclass of <CODE>PBMill::Transformator</CODE>. It transforms a Janet basis to a Pommaret basis with strongly stable leading ideal. The user can choose between two different strategies which are definied in the enum <CODE>PBMill::StronglyStableLTITransformator::StrategyFlag</CODE>.
+</P>
+<A NAME="toc12"></A>
+<H3>StabilityAlgorithm</H3>
+<A NAME="toc13"></A>
+<H4>StabilityAlgorithm</H4>
+<P>
+This class provides an interface for computing different stability positions.
+It defines a method to compute a Janet basis (which is in our case always a Pommaret basis as well)for a given input, and a method to get a JanetContainer which should contain the computed Janet basis.
+Also it contains as basic data the polynomial ring and the PPMonoid.
+Every class which computes a stability position has to be a subclass of this class.
+</P>
+<A NAME="toc14"></A>
+<H4>DeltaRegular</H4>
+<P>
+This class is a subclass of <CODE>StabilityAlgorithm</CODE>. It should transform the given ideal into delta-regular coordinates. The algorithm to compute delta-regular coordinates is quite simple. It checks if the given input is delta-regular. If not it changes the coordinates (only changes from x_i to x_i+x_j) and checks it again, until it reaches delta-regular coordinates. In addition to that it there is an <CODE>enum DeltaRegular::UsagePermutations</CODE>, where the user can decide whether we also use variable permutations as transformation. The computation of transformations like x_i -&gt; x_i + x_j is implemented in the method <CODE>DoComputeImage</CODE> which is virtual.
+</P>
+<A NAME="toc15"></A>
+<H4>DeltaRegularAll</H4>
+<P>
+This class is a subclass of <CODE>DeltaRegular</CODE>. The implementation is almost the same than <CODE>DeltaRegular</CODE>. The only difference is the method <CODE>DoComputeImage</CODE>. This class also computes transformation like x_i -&gt; x_i + x_j_1 + ... + x_j_s.
+</P>
+<A NAME="toc16"></A>
+<H4>StableLTI</H4>
+<P>
+This class is a subclass of <CODE>StabilityAlgorithm</CODE>. It should transform the given ideal into coordinates, such that the leading ideal is stable. The algorithm to compute this coordinates is quite simple. It checks if the given input are in the correct position. If not it changes the coordinates (only changes from x_i to x_i+x_j) and checks it again, until it reaches suitable coordinates. The computation of transformations like x_i -&gt; x_i + x_j is implemented in the method <CODE>DoComputeImage</CODE> which is virtual. In addition to that the check if the position is correct is again a virtual method.
+</P>
+<A NAME="toc17"></A>
+<H4>StableLTIAll</H4>
+<P>
+This class is a subclass of <CODE>StableLTI</CODE>. The implementation is almost the same than <CODE>StableLTI</CODE>. The only difference is the method <CODE>DoComputeImage</CODE>. This class also computes transformation like x_i -&gt; x_i + x_j_1 + ... + x_j_s.
+</P>
+<A NAME="toc18"></A>
+<H4>StronglyStableLTI</H4>
+<P>
+This class is a subclass of <CODE>StableLTI</CODE>. It should transform the given ideal into coordinates, such that the leading ideal is strongly stable.
+The implementation is almost the same than <CODE>StableLTI</CODE>. The only difference is the check of coordinates. It replaces the check of stability by a check of strong stability.
+</P>
+<A NAME="toc19"></A>
+<H4>StronlyStableLTIAll</H4>
+<P>
+This class is a subclass of <CODE>StronglyStableLTI</CODE>. The implementation is almost the same than <CODE>StronglyStableLTI</CODE>. The only difference is the method <CODE>DoComputeImage</CODE>. This class also computes transformation like x_i -&gt; x_i + x_j_1 + ... + x_j_s.
+</P>
+<A NAME="toc20"></A>
+<H4>Problems&amp;Ideas related to StabilityAlgorithm</H4>
+<P>
+If we could make <CODE>StableLTI</CODE> to a subclass of <CODE>DeltaRegular</CODE> it would be quite nice, because this would represent the mathematical hierachy as well.
+</P>
+
+<!-- html code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags -t html -o html/PBMill.html -i txt/PBMill.txt -->
+</BODY></HTML>

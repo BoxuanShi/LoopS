@@ -1,0 +1,2 @@
+bin/FIRE7 -c examples/v2l
+cat temp/v2.tables

@@ -1,8 +1,0 @@
-db/*
-!db/.*
-outputs/*
-!outputs/.*
-storage/*
-!storage/.*
-hints/*
-!hints/.*

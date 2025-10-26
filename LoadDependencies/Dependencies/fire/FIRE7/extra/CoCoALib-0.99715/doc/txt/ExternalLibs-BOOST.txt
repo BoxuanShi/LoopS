@@ -1,0 +1,117 @@
+      ExternalLibs-BOOST
+      Copyright (c)  2016 John Abbott
+      GNU Free Documentation License, Version 1.2
+%!includeconf: ../aux-txt2tags/config.t2t
+      TeXTitle{ExternalLibs-BOOST}{Anna M. Bigatti}
+
+
+== User documentation ==
+%======================================================================
+
+**BOOST** is an **essential** external library for CoCoA-5.
+
+At the moment CoCoALib does not require BOOST, however if you wish to
+combine CoCoALib with the external library **Normaliz** then BOOST
+must also be present.
+
+=== Examples ===
+
+=== Download and compile BOOST ===
+
+It is common for Linux computers to have the BOOST library already
+installed; the CoCoALib configuration script will check for this,
+and will give an error message if it cannot be found.
+
+== apt-get for linux ==
+TO BE CHECKED: Probably
+``` sudo apt-get install libboost-dev libboost-thread-dev
+libboost-filesystem-dev libboost-system-dev
+is enough
+
+``
+sudo apt-get install libboost-dev libboost-doc libboost-thread-dev\
+  libboost-filesystem-dev libboost-graph-dev libboost-iostreams-dev\
+  libboost-program-options-dev libboost-python-dev libboost-regex-dev\
+  libboost-signals-dev
+``
+
+== Compilation of BOOST libraries ==
+
+It is simplest to make a complete BOOST installation; that way you are
+sure to have everything you need -- but a full build can take a while,
+and space on your disk.
+Alternatively, you can try building just those sublibraries needed by CoCoA-5;
+at the moment CoCoA-5 uses the following BOOST sublibraries:
+  filesystem
+  system
+  thread
+
+To build BOOST you must first use their script "bootstrap.sh",
+and then use the script "b2"  (called "bjam" in older versions).
+
+**NOTE**: there is an incompatibility of Qt4 and boost-1.53 (and later)
+[gives: Parse error at "BOOST_JOIN"]
+so you need to have Qt5 (maybe) or boost-1.52.
+
+*** Create only STATIC libs so the C5 binary can be distributed ***
+
+=== complete installation ===
+
+```
+ cd <BOOST_DIR>
+ ./bootstrap.sh
+ sudo ./b2 architecture=x86 address-model=32_64 variant=release threading=multi link=static install
+```
+
+=== minimal + local installation ===
+
+Libs in **stage** (instead of **install**)
+
+```
+ cd <BOOST_DIR>
+ ./bootstrap.sh --with-libraries="filesystem,system,thread"
+ ./b2 architecture=x86 address-model=32_64 variant=release threading=multi link=static stage
+```
+
+(Without the "install" keyword it is necessary to set the
+DYLD_LIBRARY_PATH shell variable to tell the dynamic linker where to
+look for the BOOST dynamic libraries.)
+
+== More info ==
+http://www.technoboria.com/2009/12/compiling-boost-on-mac-os-x-for-64bit-builds/
+http://wiki.tiker.net/BoostInstallationHowto
+
+
+``` 
+cd CoCoALib-0.99
+./configure --with-libBOOST=<your_path_to>/libBOOST.a
+make
+```
+
+
+== Maintainer documentation ==
+%======================================================================
+
+A future version of CoCoALib may use the C++ interface to BOOST, but
+that it not imminent.
+
+
+== Bugs, shortcomings and other ideas ==
+%======================================================================
+
+Strictly the parts of CoCoALib which compute with small finite fields
+do not need the BOOST library; nevertheless we chose not to permit
+compilation without BOOST.
+
+I found the following website useful:
+```
+http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
+```
+
+== Main changes ==
+%======================================================================
+
+**2016**
+- 10 June: first version; added new note about ldconfig
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

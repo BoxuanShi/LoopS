@@ -1,0 +1,16 @@
+#!/bin/bash
+bin/FIRE7 -v 3 -c examples/doubleboxN --quiet
+START=$(date +%s.%N)
+for d in {100..112}
+do
+    for s in {57..62}
+    do
+        for p in {1..2}
+        do
+            bin/FIRE7p -v 3_"$s"_"$d"_"$p" -c examples/doubleboxN --quiet
+        done
+    done
+done
+END=$(date +%s.%N)
+DIFF=$(echo "$END - $START" | bc)
+echo "Total time of the script: $DIFF"

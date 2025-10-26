@@ -1,4 +1,4 @@
-FIRE, version 6.5.2
+FIRE, version 7.0
 Prepared
 Dimension set to 3
 No symmetries

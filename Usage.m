@@ -235,12 +235,14 @@ zeroSectorQ;
 
 (*FIREInterface*)
 FIREPrepareIBP;
-FIREcompressor;
-IBPKernels;
-FIREUseMMA;
 FIRERunIBP;
 FIRELoadIBP;
 FIREIBPReduction;
+
+FIREUseMMA;
+FIREcompressor;
+IBPKernels;
+FIREClearSave;
 
 
 FindCompleteGList;
@@ -259,38 +261,35 @@ findrules2;
 FIREEvaluate;
 FIREdReplace;
 
-FIREGetGRules;
-FIREGetGRulesSimplify;
+(* FIREGetGRules; *)
+(* FIREGetGRulesSimplify; *)
 FIREReductionVerbose;
 
-FIRELoadStart;
+(* FIRELoadStart;
 FIREVerbose;
 
 FIRELoadTable;
-FIREVerbose;
+FIREVerbose; *)
 
 FIREPrepareIBP;
-FIREPrepareCXX;
+(* FIREPrepareCXX; *)
 GatherGInFamily;
-compressor;
-FIRECXXKernels;
-FIREIBPKernels;
-FIREcompressor;
+(* compressor; *)
+(* FIRECXXKernels;
+FIREIBPKernels; *)
 
-FIREPrepareStart;
+(* FIREPrepareStart; *)
 FIREVerbose;
 
-FIREPrepareStartMMA;
+(* FIREPrepareStartMMA; *)
 FIREVerbose;
 FIREParallel;
 
 FIREReductionCXX;
-FIREPrepareStart;
 
 FIREReductionMMA;
-FIREPrepareStart;
 
-FIRERunCXX;
+(* FIRERunCXX; *)
 
 FIRETemplate;
 

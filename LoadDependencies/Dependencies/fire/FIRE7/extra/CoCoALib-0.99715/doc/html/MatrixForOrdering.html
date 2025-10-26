@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.sf.net">
+<LINK REL="stylesheet" TYPE="text/css" HREF="cocoalib-doc.css">
+<TITLE>      MatrixForOrdering</TITLE>
+</HEAD><BODY BGCOLOR="white" TEXT="black">
+<P ALIGN="center"><CENTER><H1>      MatrixForOrdering</H1>
+<FONT SIZE="4">
+<I>      &copy;  2008,2015 Anna Bigatti</I><BR>
+      GNU Free Documentation License, Version 1.2
+</FONT></CENTER>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+    <UL>
+    <LI><A HREF="#toc1">User Documentation</A>
+      <UL>
+      <LI><A HREF="#examples">Examples</A>
+      <LI><A HREF="#constructors">PseudoConstructors</A>
+      <LI><A HREF="#queries">Queries</A>
+      </UL>
+    <LI><A HREF="#toc5">Maintainer Documentation</A>
+    <LI><A HREF="#toc6">Bugs, Shortcomings, and other ideas</A>
+    <LI><A HREF="#toc7">Main changes</A>
+    </UL>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+<P>
+      <center><a href="index.html">CoCoALib Documentation Index</a></center>
+</P>
+<A NAME="toc1"></A>
+<H2>User Documentation</H2>
+<P>
+This is very preliminary documentation.  These functions are about matrices
+which define term orderings.  They expect and return matrices over <A HREF="RingZZ.html"><CODE>RingZZ</CODE></A>.
+</P>
+<A NAME="examples"></A>
+<H3>Examples</H3>
+<UL>
+<LI><A HREF="../../examples/index.html#ex-OrderingGrading1.C">ex-OrderingGrading1.C</A>
+</UL>
+
+<P></P>
+<A NAME="constructors"></A>
+<H3>PseudoConstructors</H3>
+<UL>
+<LI><CODE>MakeTermOrd(ConstMatrixView M)</CODE> -- produce a matrix (with non-neg
+  integer entries and having same number of columns as <CODE>M</CODE>) which
+  defines a term ordering refining the partial ordering defined by the
+  input matrix <CODE>M</CODE>; error if this cannot be done.
+<P></P>
+<LI><CODE>MakeTermOrd(ConstMatrixView M, MachineInt GrDim)</CODE> -- 
+  Same as <CODE>MakeTermOrd(M)</CODE> except that the first <CODE>GrDim</CODE> rows of the
+  output matrix are equal to the first <CODE>GrDim</CODE> rows of <CODE>M</CODE>.
+<P></P>
+<LI><CODE>LexMat(MachineInt n)</CODE>  returns a <CODE>ConstMatrix</CODE> for "lex" ordering
+<LI><CODE>StdDegLexMat(MachineInt n)</CODE>  returns a <CODE>ConstMatrix</CODE> for "DegLex" ordering
+<LI><CODE>StdDegRevLexMat(MachineInt n)</CODE>  returns a <CODE>ConstMatrix</CODE> for "DegRevLex" orderig
+<LI><CODE>XelMat(MachineInt n)</CODE>  returns a <CODE>ConstMatrix</CODE> for "Xel" ordering
+<LI><CODE>RevLexMat(MachineInt n)</CODE>  returns a <CODE>ConstMatrix</CODE> for "RevLex" ordering (not a term order!)
+<P></P>
+<LI><CODE>ElimMat(IndetsToElim, NumIndets)</CODE>  -- returns a matrix defining
+  an elimination ordering for <CODE>IndetsToElim</CODE>.
+<P></P>
+<LI><CODE>ElimMat(IndetsToElim, GradingM)</CODE>  -- returns a matrix defining
+  an elimination ordering for <CODE>IndetsToElim</CODE> compatible with the grading in <CODE>GradingM</CODE>.
+<P></P>
+<LI><CODE>ElimHomogMat(IndetsToElim, GradingM)</CODE>  -- returns a matrix defining
+   an elimination ordering for <CODE>IndetsToElim</CODE> with the added knowledge
+   that it will be used with an ideal homogeneous wrt <CODE>GradingM</CODE> (non-trivial)
+</UL>
+
+<P></P>
+<A NAME="queries"></A>
+<H3>Queries</H3>
+<P>
+Let <CODE>M</CODE> be a matrix over <A HREF="RingZZ.html"><CODE>RingZZ</CODE></A> or <A HREF="RingQQ.html"><CODE>RingQQ</CODE></A> with integer entries.
+</P>
+<UL>
+<LI><CODE>IsTermOrdering(M)</CODE>    -- true iff matrix <CODE>M</CODE> defines a term ordering
+<P></P>
+<LI><CODE>IsPositiveGrading(M)</CODE> -- true iff <CODE>M</CODE> defines a positive grading 
+  (<I>i.e.</I> no null columns and first non-zero entry in each column is positive)
+<P></P>
+</UL>
+
+<P></P>
+<A NAME="toc5"></A>
+<H2>Maintainer Documentation</H2>
+<P>
+The impl for <CODE>LexMat</CODE> is trivial: it is just an <CODE>IdentityMat</CODE>.
+Now that <CODE>ConstMatrix</CODE> is available, the impls for <CODE>XelMatImpl</CODE>,
+<CODE>RevLexImpl</CODE>, <CODE>StdDegLex</CODE> and <CODE>StdDegRevLex</CODE> are quite
+straightforward (but a bit lengthy).
+</P>
+<P>
+Currently we use the "sparse" matrix for <CODE>StdDevRevLex</CODE>; we may later
+change it to the non-neg matrix.
+</P>
+<P>
+<CODE>IsTermOrdering</CODE> is essentially the same as testing <CODE>IsPositiveGrading</CODE>
+on the whole matrix; this is what the impl does!
+</P>
+<A NAME="toc6"></A>
+<H2>Bugs, Shortcomings, and other ideas</H2>
+<P>
+Doc is woefully incomplete.
+</P>
+<A NAME="toc7"></A>
+<H2>Main changes</H2>
+<P>
+<B>2019</B>
+</P>
+<UL>
+<LI>Sep (v0.99602):
+ <UL>
+ <LI><CODE>IsNonNegGrading(M)</CODE> is now hidden in anonymous namespace
+-
+ </UL>
+</UL>
+
+<P>
+<B>2016</B>
+</P>
+<UL>
+<LI>Sep (v0.9944):
+ <UL>
+ <LI>old <CODE>HomogElimMat</CODE> has been renamed <CODE>ElimHomogMat</CODE>
+-
+ </UL>
+</UL>
+
+<P>
+<B>2015</B>
+</P>
+<UL>
+<LI>Nov (v0.9940):
+ <UL>
+ <LI>new impls for <CODE>LexMat</CODE>, <CODE>XelMat</CODE>, <CODE>RevLexMat</CODE>, <CODE>StdDegLexMat</CODE> and <CODE>StdDegRevLexMat</CODE> (names are now coherent with their counterparts in CoCoA-5)
+ <LI>replaced several "complete-to-order" fns by a single fn.
+-
+ </UL>
+</UL>
+
+<P>
+<B>2009</B>
+</P>
+<UL>
+<LI>Sept: Naming convention noq respected ("Matrix" should have been "Mat")
+</UL>
+
+
+<!-- html code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags -t html -o html/MatrixForOrdering.html -i txt/MatrixForOrdering.txt -->
+</BODY></HTML>

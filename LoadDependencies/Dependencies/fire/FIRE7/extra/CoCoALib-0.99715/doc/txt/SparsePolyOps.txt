@@ -1,0 +1,49 @@
+    SparsePolyOps
+      Copyright (c)  2017 John Abbott, Anna M. Bigatti
+      GNU Free Documentation License, Version 1.2
+%!includeconf: ../aux-txt2tags/config.t2t
+      TeXTitle{SparsePolyOps}{John Abbott, Anna M. Bigatti}
+
+
+== Examples ==[examples]
+%----------------------------------------------------------------------
+- [ex-SparsePolyOps1.C ../../examples/index.html#ex-SparsePolyOps1.C]
+-
+
+== User documentation ==
+%======================================================================
+
+This file offers some useful functions on polynomials.
+
+
+=== Operations ===[operations]
+%----------------------------------------------------------------------
+
+Let ``f`` be an element of a polynomial ring.
+
+
+moved to RingElem.txt
+
+
+== Maintainer documentation ==
+%======================================================================
+
+Relatively straightforward.  Could be neater and more efficient
+(but I can't be bothered to make the changes).
+
+
+== Bugs, shortcomings and other ideas ==
+%======================================================================
+
+Some fns make wasteful copies of coeffs -- probably not important,
+but irritating.
+
+
+== Main changes ==
+%======================================================================
+
+**2017**
+- September (v0.99557): first release
+
+
+

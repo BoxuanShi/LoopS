@@ -14,13 +14,13 @@ FactorFlat2[x_] := {x};
 
 
 ClearAll[FactorListRev]
-FactorListRev[factorlist_List] := 
- Times @@ ((Power[#[[1]], #[[2]]] &) /@ factorlist)
+FactorListRev[factorlist_List] := Times @@ ((Power[#[[1]], #[[2]]] &) /@ factorlist)
 
 
 ClearAll[AbbreviateDeno]; Protect[AbbrD];
 Options[AbbreviateDeno] = {"AbbreviateDenoName" -> AbbrD};
-AbbreviateDeno[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{tp1, tp2, abbr},
+AbbreviateDeno[expr_, opt : OptionsPattern[]] := Module[{tp1, tp2, abbr},
   tp1 = DistributeToPolyND[expr];
   tp2 = AbbreviateDenominators[tp1, {}, InverseSymbol -> abbr];
-  {tp2[[1]], Thread[tp2[[3]] -> 1 / tp2[[2]]]} /. Dispatch @ Thread[tp2[[3]] -> Array[OptionValue["AbbreviateDenoName"], Length @ tp2[[3]]]]]
+  {tp2[[1]], Thread[tp2[[3]] -> 1 / tp2[[2]]]} /. Dispatch @ Thread[tp2[[3]] -> Array[OptionValue["AbbreviateDenoName"], Length @ tp2[[3]]]]
+  ]

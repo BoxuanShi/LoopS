@@ -1,0 +1,3 @@
+#!/bin/bash
+options=$(cat previous_options)
+./configure $options

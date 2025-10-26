@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.sf.net">
+<LINK REL="stylesheet" TYPE="text/css" HREF="cocoalib-doc.css">
+<TITLE>      CpuTimeLimit</TITLE>
+</HEAD><BODY BGCOLOR="white" TEXT="black">
+<P ALIGN="center"><CENTER><H1>      CpuTimeLimit</H1>
+<FONT SIZE="4">
+<I>      &copy;  2017-2021  John Abbott, Anna M. Bigatti</I><BR>
+      GNU Free Documentation License, Version 1.2
+</FONT></CENTER>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+    <UL>
+    <LI><A HREF="#examples">Examples</A>
+    <LI><A HREF="#toc2">User documentation for CpuTimeLimit</A>
+      <UL>
+      <LI><A HREF="#constructors">Constructor</A>
+      <LI><A HREF="#operations">Operations</A>
+      <LI><A HREF="#exceptions">Exception</A>
+      </UL>
+    <LI><A HREF="#toc6">Maintainer documentation</A>
+    <LI><A HREF="#toc7">Bugs, shortcomings and other ideas</A>
+    <LI><A HREF="#toc8">Main changes</A>
+    </UL>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+<P>
+      <center><a href="index.html">CoCoALib Documentation Index</a></center>
+</P>
+<A NAME="examples"></A>
+<H2>Examples</H2>
+<UL>
+<LI><A HREF="../../examples/index.html#ex-CpuTimeLimit1.C">ex-CpuTimeLimit1.C</A>
+<LI><A HREF="../../examples/index.html#ex-CpuTimeLimit2.C">ex-CpuTimeLimit2.C</A>
+</UL>
+
+<P></P>
+<A NAME="toc2"></A>
+<H2>User documentation for CpuTimeLimit</H2>
+<P>
+An object of type <CODE>CpuTimeLimit</CODE> may be used to "limit" the CPU time
+taken by a computation: if the computation takes too long then an
+exception (of type <CODE>CoCoA::TimeoutException</CODE>) is thrown.
+</P>
+<P>
+When creating a <CODE>CpuTimeLimit</CODE> object you must specify a time limit
+in seconds as a positive <CODE>double</CODE>: <I>e.g.</I> <CODE>CpuTimeLimit CheckTime(10)</CODE>.
+</P>
+<P>
+You must tell the <CODE>CheckTime</CODE> object explicitly when it should check whether
+the time limit has been reached by calling <CODE>CheckTime()</CODE>, <I>i.e.</I> by calling
+its member function <CODE>operator()</CODE>.  If the time limit has been reached,
+it throws an exception of type <CODE>CoCoA::TimeoutException</CODE> (derived from
+<CODE>CoCoA::ErrorInfo</CODE>); otherwise the call does nothing (other than the check).
+</P>
+<P>
+An optional second parameter to the ctor specifies the "variability" of
+time between successive iterations: <I>e.g.</I> if the checks are in a loop
+where each iteration takes more or less the same time then the variability
+is low (<CODE>IterationVariability::low</CODE>); if the iterations can vary greatly in
+computation time then the variability is high  (<CODE>IterationVariability::high</CODE>);
+by default the variability is medium (<CODE>IterationVariability::medium</CODE>).
+</P>
+<P>
+The typical use is with a potentially long loop.  Just before the loop
+one creates the <CODE>CpuTimeLimit</CODE> object, then at the start of each
+iteration inside the loop one calls <CODE>operator()</CODE>.
+</P>
+<P>
+<B>IMPORTANT</B> CoCoALib checks for timeout <B>only when</B> the member
+function <CODE>CpuTimeLimit::operator()</CODE> is called; so CoCoALib
+<B>will not notice that time-out has occurred between successive calls</B>
+to <CODE>operator()</CODE>.
+</P>
+<P>
+It is possible to use a single <CODE>CpuTimeLimit</CODE> object for several
+loops, but then it is best to call <CODE>myPrepareForNewLoop</CODE> just before
+entering each new loop; the variability of the iterations of that loop
+can be specified.
+</P>
+<A NAME="constructors"></A>
+<H3>Constructor</H3>
+<P>
+There is one real constructor, and one pseudo-constructor:
+</P>
+<UL>
+<LI><CODE>CpuTimeLimit(seconds)</CODE> where <CODE>seconds</CODE> is a positive <CODE>double</CODE>; the measurement of CPU use begins immediately; there is an upper limit of one million seconds.
+<LI><CODE>CpuTimeLimit(seconds, variability)</CODE> as above, but specify how variable time between successive checks might be
+<LI><CODE>NoCpuTimeLimit()</CODE> returns a <CODE>CpuTimeLimit</CODE> object which has infinite timeout
+</UL>
+
+<P></P>
+<P>
+Variability should be: <CODE>IterationVariability::low</CODE> if successive iterations take more or less the same time;
+<CODE>IterationVariability::high</CODE> if successive iterations can take widely differing amounts of time.  The default
+is <CODE>IterationVariability::medium</CODE> which indicates some sort of compromise.
+</P>
+<A NAME="operations"></A>
+<H3>Operations</H3>
+<P>
+Let <CODE>CheckForTimeout</CODE> be an object of type <CODE>CpuTimeLimit</CODE>.
+There are two operations:
+</P>
+<UL>
+<LI><CODE>CheckForTimeout(context)</CODE> -- does nothing unless timeout has occurred, when it throws a <CODE>TimeoutException</CODE> object; <CODE>context</CODE> is a string literal which is copied into the "context" field of the exception
+<LI><CODE>CheckForTimeout.myPrepareForNewLoop()</CODE> -- if the same <CODE>CpuTimeLimit</CODE> object is to be used inside more than one loop, then call this before every loop (except the first one)
+<LI><CODE>CheckForTimeout.myPrepareForNewLoop(v)</CODE> -- like <CODE>myPrepareForNewLoop</CODE> but also specify a "variability" for the new loop
+<LI><CODE>IsUnlimited(CheckForTimeout)</CODE>  -- return <CODE>true</CODE> iff <CODE>CheckForTimeout</CODE> was created by <CODE>NoCpuTimeLimit</CODE>
+</UL>
+
+<P></P>
+<A NAME="exceptions"></A>
+<H3>Exception</H3>
+<P>
+There is one class for exceptions:
+</P>
+<UL>
+<LI><CODE>TimeoutException(context)</CODE> -- the arg <CODE>context</CODE> is a string literal indicating where the time-out was detected (usually it is a good idea to use the name of the function which was interrupted)
+</UL>
+
+<P></P>
+<P>
+The class <CODE>TimeoutException</CODE> derives from <CODE>ErrorInfo</CODE>.
+</P>
+<A NAME="toc6"></A>
+<H2>Maintainer documentation</H2>
+<P>
+This is the fourth design.  The first was based on SIGVTALRM, but it was not
+clear how portable that would be.  The second was based on <CODE>CheckForInterrupt</CODE>,
+but the calls to <CODE>CpuTime</CODE> were too costly (and it depended on a global
+variable).  The third design was based on <CODE>ProgressReporter</CODE>: it assumed
+that the times between successive clock checks do not vary too much.
+This new fourth design revises the third, and lets the caller specify
+the "variability" of time between successive checks.
+</P>
+<P>
+The idea is to check the actual cpu time only occasionally, and not every
+time <CODE>operator()</CODE> is called.  It uses a similar strategy to that of
+<CODE>ProgressReporter</CODE>; based on the variability, an estimate of how many iters
+can safely be performed before the next check is used to 
+which assumes that calls to <CODE>operator()</CODE> occur at
+fairly regular intervals.
+</P>
+<P>
+The private data field <CODE>myInterval</CODE> has a special role if its value is
+negative: it means that the <CODE>CpuTimeLimit</CODE> object has infinite time-out,
+so should never check cpu usage.
+</P>
+<A NAME="toc7"></A>
+<H2>Bugs, shortcomings and other ideas</H2>
+<P>
+Perhaps offer a version which uses only elapsed time?  This should be easy to implement!
+</P>
+<P>
+Inconvenient having to pass <CODE>CpuTimeLimit</CODE> as explicit parameters;
+but how else to do this in a threadsafe way?
+</P>
+<P>
+A normal call to <CODE>CpuTime()</CODE> may not work as desired in a multithreaded
+context.  It is not clear how to solve this portably.
+</P>
+<A NAME="toc8"></A>
+<H2>Main changes</H2>
+<P>
+<B>2019</B>
+</P>
+<UL>
+<LI>Dec (v.0.99650): big revision, introduced "variability" factor.
+<P></P>
+<B>2018</B>
+<LI>May (v0.99570): major revision, now cheaper and multithread compatible.
+<P></P>
+<B>2017</B>
+<LI>July (v0.99560): first release; major revision
+</UL>
+
+
+<!-- html code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags -t html -o html/CpuTimeLimit.html -i txt/CpuTimeLimit.txt -->
+</BODY></HTML>

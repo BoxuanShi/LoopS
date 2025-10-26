@@ -1,3 +1,0 @@
-#!/bin/bash
-#rm -f temp/box-*-*.tables
-mpirun -np 5 bin/FIRE6_MPI -c examples/box -v "100-125;4"

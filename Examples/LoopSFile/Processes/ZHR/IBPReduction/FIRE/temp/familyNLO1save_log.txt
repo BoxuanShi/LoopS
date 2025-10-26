@@ -1,22 +1,22 @@
-FIRE, version 6.5.2
+FIRE, version 7.0
 Initial data loaded
 EVALUATING {1, {0, 1, 1}}
 Working in sector 2/4: {1,{-1,1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{0, 0}}
 {1, 1}
-Preparing points, symmetries and 21 IBP's: 0.004121`4.066547608020561 seconds.
-16 new relations produced: 0.052743`5.173709822146246 seconds.
+Preparing points, symmetries and 21 IBP's: 0.004245`4.079422688075945 seconds.
+16 new relations produced: 0.053771`5.18209310678997 seconds.
 IRREDUCIBLE INTEGRAL: {1, {0, 1, 1}}
 Sector complete
-Total time: 0.059182`5.22373463114193 seconds
+Total time: 0.060341`5.232157496731085 seconds
 EVALUATING {1, {1, 1, 1}}
 Working in sector 1/4: {1,{1,1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{0, 0}}
 {1, 1}
-Preparing points, symmetries and 13 IBP's: 0.002997`3.928231736441618 seconds.
-3 new relations produced: 0.006257`4.247911148473492 seconds.
+Preparing points, symmetries and 13 IBP's: 0.003068`3.9384003487729164 seconds.
+3 new relations produced: 0.006366`4.255411627780959 seconds.
 Sector complete
 Working in sector 2/4: {1,{-1,1,1}}
 Sector complete
@@ -24,76 +24,76 @@ Working in sector 3/4: {1,{1,-1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{1, 0}}
 {1, 1}
-Preparing points, symmetries and 21 IBP's: 0.004124`4.066863650107454 seconds.
-1 new relations produced: 0.00086`3.386043444739543 seconds.
+Preparing points, symmetries and 21 IBP's: 0.00421`4.075827089331641 seconds.
+1 new relations produced: 0.000886`3.3989787153830235 seconds.
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{1, 0}}
 {1, 1}
-Preparing points, symmetries and 21 IBP's: 0.003814`4.03292568220596 seconds.
-14 new relations produced: 0.028142`4.90089995219877 seconds.
+Preparing points, symmetries and 21 IBP's: 0.003877`4.040040794503181 seconds.
+14 new relations produced: 0.028674`4.90903327440041 seconds.
 IRREDUCIBLE INTEGRAL: {1, {0, 0, 1}}
 Sector complete
-SORTING THE LIST OF 9 INTEGRALS: 0.000022`1.793967674318179 seconds.
-Substituting 9 values: 0.003266`3.9655611738966225 seconds.
-Total time: 0.055434`5.19532121098886 seconds
+SORTING THE LIST OF 9 INTEGRALS: 0.000025`1.8494850021680096 seconds.
+Substituting 9 values: 0.003368`3.978917076323587 seconds.
+Total time: 0.056544`5.203931521322643 seconds
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-Total time: 0.00038`3.031328590112783 seconds
+Total time: 0.000398`3.0514280655696586 seconds
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796213*^-6 seconds.
-Substituting 2 values: 0.000032`1.956694971815879 seconds.
-Total time: 0.000403`3.0568500396370824 seconds
+SORTING THE LIST OF 2 INTEGRALS: 5.`1.1505149978319904*^-6 seconds.
+Substituting 2 values: 0.000039`2.042609600522472 seconds.
+Total time: 0.000431`3.086022263656702 seconds
 EVALUATING {1, {1, 0, 1}}
 Working in sector 3/4: {1,{1,-1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{0, 0}}
 {1, 1}
-Preparing points, symmetries and 20 IBP's: 0.003072`3.9389662048554475 seconds.
-3 new relations produced: 0.004219`4.0767545188778564 seconds.
+Preparing points, symmetries and 20 IBP's: 0.003164`3.951781468321614 seconds.
+3 new relations produced: 0.004354`4.090433418201049 seconds.
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
 SORTING THE LIST OF 4 INTEGRALS: 0.000011`1.4929376786541977 seconds.
-Substituting 4 values: 0.000528`3.1741789160297857 seconds.
-Total time: 0.008632`4.387656425170828 seconds
+Substituting 4 values: 0.000558`3.1981791924335514 seconds.
+Total time: 0.008901`4.400983794532477 seconds
 Working in sector 3/4: {1,{1,-1,1}}
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 5 INTEGRALS: 0.000015`1.6276362525516557 seconds.
-Substituting 5 values: 0.000501`3.1513827193632187 seconds.
-Total time: 0.001208`3.533611927781084 seconds
+SORTING THE LIST OF 5 INTEGRALS: 0.000014`1.5976730291742114 seconds.
+Substituting 5 values: 0.000513`3.1616623586077868 seconds.
+Total time: 0.001186`3.525629682524217 seconds
 Working in sector 3/4: {1,{1,-1,1}}
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796128*^-6 seconds.
-Substituting 2 values: 0.000031`1.9429066873302476 seconds.
-Total time: 0.000566`3.2043614246842447 seconds
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796213*^-6 seconds.
+Substituting 2 values: 0.000032`1.956694971815879 seconds.
+Total time: 0.00057`3.2074198491684642 seconds
 Working in sector 2/4: {1,{-1,1,1}}
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 11 INTEGRALS: 0.000035`1.9956130378462467 seconds.
-Substituting 11 values: 0.003253`3.9638290567778265 seconds.
-Total time: 0.004173`4.071993378207682 seconds
+SORTING THE LIST OF 11 INTEGRALS: 0.000033`1.9700589333738623 seconds.
+Substituting 11 values: 0.003339`3.9751614125503414 seconds.
+Total time: 0.004286`4.083597160201783 seconds
 Working in sector 2/4: {1,{-1,1,1}}
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 4 INTEGRALS: 0.000012`1.5307262395435983 seconds.
-Substituting 4 values: 0.000575`3.2112128381856015 seconds.
-Total time: 0.001242`3.5456665893365367 seconds
+SORTING THE LIST OF 4 INTEGRALS: 0.000011`1.4929376786541977 seconds.
+Substituting 4 values: 0.000603`3.231862305636126 seconds.
+Total time: 0.0013159999999999999`3.570800882773912 seconds
 EVALUATING {1, {2, 1, 1}}
 Working in sector 1/4: {1,{1,1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{1, 0}}
 {1, 1}
-Preparing points, symmetries and 9 IBP's: 0.002057`3.764779285190697 seconds.
-3 new relations produced: 0.006158`4.240984678063152 seconds.
+Preparing points, symmetries and 9 IBP's: 0.00209`3.771691279607027 seconds.
+3 new relations produced: 0.006358`4.254865517074729 seconds.
 Sector complete
 Working in sector 2/4: {1,{-1,1,1}}
 Sector complete
@@ -101,14 +101,14 @@ Working in sector 3/4: {1,{1,-1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{2, 0}}
 {1, 1}
-Preparing points, symmetries and 17 IBP's: 0.002906`3.914840603457976 seconds.
-1 new relations produced: 0.001986`3.7495242376553355 seconds.
+Preparing points, symmetries and 17 IBP's: 0.002985`3.926489328961361 seconds.
+1 new relations produced: 0.002036`3.7603227671606922 seconds.
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 8 INTEGRALS: 0.000021`1.7737642882298925 seconds.
-Substituting 8 values: 0.003176`3.9534254872510295 seconds.
-Total time: 0.017761`4.701012407768263 seconds
+SORTING THE LIST OF 8 INTEGRALS: 0.000022`1.793967674318179 seconds.
+Substituting 8 values: 0.003222`3.959670529579172 seconds.
+Total time: 0.018196`4.71152092165389 seconds
 Working in sector 1/4: {1,{1,1,1}}
 Sector complete
 Working in sector 2/4: {1,{-1,1,1}}
@@ -117,9 +117,9 @@ Working in sector 3/4: {1,{1,-1,1}}
 Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
-SORTING THE LIST OF 9 INTEGRALS: 0.000028`1.8987030248381893 seconds.
-Substituting 9 values: 0.003087`3.9410816229780687 seconds.
-Total time: 0.004271`4.082074564922797 seconds
+SORTING THE LIST OF 9 INTEGRALS: 0.000029`1.913942991394927 seconds.
+Substituting 9 values: 0.003132`3.947366746881879 seconds.
+Total time: 0.004366`4.091628724869094 seconds
 Working in sector 1/4: {1,{1,1,1}}
 Sector complete
 Working in sector 2/4: {1,{-1,1,1}}
@@ -127,5 +127,5 @@ Sector complete
 Working in sector 4/4: {1,{-1,-1,1}}
 Sector complete
 SORTING THE LIST OF 4 INTEGRALS: 0.000012`1.5307262395435983 seconds.
-Substituting 4 values: 0.000744`3.3231179290418495 seconds.
-Total time: 0.001579`3.649927123504267 seconds
+Substituting 4 values: 0.000772`3.339162293831707 seconds.
+Total time: 0.001613`3.6591793608849343 seconds

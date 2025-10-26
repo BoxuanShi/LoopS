@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ "$1" != "" ]]; then
+    calc="$1"
+else
+    calc=flint
+fi
+
+rm -f tests/outputs/box_*_*.tables
+mpirun -np 3 bin/FIRE7_MPI --calc ${calc} $2 --reconstruct -c examples/box -T 31 -P 10 -I 100 -E

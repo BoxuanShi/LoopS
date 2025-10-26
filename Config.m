@@ -9,7 +9,7 @@ $MultivariateApartInstallPath = FileNameJoin[{DirectoryName @ $InputFileName,
      }];
 
 $FIREInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
-      "Dependencies", "fire", "FIRE6", "FIRE6.m"}];
+      "Dependencies", "fire", "FIRE7", "FIRE7.m"}];
 
 $OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
       "Dependencies", "opiter", "opiter"}];

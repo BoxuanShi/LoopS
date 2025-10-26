@@ -1,0 +1,9 @@
+LoadTables
+../tests/outputs/doublebox-rank4_$(variables).tables
+SectorsAtLevel
+3:7
+Level
+{0, 1}
+Symmetries
+ExtSymm
+End SectorsAtLevel

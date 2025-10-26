@@ -1,0 +1,271 @@
+include paths.inc
+include libs.inc
+
+default:
+	$(MAKE) -C ./tools
+	$(MAKE) -C ./poly
+	$(MAKE) -C ./prime
+	$(MAKE) -C ./multiprime
+
+all:
+	$(MAKE) -C ./tools
+	$(MAKE) -C ./poly
+	$(MAKE) -C ./prime
+	$(MAKE) -C ./multiprime
+	$(MAKE) -C ./tools mpi
+
+.PHONY: mpi poly prime multiprime tools tools_gpu tools_mpi_gpu mpi_gpu
+.PHONY: snappy mimalloc tcmalloc zstd kyoto
+.PHONY: gmpLibrary mpfrLibrary
+.PHONY: openmpi
+
+tools:
+	$(MAKE) -C ./tools
+
+tools_gpu:
+	$(MAKE) -C ./tools gpu
+
+tools_mpi_gpu:
+	$(MAKE) -C ./tools mpi_gpu
+
+poly:
+	$(MAKE) -C ./poly
+
+prime:
+	$(MAKE) -C ./prime
+
+multiprime:
+	$(MAKE) -C ./multiprime
+
+mpi: tools
+	$(MAKE) -C ./tools mpi
+
+mpi_gpu: tools
+	$(MAKE) -C ./tools mpi_gpu
+
+test:
+	make -f tests.makefile
+
+testmath:
+	make -f tests.makefile mathematica
+
+testR:
+	make -f tests.makefile reconstruct
+
+testM:
+	make -f tests.makefile reconstruct_mpi
+
+.PHONY: doc documentation doc_pdf showdoc
+doc: documentation
+
+documentation:
+	doxygen ./documentation/Doxyfile
+
+showdoc:
+	xdg-open documentation/html/index.html
+
+doc_pdf:
+	if [ ! -f documentation/latex/Makefile ]; then $(MAKE) doc; fi;
+	$(MAKE) -C ./documentation/latex/
+	mv ./documentation/latex/refman.pdf ./documentation/
+
+.PHONY: cleandoc
+cleandoc:
+	rm -rf ./documentation/latex/
+	rm -rf ./documentation/html/
+	rm -f ./documentation/refman.pdf
+
+ifdef BUILD_OPENMPI
+openmpi: usr/bin/mpicxx
+else
+openmpi:
+endif
+
+ifdef ENABLE_FIRE7NP
+fire7np_submodule:
+	cd .. && git submodule update --init --recursive FIRE7np
+else
+fire7np_submodule:
+endif
+
+usr/bin/mpicxx:
+	rm -rf temp/openmpi-4.1.0*
+	cd temp && wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.0.tar.gz
+	cd temp && tar -zxf openmpi-4.1.0.tar.gz
+	cd temp/openmpi-4.1.0 && ./configure --prefix=`pwd`/../../usr/ --enable-static
+	$(MAKE) -C temp/openmpi-4.1.0/
+	$(MAKE) -C temp/openmpi-4.1.0/ install
+
+pvs:
+	make clean
+	make cleanbin
+	pvs-studio-analyzer trace -- make poly
+	pvs-studio-analyzer analyze -o temp/poly.log -e usr/
+	plog-converter -d V1042 -a GA:1,2 -t tasklist -o temp/poly.tasks temp/poly.log
+	pvs-studio-analyzer trace -- make prime
+	pvs-studio-analyzer analyze -o temp/prime.log -e usr/
+	plog-converter -d V1042 -a GA:1,2 -t tasklist -o temp/prime.tasks temp/prime.log
+
+.PHONY: cleanall
+cleanall: clean cleanbin cleanbak cleandep cleantemp cleandoc cleanmake tcmallocClean
+
+.PHONY: cleanmake
+cleanmake:
+	rm -f Makefile tools/Makefile poly/Makefile prime/Makefile multiprime/Makefile
+
+.PHONY: clean
+clean:
+	rm -f tools/tools/*.o
+	rm -f poly/*.o
+	rm -f prime/*.o
+	rm -f multiprime/*.o
+
+.PHONY: cleanbin
+cleanbin:
+	rm -f poly/FIRE7 poly/FLAME6 poly/Ftool6
+	rm -f prime/FIRE7 prime/FLAME6 prime/Ftool6
+	rm -f multiprime/FIRE7 multiprime/FLAME6 multiprime/Ftool6
+
+.PHONY: cleanbak
+cleanbak:
+	rm -f sources/*~
+	rm -f sources/*backup
+	rm -f sources/*bak
+	rm -f sources/*kate-swp
+	rm -f *~
+	rm -f *backup
+	rm -f *bak
+
+.PHONY: cleantemp
+cleantemp:
+	rm -rf temp/*
+
+dep: depend
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+ASIE = AS_INTEGRATED_ASSEMBLER=1
+else
+ASIE =
+endif
+
+ifdef ENABLE_SNAPPY
+snappy:
+	export CXX=$(CCPLUS) && export CC=$(CC) && cd extra/snappy-1.1.7/ && mkdir -p build && cd build && cmake -DSNAPPY_BUILD_TESTS=0 -DCMAKE_BUILD_TYPE=Release ../
+	$(MAKE) -C ./extra/snappy-1.1.7/build
+	$(MAKE) -C ./extra/snappy-1.1.7/build DESTDIR=../../../ install
+else
+snappy:
+endif
+
+ifdef ENABLE_MIMALLOC
+mimalloc:
+	export CXX=$(CCPLUS) && export CC=$(CC) && cd extra/mimalloc && mkdir -p out/release && cd out/release && cmake -DCMAKE_INSTALL_PREFIX=`pwd`/../../../../usr/ ../../
+	export CXX=$(CCPLUS) && export CC=$(CC) && $(MAKE) -C ./extra/mimalloc/out/release mimalloc
+	export CXX=$(CCPLUS) && export CC=$(CC) && $(MAKE) -C ./extra/mimalloc/out/release mimalloc-static
+	export CXX=$(CCPLUS) && export CC=$(CC) && $(MAKE) -C ./extra/mimalloc/out/release mimalloc-obj
+	export CXX=$(CCPLUS) && export CC=$(CC) && $(MAKE) -C ./extra/mimalloc/out/release install/fast
+else
+mimalloc:
+endif
+
+ifdef ENABLE_ZSTD
+ifdef PREBUILT_ZSTD
+zstd:
+ifeq ($(UNAME_S),Darwin)
+	cd usr; \
+	tar -xf Zstd.v1.4.5.x86_64-apple-darwin14.tar.gz; \
+	cd ..
+else
+	cd usr; \
+	tar -xf Zstd.v1.4.5.x86_64-linux-gnu.tar.gz; \
+	cd ..
+endif
+else
+zstd:
+	cd .. && git submodule update --init --recursive FIRE7/extra/zstd
+	export CXX=$(CCPLUS) && export CC=$(CC) && $(MAKE) -C ./extra/zstd
+	$(MAKE) -C ./extra/zstd PREFIX=`pwd`/usr/ uninstall
+	$(MAKE) -C ./extra/zstd PREFIX=`pwd`/usr/ install
+endif
+else
+zstd:
+endif
+
+ifdef ENABLE_ZSTD
+zstdClean:
+else
+zstdClean:
+endif
+
+ifdef ENABLE_TCMALLOC
+tcmalloc:
+	export CXX=$(CCPLUS) && export CC=$(CC) && cd extra/gperftools-2.7/ && ./configure --enable-minimal --prefix=`pwd`/../../usr/
+	$(MAKE) -C ./extra/gperftools-2.7
+	$(MAKE) -C ./extra/gperftools-2.7 install
+else
+tcmalloc:
+endif
+
+kyoto:
+	export CXX=$(CCPLUS) && export CC=$(CC) && cd extra/kyotocabinet-1.2.77/ && ./configure --prefix=`pwd`/../../usr/ --disable-zlib
+	$(ASIE) $(MAKE) -C ./extra/kyotocabinet-1.2.77
+	$(MAKE) -C ./extra/kyotocabinet-1.2.77 install
+	$(MAKE) -C ./extra/lz4-1.9.2
+	cp ./extra/lz4-1.9.2/lib/*.h ./usr/include
+	cp ./extra/lz4-1.9.2/lib/liblz4.* ./usr/lib
+
+gmpLibrary:
+	$(MAKE) -C ./extra/fuel gmpLibrary
+
+mpfrLibrary:
+	$(MAKE) -C ./extra/fuel mpfrLibrary
+
+depend: | fire7np_submodule fuel snappy mimalloc tcmalloc zstd kyoto openmpi
+
+omp:
+	cd usr; \
+	tar -xf LLVMOpenMP*.tar.gz; \
+	cd ..
+
+fuel:
+	cd .. && git submodule update --init --recursive FIRE7/extra/fuel
+	cd extra/fuel && ./configure $(FUEL_OPTIONS) --cpp=$(CCPLUS) --cc=$(CC)
+	$(MAKE) -C extra/fuel dep
+	$(MAKE) -C extra/fuel library
+	cp extra/fuel/library/libfuel.a usr/lib/
+
+ifdef ENABLE_SNAPPY
+snappyClean:
+	rm -rf extra/snappy-1.1.7/build
+else
+snappyClean:
+endif
+
+ifdef ENABLE_MIMALLOC
+mimallocClean:
+	if [ -f extra/mimalloc/out/release/Makefile ]; then $(MAKE) -C ./extra/mimalloc/out/release clean; fi;
+	rm -rf extra/mimalloc/out
+else
+mimallocClean:
+endif
+
+ifdef ENABLE_TCMALLOC
+tcmallocClean:
+	if [ -f extra/gperftools-2.7/Makefile ]; then $(MAKE) -C ./extra/gperftools-2.7 clean; fi;
+else
+tcmallocClean:
+endif
+
+cleandep: fuelClean snappyClean mimallocClean tcmallocClean zstdClean
+	rm -rf usr/include/*
+	rm -rf usr/lib/*
+	rm -rf usr/share/*
+	rm -rf usr/lib64/*
+	rm -rf usr/bin/*
+	if [ -f extra/kyotocabinet-1.2.77/Makefile ]; then $(MAKE) -C ./extra/kyotocabinet-1.2.77 distclean; fi;
+	$(MAKE) -C ./extra/lz4-1.9.2 PREFIX=`pwd`/usr/ clean
+
+fuelClean:
+	export CXX=$(CCPLUS) && export CC=$(CC) && $(MAKE) -C extra/fuel clean
+

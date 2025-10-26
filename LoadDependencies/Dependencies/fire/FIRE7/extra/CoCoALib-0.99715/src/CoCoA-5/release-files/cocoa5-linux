@@ -1,0 +1,173 @@
+#!/bin/bash
+
+# Start the CoCoAInterpreter supplying the value of "--packageDir".
+
+# This script expects to find the executable(s) in the directory bin/.
+# There are two possible arrangements:
+# (1) bin/ contains just CoCoAInterpreter (and no other files)
+# (2) bin/ contains CoCoAInterpreter-with-readline & CoCoAInterpreter-without-readline
+#     (and no other files)
+# In case (2) the script tries first with readline, and if that fails then without.
+
+
+#############################################################################
+# Find directory of this script (taken from link below)
+# http://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
+
+pushd . > /dev/null
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT_PATH" ]
+do
+  cd "`dirname "$SCRIPT_PATH"`"
+  SCRIPT_PATH="$(readlink "`basename "$SCRIPT_PATH"`")"
+done
+cd "`dirname "$SCRIPT_PATH"`" > /dev/null
+SCRIPT_DIR="`pwd`"
+popd  > /dev/null
+
+
+# At this point SCRIPT_DIR contains the path to the directory
+# where the CoCoAInterpreter executable and also packages/ subdir.
+
+##################################################################
+### executable
+
+### for released CoCoA (as in release-files/): CoCoAInterpreter is in bin/
+
+# OBSOLESCENT???
+# # Check platform is 64 bit
+# SIXTYFOUR=`uname -a | fgrep x86_64`
+# if [ -z "$SIXTYFOUR" ]
+# then
+#   echo "$0: 32-bit version has been withdrawn: please write to cocoa@dima.unige.it"
+#   exit 1
+# fi
+
+PKG_DIR="$SCRIPT_DIR/packages"
+COCOA_PATH="$SCRIPT_DIR/bin"
+COCOA_EXECUTABLE="$COCOA_PATH/CoCoAInterpreter"
+COCOA_WITH_READLINE="$COCOA_PATH/CoCoAInterpreter-with-readline"
+COCOA_WITHOUT_READLINE="$COCOA_PATH/CoCoAInterpreter-without-readline"
+
+# Check that binaries exist and are executable (sorry this is messy)
+COUNT=`(cd "$COCOA_PATH"; /bin/ls | wc -l )`
+COCOA_EXECUTABLE_CHECK=ok
+if [ $COUNT = 0 -o $COUNT -gt 2 ]
+then
+    COCOA_EXECUTABLE_CHECK=wrong-files
+elif [ $COUNT = 1 ]
+then
+    if [ -f "$COCOA_EXECUTABLE" -a \! -x "$COCOA_EXECUTABLE" ]
+    then
+	COCOA_EXECUTABLE_CHECK=not-exec
+    fi
+elif [ -f "$COCOA_WITH_READLINE" -a \! -x "$COCOA_WITH_READLINE" ]
+then
+    COCOA_EXECUTABLE_CHECK=not-exec
+elif [ -f "$COCOA_WITHOUT_READLINE" -a \! -x "$COCOA_WITHOUT_READLINE" ]
+then
+    COCOA_EXECUTABLE_CHECK=not-exec
+fi
+
+if [ "$COCOA_EXECUTABLE_CHECK" = "wrong-files" ]
+then
+    sleep 1 # Useful if running inside emacs (see redmine 1352)
+    echo ""  >/dev/stderr
+    echo "=========================================================================="  >/dev/stderr
+    echo ">>> ERROR: COCOA-5 BINARY MISSING OR UNEXPECTED FILES IN bin DIRECTORY <<<"  >/dev/stderr
+    echo "=========================================================================="  >/dev/stderr
+    sleep 1
+    if [ $COUNT -lt 2 ]
+    then
+	echo "HINT: Expected to find \`CoCoAInterpreter' but found" >/dev/stderr
+    else
+	echo "HINT: Expected to find \`CoCoAInterpreter-with-readline'" >/dev/stderr
+	echo "HINT: and \`CoCoAInterpreter-no-readline' but instead found" >/dev/stderr
+    fi
+    echo "(listing of directory $COCOA_PATH)"              >/dev/stderr
+    ( cd "$COCOA_PATH"; /bin/ls -l )                       >/dev/stderr
+    sleep 4
+    exit 1
+fi
+
+if [ "$COCOA_EXECUTABLE_CHECK" = "not-exec" ]
+then
+    sleep 1 # Useful if running inside emacs (see redmine 1352)
+    echo ""  >/dev/stderr
+    echo "============================================"  >/dev/stderr
+    echo ">>> ERROR: COCOA-5 BINARY NOT EXECUTABLE <<<"  >/dev/stderr
+    echo "============================================"  >/dev/stderr
+    sleep 1
+    echo "(listing of directory $COCOA_PATH)"              >/dev/stderr
+    ( cd "$COCOA_PATH"; /bin/ls -l )                      >/dev/stderr
+    sleep 4
+    exit 1
+fi
+
+
+#######################################################
+# Check that package dir exists
+
+if [ \! -d "$PKG_DIR" ]
+then
+    sleep 1 # Useful if running inside emacs (see redmine 1352)
+    echo ""                                           >/dev/stderr
+    echo "======================================="      >/dev/stderr
+    echo ">>> ERROR: COCOA-5 PACKAGES MISSING <<<"      >/dev/stderr
+    echo "======================================="      >/dev/stderr
+    sleep 1
+    echo "Expected CoCoA-5 package directory to be:"    >/dev/stderr
+    echo "$PKG_DIR/"                                    >/dev/stderr
+    echo                                                >/dev/stderr
+    echo "Exiting..."                                   >/dev/stderr
+    sleep 4
+    exit 1
+fi
+
+#############################################################################
+# A simple sanity check that this script has been correctly set up.
+
+if [ -f "$COCOA_EXECUTABLE" ]
+then
+    "$COCOA_EXECUTABLE" --do-nothing  > /dev/null 2>&1
+    if [ $? -ne 0 ]
+    then
+	sleep 1 # Useful if running inside emacs (see redmine 1352)
+	echo ""                                              >/dev/stderr
+	echo "============================================"    >/dev/stderr
+	echo ">>> ERROR: COCOA-5 EXECUTABLE CANNOT RUN <<<"    >/dev/stderr
+	echo "============================================"    >/dev/stderr
+	sleep 4
+	exit 1
+    fi
+    exec "$COCOA_EXECUTABLE" --packageDir "$SCRIPT_DIR/packages" "$@"
+fi
+
+# Now we are in the case where there should be two executables with and without readline
+# Try first with readline; then without; complain if both fail.
+
+"$COCOA_WITH_READLINE" --do-nothing  > /dev/null 2>&1
+if [ $? = 0 ]
+then
+    exec "$COCOA_WITH_READLINE" --packageDir "$SCRIPT_DIR/packages" "$@"
+fi
+
+"$COCOA_WITHOUT_READLINE" --do-nothing  > /dev/null 2>&1
+if [ $? = 0 ]
+then
+        exec "$COCOA_WITHOUT_READLINE" --packageDir "$SCRIPT_DIR/packages" "$@"
+fi
+
+# Neither executable worked  -->  REPORT ERROR
+sleep 1 # Useful if running inside emacs (see redmine 1352)
+echo ""                                              >/dev/stderr
+echo "============================================"    >/dev/stderr
+echo ">>> ERROR: COCOA-5 EXECUTABLE CANNOT RUN <<<"    >/dev/stderr
+echo "============================================"    >/dev/stderr
+sleep 1
+echo "Looked in directory $COCOA_PATH"                 >/dev/stderr
+echo "Neither executable worked  :-("                  >/dev/stderr
+echo                                                   >/dev/stderr
+echo "Exiting..."                                      >/dev/stderr
+sleep 4
+exit 1

@@ -1,1 +1,10 @@
+.idea
+.DS_Store
 *.swp
+.vscode
+compile_commands.json
+*.warmup
+*.steps
+*.sorting
+*_cut*.config
+*_cut*.masters

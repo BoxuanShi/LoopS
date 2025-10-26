@@ -1,0 +1,12 @@
+#!/bin/bash
+if [[ "$1" != "" ]]; then
+    calc="$1"
+else
+    calc=flint
+fi
+
+START=$(date +%s.%N)
+mpirun -np 5 bin/FIRE7_MPI --delete_tables --calc ${calc} $2 --reconstruct -F t_3 -c examples/doublebox3N -T 6_13 -N 7 -I 57_100 -P 3 -E
+END=$(date +%s.%N)
+DIFF=$(echo "$END - $START" | bc)
+echo "Total time of the script: $DIFF"

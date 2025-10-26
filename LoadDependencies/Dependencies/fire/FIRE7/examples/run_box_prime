@@ -1,0 +1,12 @@
+#!/bin/bash
+START=$(date +%s.%N)
+for d in {100..125}
+do
+    for p in {1..4}
+    do
+        bin/FIRE7p "$@" -v "$d"_"$p" -c examples/box3 --quiet
+    done
+done
+END=$(date +%s.%N)
+DIFF=$(echo "$END - $START" | bc)
+echo "Total time of the script: $DIFF"

@@ -1,4 +1,4 @@
-Get["/media/balth/DATA1/work/LoopSWork/packages/LoopS/LoadDependencies/Dependencies/fire/FIRE6/FIRE6.m"];
+Get["/media/balth/DATA1/work/LoopSWork/packages/LoopS/LoadDependencies/Dependencies/fire/FIRE7/FIRE7.m"];
 Internal = {l1h}; 
 External = {n, nb}; 
 Propagators = {l1h*n, l1h^2, -mch^2 + (l1h + (n*nbkh)/2 - (n*nbp)/2 - (nb*np)/2)^2}; 

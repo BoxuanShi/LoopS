@@ -1,0 +1,382 @@
+#!/bin/bash
+
+echo "$*" | tr _ - >previous_options
+
+echo ""
+echo "This script is not a classical configure script."
+echo "It only creates the Makefile according to the options you pass."
+echo "Changes in some options require rebuilding of dependancy libraries (make cleandep && make dep) first."
+echo "The following options are valid:"
+echo ""
+echo "--enable_zlib: enables the zlib compressor shipped with kyotocabinet, requires the zlib/deflate library (zlib1g-dev)"
+echo "--enable_snappy: tries to build the snappy library shipped with FIRE (might require some automake magic)"
+echo "--enable_zstd: tries to build the ZStandard compressor"
+echo "--enable_debug: add -g to compile options for debugging symbols"
+echo "--enable_tcmalloc: use tcmalloc from google perf tools instead of the libc malloc"
+echo "--enable_mimalloc: use microsoft mimalloc instead of libc malloc (incompatible with --enable_tcmalloc)"
+echo "--enable_lto: enable gcc link time optimization for the prime version. Can result in a 5% speedup but spoils debugging and crash diagnostics"
+echo "--enable_ginac: enable ginac library for calculations instead of fermat"
+echo "--enable_pari: enable pari library for calculations instead of fermat"
+echo "--enable_symbolica: enable symbolica library for calculations without calls to external binary"
+echo "--static-stdc++: no link with stdc++ statically"
+echo "--cpp=NAME sets the name of the c plus plus compiler"
+echo "--cc=NAME sets the name of the c compiler"
+echo "--mprime=value sets the number of values in multiprime mode"
+echo "--prebuilt-mpfr to use prebuilt mpfr instead of building it"
+echo "--prebuilt-gmp to use prebuilt gmp instead of building it"
+echo "--prebuilt-flint to use prebuilt flint instead of building it"
+echo "--prebuilt-zstd to use prebuilt zstd instead of building it, needs also --enable_zstd"
+echo "--build-openmpi to build the openmpi compiler (needed in case the one installed at the cluster does not support c++17)"
+echo "--fermat7 to switch to fermat 7 (option passed to fuel)"
+echo "--enable-fire7np to enable the private modular version (gets cloned from a private sumbodule)"
+echo ""
+echo "The following options influence point size, maximal number of indices and non-zero sectors. small_point is incompatible with large_point or many_sectors"
+echo "Default size if 24 bytes, 22 for indices and 2 bytes for non-zero sector numbers staying with 2^15 max non-zero sectors (1 bit is reserved for other usage)"
+echo "--small_point: make point size 16 bytes. Limits the number of indices to 18 (with compression), index value to 32"
+echo "--many_sectors[=value]: keep point size 24 with max 20 indices instead of 22, but up to 2^31 non-zero sectors instead of 2^15 with default value 20 meaning 2^20. Keep in mind that we allocate memory proportional to 2^value, so do not increase it to the maximum unless needed"
+echo "--large_point: make point size 32 bytes instead of 24 with 28 max indices and 2^20 non-zero sectors (can be increased with --many_sectors"
+echo "-----------------------------------------------------------------------------------------------------------"
+echo ""
+echo "Now creating Makefile"
+
+UNAME_S=$(uname -s)
+if [ $UNAME_S = Darwin ]; then
+  cpp=clang++
+  cc=clang
+  math=/Applications/Mathematica.app/Contents/MacOS/WolframKernel
+else
+  cpp=g++
+  cc=gcc
+  math=math
+fi
+
+fire7np=0
+fermat7=0
+static_stdc=0
+build_openmpi=0
+enable_zlib=0
+enable_snappy=0
+enable_debug=0
+enable_tcmalloc=0
+enable_mimalloc=0
+enable_zstd=0
+small_point=0
+large_point=0
+many_sectors=0
+enable_lto=0
+enable_ginac=0
+enable_pari=0
+enable_symbolica=0
+prebuilt_mpfr=0
+prebuilt_gmp=0
+prebuilt_zstd=0
+prebuilt_flint=0
+set_mprime_count=16
+many_sectors_value=20
+for var in "$@"; do
+  case "$var" in
+  "--fermat7") fermat7=1 ;;
+  "--enable-fire7np") fire7np=1 ;;
+  "--enable_fire7np") fire7np=1 ;;
+  "--build-openmpi") build_openmpi=1 ;;
+  "--build_openmpi") build_openmpi=1 ;;
+  "--prebuilt-mpfr") prebuilt_mpfr=1 ;;
+  "--prebuilt_mpfr") prebuilt_mpfr=1 ;;
+  "--prebuilt-gmp") prebuilt_gmp=1 ;;
+  "--prebuilt_gmp") prebuilt_gmp=1 ;;
+  "--prebuilt-flint") prebuilt_flint=1 ;;
+  "--prebuilt_flint") prebuilt_flint=1 ;;
+  "--prebuilt-zstd") prebuilt_zstd=1 ;;
+  "--prebuilt_zstd") prebuilt_zstd=1 ;;
+  "--enable-zlib") enable_zlib=1 ;;
+  "--enable_zlib") enable_zlib=1 ;;
+  "--enable-snappy") enable_snappy=1 ;;
+  "--enable_snappy") enable_snappy=1 ;;
+  "--enable-debug") enable_debug=1 ;;
+  "--enable_debug") enable_debug=1 ;;
+  "--enable-tcmalloc") enable_tcmalloc=1 ;;
+  "--enable_tcmalloc") enable_tcmalloc=1 ;;
+  "--enable-mimalloc") enable_mimalloc=1 ;;
+  "--enable_mimalloc") enable_mimalloc=1 ;;
+  "--enable-zstd") enable_zstd=1 ;;
+  "--enable_zstd") enable_zstd=1 ;;
+  "--enable-lto") enable_lto=1 ;;
+  "--enable_lto") enable_lto=1 ;;
+  "--small-point") small_point=1 ;;
+  "--small_point") small_point=1 ;;
+  "--large-point") large_point=1; many_sectors=1 ;;
+  "--large_point") large_point=1; many_sectors=1 ;;
+  "--many-sectors") many_sectors=1; ;;
+  "--many_sectors") many_sectors=1; ;;
+  "--enable-ginac") enable_ginac=1 ;;
+  "--enable_ginac") enable_ginac=1 ;;
+  "--enable-pari") enable_pari=1 ;;
+  "--enable_pari") enable_pari=1 ;;
+  "--enable-symbolica") enable_symbolica=1 ;;
+  "--enable_symbolica") enable_symbolica=1 ;;
+  "--static-stdc++") static_stdc=1 ;;
+  "--static_stdc++") static_stdc=1 ;;
+  *)    varstart="${var%=*}"
+        varend="${var#*=}"
+        case "$varstart" in
+            "--cpp")
+                cpp="$varend"
+                ;;
+            "--cc")
+                cc="$varend"
+                ;;
+            "--mprime")
+                set_mprime_count="$varend"
+                ;;
+            "--many_sectors")
+                many_sectors=1
+                many_sectors_value="$varend"
+                ;;
+            "--many-sectors")
+                many_sectors=1
+                many_sectors_value="$varend"
+                ;;
+        *)
+            echo "Option $var not recognized! Skipping it"
+            ;;
+        esac
+  esac
+done
+paths=$(cat paths.inc.in)
+libs=$(cat libs.inc.in)
+text=$(cat Makefile.in)
+stext=$(cat poly/Makefile.in)
+ptext=$(cat prime/Makefile.in)
+mtext=$(cat multiprime/Makefile.in)
+ttext=$(cat tools/Makefile.in)
+if [ $enable_mimalloc = 1 ] && [ $enable_tcmalloc = 1 ]; then
+  echo "CANNOT ENABLE BOTH TCMALLOC AND MIMALLOC!"
+  rm Makefile
+  exit 1
+fi
+
+echo "Using ${set_mprime_count} values in multiprime mode"
+paths=${paths/"SET_MPRIME_COUNT"/${set_mprime_count}}
+
+if [ $small_point = 1 ] && [ $large_point = 1 ]; then
+    echo "Small point and large point options are incompatible, aborting script"
+    echo "!!!!!!!!"
+    exit 1
+fi
+
+if [ $small_point = 1 ] && [ $many_sectors = 1 ]; then
+    echo "Small point and many sectors options are incompatible, aborting script"
+    echo "!!!!!!!!"
+    exit 1
+fi
+
+if [ $fermat7 = 1 ]; then
+    echo "Using fermat7"
+else
+    libs=${libs/"--fermat7 "/""}
+fi
+
+if [ $prebuilt_mpfr = 1 ]; then
+    echo "Using prebuilt mpfr"
+else
+    libs=${libs/"--prebuilt-mpfr "/""}
+fi
+
+if [ $prebuilt_gmp = 1 ]; then
+    echo "Using prebuilt gmp"
+else
+    libs=${libs/"--prebuilt-gmp "/""}
+fi
+
+if [ $prebuilt_flint = 1 ]; then
+    echo "Using prebuilt flint"
+else
+    libs=${libs/"--prebuilt-flint "/""}
+fi
+
+if [ $prebuilt_zstd = 1 ]; then
+    echo "Using prebuilt zstd"
+else
+    paths=${paths/"PREBUILT_ZSTD=1"/""}
+fi
+
+if [ $build_openmpi = 1 ]; then
+    echo "Building openmpi"
+else
+    paths=${paths/"BUILD_OPENMPI=1"/""}
+fi
+
+
+if [ $static_stdc = 0 ]; then
+  stext=${stext/"-static-libstdc++ "/""}
+  ptext=${ptext/"-static-libstdc++ "/""}
+  mtext=${mtext/"-static-libstdc++ "/""}
+  ttext=${ttext/"-static-libstdc++ "/""}
+else
+  echo "Linking with static stdc++"
+  stext=${stext/"-lstdc++ "/""}
+  ptext=${ptext/"-lstdc++ "/""}
+  mtext=${mtext/"-lstdc++ "/""}
+fi
+if [ $enable_ginac = 0 ]; then
+  echo "Disabling ginac lib"
+  paths=${paths/"ENABLE_GINAC=1"/""}
+  libs=${libs/"--enable-ginac "/""}
+  stext=${stext/"-lcln -lginac "/""}
+  stext=${stext/"-lcln -lginac "/""}
+  ptext=${ptext/"-lcln -lginac "/""}
+  ptext=${ptext/"-lcln -lginac "/""}
+  mtext=${mtext/"-lcln -lginac "/""}
+  mtext=${mtext/"-lcln -lginac "/""}
+  ttext=${ttext/"-lcln -lginac "/""}
+  ttext=${ttext/"-lcln -lginac "/""}
+fi
+if [ $enable_pari = 0 ]; then
+  echo "Disabling pari lib"
+  paths=${paths/"ENABLE_PARI=1"/""}
+fi
+if [ $enable_symbolica = 0 ]; then
+  echo "Disabling symbolica lib"
+  paths=${paths/"ENABLE_SYMBOLICA=1"/""}
+  libs=${libs/"--enable-symbolica "/""}
+  stext=${stext/"-lsymbolica "/""};
+  stext=${stext/"-lsymbolica "/""};
+  ptext=${ptext/"-lsymbolica "/""};
+  ptext=${ptext/"-lsymbolica "/""};
+  mtext=${mtext/"-lsymbolica "/""};
+  mtext=${mtext/"-lsymbolica "/""};
+  ttext=${ttext/"-lsymbolica "/""};
+  ttext=${ttext/"-lsymbolica "/""};
+fi
+if [ $enable_zlib = 1 ]; then
+  echo "Enabling zlib compressor"
+  text=${text/"--disable-zlib "/""}
+else
+  stext=${stext/"-DWITH_ZLIB "/""}
+  ptext=${ptext/"-DWITH_ZLIB "/""}
+  mtext=${mtext/"-DWITH_ZLIB "/""}
+  stext=${stext/"-lz "/""}
+  stext=${stext/"-lz "/""}
+  ptext=${ptext/"-lz "/""}
+  ptext=${ptext/"-lz "/""}
+  mtext=${mtext/"-lz "/""}
+  mtext=${mtext/"-lz "/""}
+fi
+if [ $small_point = 1 ]; then echo "Using small point size"; else
+  stext=${stext/"-DSMALL_POINT"/""};
+  ptext=${ptext/"-DSMALL_POINT"/""};
+  mtext=${mtext/"-DSMALL_POINT"/""};
+fi
+if [ $large_point = 1 ]; then echo "Using large point size"; else
+  stext=${stext/"-DLARGE_POINT"/""};
+  ptext=${ptext/"-DLARGE_POINT"/""};
+  mtext=${mtext/"-DLARGE_POINT"/""};
+fi
+if [ $many_sectors = 1 ]; then
+  echo "Using many non-zero sectors with up to 2^$many_sectors_value";
+  stext=${stext/"-DMANY_SECTORS"/"-DMANY_SECTORS=$many_sectors_value"};
+  ptext=${ptext/"-DMANY_SECTORS"/"-DMANY_SECTORS=$many_sectors_value"};
+  mtext=${mtext/"-DMANY_SECTORS"/"-DMANY_SECTORS=$many_sectors_value"};
+else
+  stext=${stext/"-DMANY_SECTORS"/""};
+  ptext=${ptext/"-DMANY_SECTORS"/""};
+  mtext=${mtext/"-DMANY_SECTORS"/""};
+fi
+if [ $enable_debug = 1 ]; then echo "Enabling debug symbols"; else
+  stext=${stext/"-g "/""}
+  ptext=${ptext/"-g "/""}
+  mtext=${mtext/"-g "/""}
+  stext=${stext/"-rdynamic "/""}
+  ptext=${ptext/"-rdynamic "/""}
+  mtext=${mtext/"-rdynamic "/""}
+  stext=${stext/"-rdynamic "/""}
+  ptext=${ptext/"-rdynamic "/""}
+  mtext=${mtext/"-rdynamic "/""}
+  stext=${stext/"-DWITH_DEBUG "/""}
+  ptext=${ptext/"-DWITH_DEBUG "/""}
+  mtext=${mtext/"-DWITH_DEBUG "/""}
+  ttext=${ttext/"-DWITH_DEBUG "/""}
+fi
+if [ $enable_snappy = 1 ]; then echo "Enabling snappy compressor"; else
+  stext=${stext/"-DWITH_SNAPPY "/""}
+  stext=${stext//"-lsnappy "/""}
+  ptext=${ptext/"-DWITH_SNAPPY "/""}
+  ptext=${ptext//"-lsnappy "/""}
+  mtext=${mtext/"-DWITH_SNAPPY "/""}
+  mtext=${mtext//"-lsnappy "/""}
+  paths=${paths/"ENABLE_SNAPPY=1"/""}
+fi
+if [ $enable_zstd = 1 ]; then echo "Enabling ZStandard compressor"; else
+  stext=${stext/"-DWITH_ZSTD "/""}
+  stext=${stext//"-lzstd "/""}
+  stext=${stext//"-lzstd "/""}
+  ptext=${ptext/"-DWITH_ZSTD "/""}
+  ptext=${ptext//"-lzstd "/""}
+  ptext=${ptext//"-lzstd "/""}
+  mtext=${mtext/"-DWITH_ZSTD "/""}
+  mtext=${mtext//"-lzstd "/""}
+  mtext=${mtext//"-lzstd "/""}
+  paths=${paths/"ENABLE_ZSTD=1"/""}
+fi
+if [ $enable_mimalloc = 0 ] && [ $enable_tcmalloc = 0 ]; then
+  stext=${stext/"-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"/""}
+  ptext=${ptext/"-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"/""}
+  mtext=${mtext/"-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"/""}
+fi
+if [ $enable_tcmalloc = 1 ]; then echo "Enabling tcmalloc"; else
+  stext=${stext//"-ltcmalloc_minimal "/""}
+  ptext=${ptext//"-ltcmalloc_minimal "/""}
+  mtext=${mtext//"-ltcmalloc_minimal "/""}
+  paths=${paths/"ENABLE_TCMALLOC=1"/""}
+fi
+if [ $enable_mimalloc = 1 ]; then echo "Enabling mimalloc"; else
+  stext=${stext//"\$(MFLAGS)"/""}
+  stext=${stext//"\$(MFLAGS)"/""}
+  stext=${stext//"\$(MFLAGS)"/""}
+  ptext=${ptext//"\$(MFLAGS)"/""}
+  ptext=${ptext//"\$(MFLAGS)"/""}
+  ptext=${ptext//"\$(MFLAGS)"/""}
+  mtext=${mtext//"\$(MFLAGS)"/""}
+  mtext=${mtext//"\$(MFLAGS)"/""}
+  mtext=${mtext//"\$(MFLAGS)"/""}
+  paths=${paths/"ENABLE_MIMALLOC=1"/""}
+fi
+if [ $enable_lto = 1 ]; then echo "Enabling link-time optimization"; else
+  ptext=${ptext//"-flto -O3 -g "/""}
+  ptext=${ptext//"-flto "/""}
+  mtext=${mtext//"-flto -O3 -g "/""}
+  mtext=${mtext//"-flto "/""}
+fi
+if [ $fire7np = 1 ]; then
+  echo "Enabling FIRE7np"
+  paths="${paths}
+NP_INCLUDE = -isystem../../FIRE7np/extra/TinySolve/src -isystem../../FIRE7np/extra/TinySolve/src/extra/sparse-map/include -isystem../../FIRE7np/extra/TinySolve/src/extra/unordered_dense/include"; else
+  paths=${paths/"ENABLE_FIRE7NP=1"/""}
+fi
+
+FIRE_folder_string="\${FIRE_folder}"
+paths=${paths/"CPLUSPLUSCOMPILER"/"$cpp"}
+paths=${paths/"CCOMPILER"/"$cc"}
+
+echo "Using $cpp as the compiler for c++"
+echo "Using $cc as the compiler for c"
+
+echo "$paths" >paths.inc
+echo "$libs" >libs.inc
+echo "$text" >Makefile
+echo "$stext" >poly/Makefile
+echo "$ptext" >prime/Makefile
+echo "$mtext" >multiprime/Makefile
+echo "$ttext" >tools/Makefile
+echo "";
+echo "Done";
+echo "make dep: build dependancy libraries";
+echo "make: build FIRE";
+echo "";
+echo "";
+if [ $cpp = g++ ]; then
+    echo "Minimal gcc version required: 9"
+    echo "Current gcc version: $(gcc -dumpversion)"
+fi
+echo "";
+echo "";

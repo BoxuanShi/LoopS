@@ -1,0 +1,77 @@
+FIRE 6 - Feynman Integral REduction
+Copyright (C) 2014 A. Smirnov
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+--------------------------------------------------------------------------
+
+The package contents:
+bin/ - the folder with simlinks to all binary files
+extra/ - external packages such as kyotocabinet, snappy, LiteRed, fermat
+usr/ - the folder where the external libraries are installed
+temp/ - temporary folder, not included in git
+sources/ - the sources of C++ FIRE
+poly/ - where polynomial version of FIRE is built
+prime/ - where modular arithmetic version of FIRE is built
+examples/ - examples
+documentation/ - the folder where documentation is generated
+tests/ - the folder where all tests used by tests.makefile reside
+reports/ - the folder where reports can be stored, not logged by git
+reconstruction/ - the folder where reconstruction programs reside
+tests.makefile - Makefile which describes tests to be run on FIRE
+
+--------------------------------------------------------------------------
+
+For Mac OS X users
+    
+To configure and make a project:
+
+    ./configure --cpp=g++ --cc=gcc
+    make dep
+    make
+
+Troubleshooting:
+  
+    error: "fatal error: 'omp.h' file not found" with clang, while gcc is ok
+    fix: sudo apt install libomp-dev
+ 
+    error: unsupported option '-fopenmp'
+    fix: Occurs when clang compiler is used even
+         though you have chosen a gcc/g++ in 
+         configure options.
+         To fix this error you have to write an
+         aliases for gcc in your shell .*rc file
+         Also you have to install gcc/g++.
+
+         Example:
+            1.  Run the command in terminal:
+                brew install gcc@12
+            2a. If you are using bash:
+                    vim ~/.bashrc
+            2b. If you are using zsh:
+                    vim ~/.zshrc
+            3.  add this text to the end of the file:
+                    alias gcc='gcc-12'
+                    alias cc='gcc-12'
+                    alias g++='g++-12'
+                    alias c++='g++-12'
+
+         Now try making FIRE again after those commands:
+            make depclean
+            make clean
+            
+--------------------------------------------------------------------------
+
+For examples listing see examples/README
+For information about documentation see documentation/README

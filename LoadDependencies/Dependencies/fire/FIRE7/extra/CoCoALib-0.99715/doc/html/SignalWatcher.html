@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.sf.net">
+<LINK REL="stylesheet" TYPE="text/css" HREF="cocoalib-doc.css">
+<TITLE>      SignalWatcher</TITLE>
+</HEAD><BODY BGCOLOR="white" TEXT="black">
+<P ALIGN="center"><CENTER><H1>      SignalWatcher</H1>
+<FONT SIZE="4">
+<I>      &copy;  2017  John Abbott,  Anna M. Bigatti</I><BR>
+      GNU Free Documentation License, Version 1.2
+</FONT></CENTER>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+    <UL>
+    <LI><A HREF="#examples">Examples</A>
+    <LI><A HREF="#toc2">User documentation</A>
+      <UL>
+      <LI><A HREF="#constructors">Constructors and pseudo-constructors</A>
+      <LI><A HREF="#queries">Queries</A>
+      <LI><A HREF="#operations">Operations</A>
+      </UL>
+    <LI><A HREF="#toc6">Maintainer documentation</A>
+    <LI><A HREF="#toc7">Bugs, shortcomings and other ideas</A>
+    <LI><A HREF="#toc8">Main changes</A>
+    </UL>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+<P>
+      <center><a href="index.html">CoCoALib Documentation Index</a></center>
+</P>
+<A NAME="examples"></A>
+<H2>Examples</H2>
+<UL>
+<LI><A HREF="../../examples/index.html#ex-interrupt1.C">ex-interrupt1.C</A>
+<LI><A HREF="../../examples/index.html#ex-interrupt2.C">ex-interrupt2.C</A>
+</UL>
+
+<P></P>
+<A NAME="toc2"></A>
+<H2>User documentation</H2>
+<P>
+A <CODE>SignalWatcher</CODE> is part of the CoCoA mechanism for detecting and
+reacting to interprocess signals (sometimes known as "interrupts").
+</P>
+<P>
+Since CoCoALib is a software library, it does not change any existing
+signal handlers unless you tell to do so explicitly.  A <CODE>SignalWatcher</CODE>
+is an RAII object: creating it installs CoCoA's "signal handler" for
+the given signal; destroying it, reinstates the previous "signal
+handler".
+</P>
+<P>
+A <CODE>SignalWatcher</CODE> by itself does not do much: it simply "takes note"
+when a signal of the given type arrives.  CoCoALib can react to a
+signal only after it has been noted by a <CODE>SignalWatcher</CODE> <B>and</B>
+the procedure <CODE>CheckForInterrupt</CODE> is called -- see <A HREF="interrupt.html"><CODE>interrupt</CODE></A>
+for a summary, or look at the example programs.
+</P>
+<P>
+If several signals arrive before <CODE>CheckForInterrupt</CODE> is called, only
+the last signal is heeded; the others are "forgotten".
+</P>
+<A NAME="constructors"></A>
+<H3>Constructors and pseudo-constructors</H3>
+<UL>
+<LI><CODE>SignalWatcher(sig)</CODE> -- install the standard CoCoALib signal handler for the
+signal <CODE>sig</CODE> (usually this will be <CODE>SIGINT</CODE>)
+<LI><CODE>SignalWatcher(sig, OtherHandler)</CODE> -- install <CODE>OtherHandler</CODE> for the signal
+<CODE>sig</CODE>; <CODE>OtherHandler</CODE> is of type <CODE>void OtherHandler(int)</CODE>
+<LI><CODE>DESTRUCTOR</CODE> -- the destructor reinstates the previous handler for the signal
+specified in the constructor
+</UL>
+
+<P></P>
+<P>
+The exception which thrown when <CODE>CheckForInterrupt</CODE> detects a signal is
+created by the following constructor:
+</P>
+<UL>
+<LI><CODE>InterruptedBySignal(sig, context)</CODE> -- where <CODE>sig</CODE> is an <CODE>int</CODE> indicating the
+signal which has arrived, and <CODE>context</CODE> is a string literal (usually indicating
+the function which was interrupted)
+</UL>
+
+<P></P>
+<A NAME="queries"></A>
+<H3>Queries</H3>
+<P>
+Let <CODE>SW</CODE> be a <CODE>SignalWatcher</CODE>.
+</P>
+<UL>
+<LI><CODE>IsActive(SW)</CODE> -- <CODE>true</CODE> iff <CODE>SW</CODE> has not been deactivated (see below)
+<LI><CODE>GetAndResetSignalReceived()</CODE> -- returns an <CODE>int</CODE>: zero if no signal has arrived,
+otherwise the integer value of the signal.  <B>Resets the register of last-signal-received.</B>
+</UL>
+
+<P></P>
+<A NAME="operations"></A>
+<H3>Operations</H3>
+<P>
+Let <CODE>SW</CODE> be of type <CODE>SignalWatcher</CODE>; and let <CODE>INTR</CODE> be of type <CODE>InterruptedBySignal</CODE>
+</P>
+<UL>
+<LI><CODE>deactivate(SW)</CODE> -- effectively "destroys" <CODE>SW</CODE>, _i.e._ reinstates the previous signal handler
+<LI><CODE>TriggeringSignal(INTR)</CODE> -- returns an <CODE>int</CODE> indicating the signal specified when creating <CODE>INTR</CODE>
+<LI><CODE>SetSignalReceived(sig)</CODE> -- sets the register of last-signal-received to <CODE>sig</CODE>; note that zero
+means no signal received.  You probably should not use this function!
+</UL>
+
+<P></P>
+<A NAME="toc6"></A>
+<H2>Maintainer documentation</H2>
+<P>
+The implementation is straightforward (except for <CODE>SetSignalReceived</CODE>
+which still involves a "dodgy hack" from an earlier implementation).
+</P>
+<P>
+For portability the CoCoALib signal handler just sets
+a "hidden" global variable <CODE>CoCoA::&lt;anon&gt;::SignalReceived</CODE>
+(of type <CODE>std::sig_atomic_t</CODE>).
+</P>
+<P>
+The CoCoALib signal handler is registered by creating an object
+of type <CODE>SignalWatcher</CODE>; its constructor takes as arg the signal
+to detect.  The original signal is restored when the <CODE>SignalWatcher</CODE>
+is destroyed (or when the mem fn <CODE>myDeactivate</CODE> is called).
+</P>
+<A NAME="toc7"></A>
+<H2>Bugs, shortcomings and other ideas</H2>
+<P>
+I do not know how threadsafe the implementation is: hopefully it is good,
+but I doubt it is perfect.
+</P>
+<A NAME="toc8"></A>
+<H2>Main changes</H2>
+<P>
+<B>2017</B>
+</P>
+<UL>
+<LI>July (v0.99555): first release (was previously inside "interrupt")
+</UL>
+
+<P></P>
+
+<!-- html code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags -t html -o html/SignalWatcher.html -i txt/SignalWatcher.txt -->
+</BODY></HTML>
