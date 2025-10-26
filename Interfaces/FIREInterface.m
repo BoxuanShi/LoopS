@@ -15,8 +15,10 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
   (*check install*)
   If[!FileExistsQ[$FIREInstallPath] || !StringMatchQ[FileNameTake@$FIREInstallPath, "FIRE" ~~ __ ~~ ".m"], Print["$FIREInstallPath is wrong."]; Abort[]];
   (*create directories*)
+  Off[CreateDirectory::eexist];
   CreateDirectoryS@FIREWorkPath;
   CreateDirectoryS@FileNameJoin[{FIREWorkPath, "temp"}];
+  On[CreateDirectory::eexist];
   (*start file*)
   template = FIRETemplate["Start"];
   startfile = FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}];

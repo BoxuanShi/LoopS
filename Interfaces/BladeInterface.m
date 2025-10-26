@@ -23,8 +23,10 @@ BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmom
   (*toBLform*)
   toBLform[expr_] := expr /. G[a_, b_] :> BL[BladeFamilyName <> ToString[problem], b];
   (*create directories*)
+  Off[CreateDirectory::eexist];
   CreateDirectoryS@BladeWorkPath;
   CreateDirectoryS@FileNameJoin[{BladeWorkPath, "temp"}];
+  On[CreateDirectory::eexist];
   (*target file*)
   Fslist2 = DeleteCases[Fslist, x_ /; x[[1]] =!= problem];
   topsector = FindTopSectors@Fslist2 // toBLform;
