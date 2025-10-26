@@ -1,2 +1,2 @@
 /media/balth/DATA1/work/LoopSWork/packages/LoopS/LoadDependencies/Dependencies/fire/FIRE7/bin/FIRE7 -c /media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/ZHR/IBPReduction/FIRE/familyNLO1;
-wolframscript -file /media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/ZHR/IBPReduction/FIRE/temp/familyNLO1save.wl;
+wolframscript -file /media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/Processes/ZHR/IBPReduction/FIRE/temp/familyNLO1save.wl ;

@@ -73,7 +73,10 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
   Do[
     If[FileExistsQ[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> ".config"}]], 
       WriteString[stream, FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}] <> " -c " <> FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i]}] <> ";\n"];
-      WriteString[stream, "wolframscript -file " <> FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}] <> ";\n"],
+      If[OptionValue["FIREUseMMA"],
+        WriteString[stream, StringRiffle@{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}],";\n"}],
+        WriteString[stream, StringRiffle@{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]} <> ";\n"]
+        ],
       Break[]]
     , {i, Infinity}];
   Close[stream];
@@ -108,7 +111,7 @@ FIRELoadIBP::usage = "FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_Str
 FIRELoadIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, FIRELoadIBP[problem, loops, {FIREWorkPath[p["ProcessName"]], FIREFamilyName[loops]}]]
 FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}] := Module[{path},
   path = FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}];
-  Get[path]
+  Get[path] /. d -> D
   ]
 
 
