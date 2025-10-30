@@ -51,7 +51,7 @@ Get["InterfacesLoad.m"];
 (*Unusual bug fix*)
 (* LoopSWorkDirectory; *)
 (*Generate LoopS directory*)
-(* CreateDirectoryS[LoopSWorkDirectory]; *)
+CreateDirectoryS[LoopSWorkDirectory];
 (*LoopSNeatEnd2*)
 End[];
 
