@@ -1,2 +1,2 @@
 ClearAll[CollectFlat];
-CollectFlat[expr_, patt_, func1_ : (# &), func2_ : (# &)] := Module[{hd}, Expand[Collect[expr, patt, hd]] /. hd[a_] * b_. :> func1[a] func2[b]]
+CollectFlat[expr_, patt_, func1_ : (# &), func2_ : (# &)] := Module[{hd, f1, f2}, Expand[Collect[expr, patt, hd]] /. hd[a_] * b_. :> f1[a] f2[b] /. Dispatch@{f1 -> func1, f2 -> func2}]
