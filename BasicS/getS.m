@@ -4,7 +4,8 @@ getS[expr_, patt_, opt : OptionsPattern[]] := Cases[expr, patt, {0, Infinity}] /
 
 ClearAll[getV]
 getV[expr_] := Variables[expr]
-getV[expr_, patt_] := Variables[expr] // Select[#, !FreeQ[#, patt] &] &
+(* getV[expr_, patt_] := Variables[expr] // Select[#, !FreeQ[#, patt] &] & *)
+getV[expr_, patt_] := Variables[expr] // Cases[#, patt, {1}]&
 
 ClearAll[getDo]
 getDo[expr_, patt_, func_] := Module[{tp1, tp2, tp3},
