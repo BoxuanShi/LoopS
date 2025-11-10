@@ -26,7 +26,7 @@ SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, 
      Return[OptionValue["SeparateHead"] @@ {{}, {}}],
      Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]]
   ];
-  sa = CoefficientArrays[expr, vars];
+  sa = Check[CoefficientArrays[expr, vars], Abort[], {CoefficientArrays::poly, CoefficientArrays::ivar}];
   ar = (ArrayRules /@ sa[[2 ;; -1]])[[All, 1 ;; -2]] // Flatten;
   ltop[list_] := opr @@ (vars[[#]] & /@ list);
   tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
