@@ -7,9 +7,9 @@ NumeratorReduction::spinor = "Spinor still exist, the operatorRules is not compl
 
 Options[NumeratorReduction] := CreateOptions[{"OperatorCollect" -> False, "OperatorReplace" -> True, "PVPatt" -> Automatic, "MaxIt" -> 10, "NumeratorReductionSimplify" :> SimplifyS, "NumeratorReductionForm" -> "Expression", "NumeratorReductionDispatch" -> True, "OperatorName" -> OPs, "OperatorHead" -> (# &)}, {CollectS}];
 
-NumeratorReduction[expr_, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := NumeratorReduction[expr, ToExpression[process], opt]
-NumeratorReduction[expr_, process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := NumeratorReduction[expr, process["indices"], process["operatorRules"], process["loopmoms"], process["moms"], process["extmomsind"], process["purePV"], opt]
-NumeratorReduction[expr_, indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop, maxit = OptionValue["MaxIt"], itc = 0, TestFunction, operatorRules},
+NumeratorReduction[expr_, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, NumeratorReduction[expr, p["indices"], p["operatorRules"], p["loopmoms"], p["moms"], p["extmomsind"], p["purePV"], opt]]
+NumeratorReduction[expr_List, indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] := NumeratorReduction[#, indices, operatorRules0, loopmoms, moms, extmomsind, purePV, opt]& /@ expr;
+NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] := Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop, maxit = OptionValue["MaxIt"], itc = 0, TestFunction, operatorRules},
   
   operatorRules = If[Head[operatorRules0] === Dispatch, operatorRules0, Dispatch@operatorRules0];
   
@@ -30,7 +30,8 @@ NumeratorReduction[expr_, indices_List, operatorRules0_List | operatorRules0_Dis
     tp1[[2]] = TableS[ DiracSimplify[ tp1[[2, i]] /. DiracTrace -> TR ], {i, Length @ tp1[[2]]} ];
     tp1 = Dot @@ tp1 // ExpandDirac (*//TimingS*);
 
-    tp2 = tp1 // CollectS[#, _FAD | _SFAD, # &, FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &; , "NumeratorReduction: Preprocessing..."];
+    tp2 = tp1 // CollectS[#, _FAD | _SFAD, # &, FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &; , "NumeratorReduction: Preprocessing..."
+  ];
 
   (*have to collect FVD, MTD here, otherwise, 
   many terms with open index appear...*)
