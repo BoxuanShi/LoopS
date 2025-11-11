@@ -4,8 +4,8 @@ DropZeroByNumerics::usage = "1. DropZeroByNumerics[expr0, expr, patt] drops the 
 DropZeroByNumerics[expr0_, patt_] := DropZeroByNumerics[expr0, expr0, patt]
 DropZeroByNumerics[expr0_, expr_, patt_] := Module[{x, tp1, poly1, vars, func1, poly2, poly3, polyv, tpRules2},
   poly1 = expr0 // getS[#, patt] &;
-  tp1 = expr // SeparatePoly[#, poly1, "SeparateDropOne" -> True] &;
-  If[! SubsetQ[poly1, tp1[[2]]], Print["DropZeroByNumerics: expr is not linear dependent with patt."]; Abort[]];
+  tp1 = expr // SeparatePoly[#, poly1] &;
+  If[! SubsetQ[Append[poly1,1], tp1[[2]]], Print["DropZeroByNumerics: expr is not linear dependent with patt."]; Abort[]];
   
   func1[exprf_, varsf_] := Module[{tpvalues, tpRules, tpf1}, 
     tpvalues = ConstantArray[Hold[RandomReal[WorkingPrecision -> 50]], Length @ varsf] // ReleaseHold;

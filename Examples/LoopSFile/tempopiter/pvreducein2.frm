@@ -1,5 +1,5 @@
 
-#: IncDir /media/balth/DATA1/work/LoopSWork/packages/LoopS/LoadDependencies/Dependencies/opiter/opiter
+#: IncDir /Users/balth/Library/Mathematica/Applications/LoopS/LoadDependencies/Dependencies/opiter/opiter
 #include- opiter.frm
 Autodeclare Vector q;
 Off statistics;
@@ -11,5 +11,5 @@ L F2=ext(q1,q2)*loop(p1,p2)*p1(mu1)*p1(mu2)*p1(mu3)*p2(mu4);
 #call leavedualtransverse
 .sort
 B loop,ext,Gsigma,d_,ddts,dual,sym,deno;
-#write </media/balth/DATA1/work/LoopSWork/packages/LoopS/Examples/LoopSFile/tempopiter/pvreduceout2.m> "%e",F2;
+#write </Users/balth/Library/Mathematica/Applications/LoopS/Examples/LoopSFile/tempopiter/pvreduceout2.m> "%e",F2;
 .end

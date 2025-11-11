@@ -106,7 +106,6 @@ sameSetQ;
 
 Separate;
 SeparateHead;
-SeparateDropOne;
 SeparatePattMatch;
 SeparatePoly;
 SeparateOperation;

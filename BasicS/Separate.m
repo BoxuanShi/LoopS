@@ -16,20 +16,31 @@ Separate[expr : Except[_List], patt : Except[_List], opt : OptionsPattern[]] := 
   vars = OptionValue["SeparatePattMatch"][{expr}, patt];
   SeparatePoly[expr, vars, Evaluate @ FilterOptions[{opt}, SeparatePoly]]]
 
-Options[SeparatePoly] = {"SeparateHead" -> List, "SeparateDropOne" -> False, "SeparateOperation" -> Times};
+SeparatePoly::poly = "SeparatePoly: non polynomial expression `1`. `2` are not separated.";
+Options[SeparatePoly] = {"SeparateHead" -> List, "SeparateOperation" -> Times};
 SeparatePoly[expr_List, vars_List, opt : OptionsPattern[]] := SeparatePoly[#, vars, opt] & /@ expr;
-SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, tp1, opr},
+SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, tp1, opr, plq},
   opr = OptionValue["SeparateOperation"];
   If[expr === 0, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
-  If[vars === {},
-    If[OptionValue["SeparateDropOne"], 
-     Return[OptionValue["SeparateHead"] @@ {{}, {}}],
-     Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]]
-  ];
-  sa = Check[CoefficientArrays[expr, vars], Abort[], {CoefficientArrays::poly, CoefficientArrays::ivar}];
-  ar = (ArrayRules /@ sa[[2 ;; -1]])[[All, 1 ;; -2]] // Flatten;
-  ltop[list_] := opr @@ (vars[[#]] & /@ list);
-  tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
-  tp1 = SortBy[tp1, Last];
-  If[sa[[1]] =!= 0 && ! OptionValue["SeparateDropOne"], PrependTo[tp1, {sa[[1]], opr @@ {1}}], Nothing];
-  OptionValue["SeparateHead"] @@ Transpose[tp1]]
+  (* If[vars === {} || (plq = !PolynomialQ[expr, vars]), 
+    If[plq, Message[SeparatePoly::poly, expr, vars]];
+    Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]
+  ]; *)
+  If[vars === {}, Return[OptionValue["SeparateHead"] @@ {{expr}, {1}}]];
+
+  If[Length@vars > 1,
+    sa = Check[CoefficientArrays[expr, vars], Abort[], {CoefficientArrays::poly, CoefficientArrays::ivar}];
+    ar = (ArrayRules /@ sa[[2 ;; -1]])[[All, 1 ;; -2]] // Flatten;
+    ltop[list_] := opr @@ (vars[[#]] & /@ list);
+    tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
+    tp1 = SortBy[tp1, Last];
+    If[sa[[1]] =!= 0, PrependTo[tp1, {sa[[1]], opr @@ {1}}], Nothing];
+    OptionValue["SeparateHead"] @@ Transpose[tp1]
+    ,
+    sa = Check[CoefficientList[expr, vars], Abort[], {CoefficientList::poly}];
+    tp1 = vars[[1]]^Range[0, Length@sa - 1];
+    tp1 = Transpose[{sa, tp1}];
+    tp1 = Select[tp1, #[[1]] =!= 0 &];
+    OptionValue["SeparateHead"] @@ Transpose[tp1]
+  ]
+]
