@@ -9,7 +9,8 @@ DropZeroByNumerics[expr0_, expr_, patt_] := Module[{x, tp1, poly1, vars, func1, 
   
   func1[exprf_, varsf_] := Module[{tpvalues, tpRules, tpf1}, 
     tpvalues = ConstantArray[Hold[RandomReal[WorkingPrecision -> 50]], Length @ varsf] // ReleaseHold;
-    tpRules = Dispatch@Thread[(Verbatim /@ varsf) -> tpvalues];
+    tpRules = Dispatch@Thread[(varsf) -> tpvalues];
+    (* tpRules = Dispatch@Thread[(Verbatim /@ varsf) -> tpvalues]; *)
     tpf1 = exprf /. tpRules;
     tpf1 // CollectS[#, patt, Chop[TogetherExpand[#], 10^-5] &] & // getS[#, patt] &];
 
