@@ -26,7 +26,6 @@ Get[FileNameJoin[{$LoopSInstallPath, "Config.m"}]];
 EndPackage[];
 
 
-
 (*LoadDependencies*)
 Print["################## LoopS: Loading Dependencies ##################"];
 $Path = Union@Append[$Path,FileNameJoin[{$LoopSInstallPath,"LoadDependencies"}]];
