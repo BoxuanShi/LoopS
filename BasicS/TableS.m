@@ -1,5 +1,5 @@
 ClearAll[TimingS, CreateDirectoryS]
-SetAttributes[TimingS, HoldAll]
+SetAttributes[TimingS, HoldFirst]
 TimingS::usage = "TimingS[expr, str] evaluate expr and print the time used with optional str. When using the second argument, do not use profix \"\\\\\".";
 TimingS[expr_, str_String : ""] := Module[{tp1, tp2, tp3},
   tp2 = expr // AbsoluteTiming;

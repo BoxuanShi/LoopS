@@ -29,6 +29,8 @@ FactorFlat;
 FactorFlat2;
 FactorListRev;
 AbbreviateDeno;
+AbbreviateDenoName;
+AbbreviateDenoExplict;
 AbbrD;
 
 AbbreviateFactor;
@@ -64,6 +66,8 @@ DistributeToPolyND;
 DownValuesArguments;
 
 DropZeroByNumerics;
+
+ExpandS;
 
 FormDo;
 

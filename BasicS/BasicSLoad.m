@@ -38,3 +38,4 @@ Get["DropZeroByNumerics.m"];
 Get["AbbreviateFactor.m"];
 Get["DumpDistribute.m"];
 Get["DistributeAssociation.m"];
+Get["ExpandS.m"];
