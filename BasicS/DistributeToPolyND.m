@@ -3,7 +3,7 @@ SetAttributes[DistributeToPolyND, Listable];
 DistributeToPolyND[expr_] := Total@Flatten@DistributeToPolyND0[{expr}]
 DistributeToPolyND0[expr_] := DistributeToPolyND0[expr, Variables[expr]];
 DistributeToPolyND0[expr_Plus, vars_List] := DistributeToPolyND0[List @@ expr, vars]; 
-DistributeToPolyND0[expr_List, vars_List] := Union[Flatten[(DistributeToPolyND0[#1, vars] &) /@ expr]]; 
+DistributeToPolyND0[expr_List, vars_List] := Flatten[(DistributeToPolyND0[#1, vars] &) /@ expr]; 
 DistributeToPolyND0[expr_, vars_List] := Module[{ND, tp1},
   ND = {Numerator[expr], Denominator[expr]};
   If[! AllTrue[ND, PolynomialQ],
