@@ -8,7 +8,7 @@ DistributeToPolyND0[expr_, vars_List] := Module[{ND, tp1},
   ND = {Numerator[expr], Denominator[expr]};
   If[! AllTrue[ND, PolynomialQ],
     If[
-    (tp1 = Distribute[expr]) =!= expr && Head[expr] === Times,
+    (tp1 = Distribute[expr, Plus, Times]) =!= expr,
     Return[DistributeToPolyND0[tp1, vars]],
     Print["DistributeToPolyND0: Encountered unknow structures. Use Together or Factor Firstly."]; Abort[];
     ];,
