@@ -30,7 +30,7 @@ FactorFlat2;
 FactorListRev;
 AbbreviateDeno;
 AbbreviateDenoName;
-AbbreviateDenoExplict;
+AbbreviateDenoExplicit;
 AbbrD;
 
 AbbreviateFactor;

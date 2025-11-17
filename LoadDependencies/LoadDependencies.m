@@ -19,7 +19,7 @@ If[$OperatingSystem =!= "Windows",
     Print[Style["OPIteR can be add by: git clone https://bitbucket.org/jaegoode/opiter.git "<> ToString[DirectoryName @ $OPITeRInstallPath], FontColor->Red]];
     Print[Style["Or set $OPITeRInstallPath as the path of OPITeR's example.frm directory.", FontColor->Red]]
     ]
-  ];
+];
 
 
 EndPackage[];

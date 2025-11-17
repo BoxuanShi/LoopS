@@ -18,11 +18,11 @@ FactorListRev[factorlist_List] := Times @@ ((Power[#[[1]], #[[2]]] &) /@ factorl
 
 
 ClearAll[AbbreviateDeno]; Protect[AbbrD];
-Options[AbbreviateDeno] = {"AbbreviateDenoName" -> AbbrD, "AbbreviateDenoExplict" -> False};
+Options[AbbreviateDeno] = {"AbbreviateDenoName" -> AbbrD, "AbbreviateDenoExplicit" -> False};
 AbbreviateDeno[expr_, opt : OptionsPattern[]] := Module[{tp1, tp2, abbr},
   tp1 = DistributeToPolyND[expr];
   tp2 = AbbreviateDenominators[tp1, {}, InverseSymbol -> abbr];
-  If[OptionValue["AbbreviateDenoExplict"],
+  If[OptionValue["AbbreviateDenoExplicit"],
     {tp2[[1]] /. Dispatch @ Thread[tp2[[3]] -> (OptionValue["AbbreviateDenoName"] /@ (1 / tp2[[2]]))], OptionValue["AbbreviateDenoName"] -> (#&)}
     ,
     {tp2[[1]], Thread[tp2[[3]] -> 1 / tp2[[2]]]} /. Dispatch @ Thread[tp2[[3]] -> Array[OptionValue["AbbreviateDenoName"], Length @ tp2[[3]]]]
