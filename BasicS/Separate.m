@@ -6,6 +6,7 @@ Separate::usage = "1. Separate[expr, patt] separate polynomials consitituted by 
 Options[Separate] := CreateOptions[{"SeparatePattMatch" -> getS}, {SeparatePoly}];
 Separate[expr_List, patt_, opt : OptionsPattern[]] := Separate[#, patt, opt] & /@ expr;
 Separate[expr : Except[_List], patt_List, opt : OptionsPattern[]] := Module[{coe, patt2},
+  If[expr === 0, Return[OptionValue["SeparateHead"] @@ ConstantArray[{}, Length @ patt + 1]]];
   {coe, patt2} = Separate[expr, Alternatives @@ patt];
   patt2 = (ListS[#, {}, Times] &) /@ patt2;
   patt2 = (Table[Select[#, MatchQ[# /. a_^b_ :> a, patt[[i]]] &], {i, Length @ patt}] &) /@ patt2;
