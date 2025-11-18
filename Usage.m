@@ -113,6 +113,7 @@ SeparateHead;
 SeparatePattMatch;
 SeparatePoly;
 SeparateOperation;
+CoefficientLinear;
 
 SeriesPoly;
 SeriesPower;

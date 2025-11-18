@@ -46,3 +46,7 @@ SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, 
     OptionValue["SeparateHead"] @@ Transpose[tp1]
   ]
 ]
+
+
+ClearAll[CoefficientLinear]
+CoefficientLinear[expr_, arglist_List] := SeparatePoly[expr, Variables[arglist]] // Transpose // GroupBy[#, #[[2]] &] & // # /@ arglist & // # /. _Missing -> {{0}} & // #[[All, 1, 1]] &
