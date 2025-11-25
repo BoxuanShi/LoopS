@@ -1,12 +1,12 @@
 BeginPackage["LoopS`"];
 
 
-(*LoopSInformation*)
-$LoopSVersion="2025-10-24";
+(*Paths*)
 $LoopSInstallPath = DirectoryName[$InputFileName];
 $NotebookDirectory = DirectoryName[NotebookFileName[]]
 
 
+$LoopSVersion="2025-11-25";
 Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
 Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
 Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
@@ -40,7 +40,8 @@ Parallel`Protected`AddInitCode[Parallel`Client`HoldCompound[
       Get[FileNameJoin[{LoopS`Private`ins, "LoopSCore.m"}]]]
       ]]
 ];
-(* Parallel`Protected`addBadContext["LoopS`"]; *)
+(* Parallel`Protected`addBadContext["LoopS`"];*)
+(*this is because of that the definitions of "AlgebrasDefinition", so as "ClearProcess", etc, are changed by the user. I can add the above line and optimize the package by adding "DumpDistribute" to the relevant functions in "PrepareParallel" in the future, since "DumpDistribute" still functions even with the above line, which is different with the MMA function DistirbuteDefinition.*)
 
 
 (*setshared*)

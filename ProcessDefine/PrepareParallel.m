@@ -17,4 +17,4 @@ PrepareParallel[kernels0_Integer : 0, opt : OptionsPattern[]] := Module[{kernels
     ParallelEvaluate[ParallelLoad[]];
     Print["Parallelization is prepared for ", Length@Kernels[], " Kernels."];
     Print["The default number of the kernel prepared is controlled by LoopSParallelKernels."];
-    ]
+]
