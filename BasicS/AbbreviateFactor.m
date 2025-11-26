@@ -2,16 +2,16 @@ ClearAll[AbbreviateFactor];
 AbbreviateFactor::usage = "1. AbbreviateFactor[expr, condi] can abbreviate factors satisfy the condi. 
 2. Option \"AbbreviateFactorName\" can replace the default name AbbrF.";
 Options[AbbreviateFactor] = {"AbbreviateFactorName" -> AbbrF};
-AbbreviateFactor[expr_, condi_, opt : OptionsPattern[]] := Module[{tp1, tp2, head2, factors, name, rules},
+AbbreviateFactor[expr_, condi_, opt : OptionsPattern[]] := Module[{tp1, tp2, head2, factors, name, rules, rulesdis},
   tp1 = expr // FactorCondition[#, condi, "FactorConditionHead" -> head2] &;
   factors = Union @ Flatten[{tp1}][[All, 1]];
   factors = factors // DeleteCases[#, 1] &;
   (* factors = Verbatim /@ factors; *)
   name = OptionValue["AbbreviateFactorName"];
   rules = Thread[factors -> Array[name, Length @ factors]];
-  tp2 = tp1 /. Dispatch @ rules;
-  tp2 = tp2 /. head2 -> Times;
-  rules = Reverse /@ rules (*/. Verbatim -> (# &) *) /. head2 -> Times;
+  rulesdis = Dispatch@rules;
+  tp2 = tp1 /. head2[x_, y_] :> Replace[x, rulesdis] * y;
+  rules = Reverse /@ rules (*/. head2 -> Times*);
   {tp2, rules}]
 
 

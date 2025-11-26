@@ -1,6 +1,7 @@
 ClearAll[DropZeroByNumerics];
 DropZeroByNumerics::usage = "1. DropZeroByNumerics[expr0, expr, patt] drops the patt with zero coefficient in expr0 according to expr by numerics.
 2. DropZeroByNumerics does not change the original structure of expr0, so that the expr should be linear dependent with patt.";
+DropZeroByNumerics[expr0_] := Module[{yum}, DropZeroByNumerics[yum*expr0, yum*expr0, yum]];
 DropZeroByNumerics[expr0_, patt_] := DropZeroByNumerics[expr0, expr0, patt]
 DropZeroByNumerics[expr0_, expr_, patt_] := Module[{x, tp1, poly1, vars, func1, poly2, poly3, polyv, tpRules2},
   poly1 = expr0 // getS[#, patt] &;

@@ -32,6 +32,7 @@ SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, 
   If[Length@vars <= 5,
     sa = Check[CoefficientList[expr, vars], Abort[], {CoefficientList::poly}];
     ar = ArrayRules[sa][[1 ;; -2]];
+    If[ar === {}, Return[OptionValue["SeparateHead"] @@ {{}, {}}]];
     ltop[list_] := opr @@ (vars ^ (list-1));
     tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
     tp1 = SortBy[tp1, {#[[2]] =!= 1 &, Last}];
@@ -42,7 +43,7 @@ SeparatePoly[expr_, vars_List, opt : OptionsPattern[]] := Module[{sa, ar, ltop, 
     ltop[list_] := opr @@ (vars[[#]] & /@ list);
     tp1 = ar /. (x_ -> y_) :> {y, ltop[x]};
     tp1 = SortBy[tp1, Last];
-    If[sa[[1]] =!= 0, PrependTo[tp1, {sa[[1]], opr @@ {1}}], Nothing];
+    If[sa[[1]] =!= 0, PrependTo[tp1, {Chop[sa[[1]]], opr @@ {1}}], Nothing];
     OptionValue["SeparateHead"] @@ Transpose[tp1]
   ]
 ]
