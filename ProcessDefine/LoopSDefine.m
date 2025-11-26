@@ -26,4 +26,4 @@ LoopSWorkDirectory = PathName @ FileNameJoin[{ExpandFileName[$NotebookDirectory]
 SimplifyS = If[ToString[SimplifyS] === "SimplifyS", Factor, SimplifyS];
 DiracPattern =  _Dot | _DiracTrace | _Spinor | _GAD | _GSD | _DiracGamma;
 OperatorPattern = If[ToString@OperatorPattern === "OperatorPattern", DiracPattern, OperatorPattern];
-AmplitudePattern = _Dot | _DiracTrace | _Spinor | _GAD | _GSD | _FVD | _MTD | _FAD | _SPD | _Pair | _DiracGamma;
+AmplitudePattern = _Dot | _DiracTrace | _Spinor | _GAD | _GSD | _FVD | _MTD | _FAD | _SFAD| _SPD | _Pair | _DiracGamma;
