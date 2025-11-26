@@ -7,4 +7,5 @@ AbbreviateOperators[expr_, opt : OptionsPattern[]] := Module[{tp1, res},
     {res, Thread[Array[OptionValue["AbbreviateOperatorsName"], Length @ tp1] -> (OptionValue["AbbreviateOperatorsHead"] /@ tp1)]}
     ]
 
+Options[AbbreviateOperators2] := CreateOptions[{}, {AbbreviateOperators}];
 AbbreviateOperators2[expr_, opt : OptionsPattern[]] := AbbreviatePolynomials[expr, OperatorPattern, "AbbreviatePolynomialsName" -> OptionValue["AbbreviateOperatorsName"], "AbbreviatePolynomialsHead" -> OptionValue["AbbreviateOperatorsHead"]]

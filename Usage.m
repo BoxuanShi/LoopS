@@ -366,7 +366,7 @@ operatorRules;
 
 (*TensorReduction*)
 AbbreviateOperators;
-AbbreviateOperators2;
+(* AbbreviateOperators2; *)
 AbbreviateOperatorsHead;
 AbbreviateOperatorsName;
 
