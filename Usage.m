@@ -314,6 +314,8 @@ GatherGInFamily;
 ApplyIBPRules;
 ToIBPSystem;
 FamilyMerge;
+FindSectorCorrelations;
+FindSymmetriedSectors;
 
 (*LoadDependencies*)
 (* ParallelNeedS; *)(*loaded before load Usage.m*)

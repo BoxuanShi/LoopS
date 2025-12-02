@@ -63,4 +63,44 @@ FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_
     , "Transforming to the PreferredMIs..."];
   (*return*)
   TableS[rules2[[i]] // Collect[#, _G, OptionValue["FamilyMergeSimplify"]] &, {i, Length @ rules2}, "FamilyMerge: Simplifying with option \"FamilyMergeSimplify\".", Method -> Automatic, Evaluate@FilterOptions[{opt}, TableS]]
-  ]
+]
+
+
+(* ClearAll[FindSectorCorrelations]
+FindSectorCorrelations::usage = "FindSectorCorrelations[MI_G,MIList_List,symsectors_List,MergeRules:_List|_Dispatch]";
+FindSectorCorrelations[MIList_List, symsectors_List, MergeRules : _List | _Dispatch, opt : OptionsPattern[]] := FindSectorCorrelations[#, MIList, symsectors, MergeRules, opt] & /@ MIList
+FindSectorCorrelations[MI_G, MIList_List, symsectors_List, MergeRules : _List | _Dispatch] := Module[{tp1, tp2, tp3},
+  tp1 = Select[tosector@symsectors, subsectorQ[MI, #] &];
+  tp2 = tp1 /. Dispatch@MergeRules // DeleteCases[#, Except[_G], {1}] &;
+  tp3 = Position[MIList, #, {1}][[1]] & /@ Intersection[tp2, MIList] // Sort;
+  ReplacePart[ConstantArray[0, Length@MIList], tp3 -> 1]
+] *)
+
+
+ClearAll[FindSectorCorrelations]
+FindSectorCorrelations[MIList_List, symsectors_List, MergeRules : _List | _Dispatch, opt : OptionsPattern[]] := FindSectorCorrelations[#, MIList, symsectors, MergeRules, opt] & /@ MIList
+FindSectorCorrelations[MI_G, MIList_List, symsectors_List, MergeRules : _List | _Dispatch] := Module[{tp1, tp2, tp3},
+  tp1 = Select[tosector@symsectors, subsectorQ[MI, #] &];
+  tp2 = tp1 /. MergeRules // DeleteCases[#, Except[_G], {1}] &;
+  tp3 = Position[MIList, #, {1}][[1]] & /@ Intersection[tp2, MIList] // Sort;
+  ReplacePart[ConstantArray[0, Length@MIList], tp3 -> 1]
+]
+
+
+ClearAll[FindSymmetriedSectors]
+Options[FindSymmetriedSectors] = {"Parallelization"->False};
+FindSymmetriedSectors[MIsNoMerge_?VectorQ, family_List, loops_List, process_Association : Hold@CurrentProcess, opt:OptionsPattern[]] := Module[{p=ReleaseHold@process}, FindSymmetriedSectors[MIsNoMerge, family, loops, p["kinematics"], p["extmomsind"], opt]]
+FindSymmetriedSectors[MIsNoMerge_?VectorQ, {familyi_?VectorQ, problem_Integer}, loops_List, kinematics_List, extmomsind_List, opt:OptionsPattern[]] := FindSymmetriedSectors[Cases[MIsNoMerge, G[problem, __]] /. G[problem, x__] :> G[1, x], {familyi}, loops, kinematics, extmomsind, opt] /. G[1, x__] :> G[problem, x]
+FindSymmetriedSectors[MIsNoMerge_?VectorQ, family_?MatrixQ, loops_List, kinematics_List, extmomsind_List, OptionsPattern[]] := Module[{i, res},
+  $FindSymmetriedSectorsMIsNoMerge2 = GroupBy[tosector@MIsNoMerge,#[[1]]&]/@(Range@Length@family)/._Missing:>{};
+  $FindSymmetriedSectorstpfun1[expr_] := Module[{i2,tpf1,tpf2,tpf3,tpf4},
+    tpf1=expr//DeleteDuplicates[#,(#1[[1]]===#2[[1]])&&(Total[#1[[2]]]===Total[#2[[2]]])&]&;
+    tpf2=Table[G[tpf1[[i2,1]], #]& /@ Permutations[tpf1[[i2,2]]]//DropZeroSector[#, family, loops, kinematics]& //DeleteCases[#,0]&, {i2, Length@tpf1}] // Flatten;
+    tpf3=tpf2//findrules[family,#,loops,kinematics,extmomsind]&;
+    tpf4=Select[tpf3, !FreeQ[#, Alternatives@@(expr/.Dispatch@tpf3)]&];
+    {expr,tpf4} // getS[#, _G]&
+  ];
+  If[OptionValue["Parallelization"],DumpDistribute[$FindSymmetriedSectorsMIsNoMerge2,$FindSymmetriedSectorstpfun1]];
+  res=TableS[$FindSymmetriedSectorstpfun1[$FindSymmetriedSectorsMIsNoMerge2[[i]]],{i,Length@family},"Parallelization"->OptionValue["Parallelization"],DistributedContexts->None];
+  Flatten[res]
+]
