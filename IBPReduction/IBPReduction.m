@@ -40,7 +40,7 @@ FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_
 Depending options: {FindRulesComplete, TableS}";
 Options[FamilyMerge] := CreateOptions[{"PreferredMIs" -> {}, "FamilyMergeSimplify" :> SimplifyS}, {FindRulesComplete, TableS}];
 FamilyMerge[Fslist_List, family_List, rawibprules_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, FamilyMerge[Fslist, family, rawibprules, loops, p["extmomsind"], p["kinematics"], Evaluate@opt]]
-FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, rules2, tpmi, tpeqs, tpmap, ibpsystem},
+FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, Fslist, Gs, GsRules, tp1, tp2, rules1, pref, prefRed, tpmi, tpeqs, tpmap, ibpsystem},
   ibpsystem = ToIBPSystem[rawibprules];
   pref = OptionValue["PreferredMIs"];
   Fslist = Join[Fslist0, pref];
@@ -51,7 +51,7 @@ FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_
   tp2 = tp1 /. Dispatch@GsRules;
   rules1 = Union@Join[Thread[Fslist -> tp2], GsRules];
   (*change MI basis*)
-  rules2 = If[pref === {},
+  $FamilyMergerules2 = If[pref === {},
     rules1,
     Monitor[
     prefRed = (ApplyIBPRules[pref, ibpsystem] /. Dispatch@rules1);
@@ -62,7 +62,8 @@ FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_
     ];
     , "Transforming to the PreferredMIs..."];
   (*return*)
-  TableS[rules2[[i]] // Collect[#, _G, OptionValue["FamilyMergeSimplify"]] &, {i, Length @ rules2}, "FamilyMerge: Simplifying with option \"FamilyMergeSimplify\".", Method -> Automatic, Evaluate@FilterOptions[{opt}, TableS]]
+  If[OptionValue["Parallelization"], DumpDistribute[$FamilyMergerules2]];
+  TableS[$FamilyMergerules2[[i]] // Collect[#, _G, OptionValue["FamilyMergeSimplify"]] &, {i, Length @ $FamilyMergerules2}, "FamilyMerge: Simplifying with option \"FamilyMergeSimplify\".", Method -> Automatic, DistributedContexts->None, Evaluate@FilterOptions[{opt}, TableS]]
 ]
 
 
