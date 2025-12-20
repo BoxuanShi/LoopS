@@ -1,4 +1,3 @@
-Intel MKL WARNING: Support of Intel(R) Streaming SIMD Extensions 4.2 (Intel(R) SSE4.2) enabled only processors has been deprecated. Intel oneAPI Math Kernel Library 2025.0 will require Intel(R) Advanced Vector Extensions (Intel(R) AVX) instructions.
 FIRE, version 7.0
 Initial data loaded
 EVALUATING {2, {-2, 1, 1}}
@@ -6,182 +5,182 @@ Working in sector 2/3: {2,{-1,1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{0, 2}}
 {1, 1}
-Preparing points, symmetries and 21 IBP's: 0.006957`4.293966996853623 seconds.
-16 new relations produced: 0.104113`5.469049954281906 seconds.
+Preparing points, symmetries and 21 IBP's: 0.004202`4.075001041565909 seconds.
+16 new relations produced: 0.070663`5.300737064972782 seconds.
 {1, 2}
-Preparing points, symmetries and 9 IBP's: 0.003046`3.9352748924959946 seconds.
+Preparing points, symmetries and 9 IBP's: 0.002051`3.7635106538643393 seconds.
 IRREDUCIBLE INTEGRAL: {2, {0, 1, 1}}
-3 new relations produced: 0.021495`4.783882442948999 seconds.
+3 new relations produced: 0.013538`4.583099503257211 seconds.
 Sector complete
-SORTING THE LIST OF 21 INTEGRALS: 0.000179`2.704398024475866 seconds.
-Substituting 21 values: 0.005789`4.214148543062776 seconds.
-Total time: 0.149318`5.625657157747958 seconds
+SORTING THE LIST OF 21 INTEGRALS: 0.000112`2.5007630161661525 seconds.
+Substituting 21 values: 0.003679`4.017274781327098 seconds.
+Total time: 0.098079`5.4431210226860545 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000018`1.706817498599281 seconds.
-Substituting 3 values: 0.000612`3.238296415641534 seconds.
-Total time: 0.001448`3.6123135553570993 seconds
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959739 seconds.
+Substituting 3 values: 0.000403`3.0568500396370824 seconds.
+Total time: 0.000949`3.4288112059232656 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-SORTING THE LIST OF 25 INTEGRALS: 0.000401`3.054689366116155 seconds.
-Substituting 25 values: 0.005745`4.21083502652028 seconds.
-Total time: 0.008414`4.376547501176948 seconds
-Working in sector 2/3: {2,{-1,1,1}}
-Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000016`1.6556649761518956 seconds.
-Substituting 3 values: 0.000624`3.246729583178395 seconds.
-Total time: 0.001438`3.6093038795428387 seconds
-Working in sector 2/3: {2,{-1,1,1}}
-Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000018`1.706817498599279 seconds.
-Substituting 3 values: 0.000489`3.140853852619593 seconds.
-Total time: 0.001305`3.567155505170275 seconds
+SORTING THE LIST OF 25 INTEGRALS: 0.000242`2.8353603594764043 seconds.
+Substituting 25 values: 0.003917`4.044498565043841 seconds.
+Total time: 0.005623`4.201513077005376 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
 SORTING THE LIST OF 3 INTEGRALS: 0.000014`1.5976730291742114 seconds.
-Substituting 3 values: 0.000481`3.133690069869807 seconds.
-Total time: 0.00114`3.5084498448324473 seconds
+Substituting 3 values: 0.000659`3.270430408089983 seconds.
+Total time: 0.001334`3.576700823076501 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000014`1.5976730291742092 seconds.
-Substituting 3 values: 0.000541`3.1847422586025407 seconds.
-Total time: 0.001205`3.5325320404068625 seconds
+SORTING THE LIST OF 3 INTEGRALS: 0.000011`1.4929376786542 seconds.
+Substituting 3 values: 0.000597`3.2275193246253395 seconds.
+Total time: 0.001227`3.5403895562229772 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000014`1.5976730291742114 seconds.
-Substituting 3 values: 0.0005`3.150514997831992 seconds.
-Total time: 0.001161`3.5163772132345468 seconds
+SORTING THE LIST OF 3 INTEGRALS: 0.000011`1.4929376786541977 seconds.
+Substituting 3 values: 0.000568`3.2058933292069915 seconds.
+Total time: 0.001134`3.5061580480528582 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-Total time: 0.000585`3.2187008595781554 seconds
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959739 seconds.
+Substituting 3 values: 0.000569`3.206657259891044 seconds.
+Total time: 0.001158`3.5152535528873923 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000016`1.6556649761518978 seconds.
-Substituting 3 values: 0.000611`3.2375862037385277 seconds.
-Total time: 0.001287`3.5611235404003616 seconds
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959717 seconds.
+Substituting 3 values: 0.000439`3.0940095137380963 seconds.
+Total time: 0.001032`3.4652246907871653 seconds
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000018`1.706817498599279 seconds.
-Substituting 3 values: 0.000729`3.3142725218139475 seconds.
-Total time: 0.001556`3.6435545861496412 seconds
+Total time: 0.000414`3.0685453346168696 seconds
+Working in sector 2/3: {2,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 1.`1.4515449934959717*^-5 seconds.
+Substituting 3 values: 0.000466`3.119930910185975 seconds.
+Total time: 0.000934`3.421891869726064 seconds
+Working in sector 2/3: {2,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 1.`1.4515449934959694*^-5 seconds.
+Substituting 3 values: 0.000401`3.054689366116155 seconds.
+Total time: 0.000922`3.4162759145496002 seconds
 EVALUATING {2, {1, -2, 1}}
 Working in sector 3/3: {2,{1,-1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{0, 2}}
 {1, 1}
-Preparing points, symmetries and 21 IBP's: 0.0072`4.3088774899272435 seconds.
-16 new relations produced: 0.060896`5.236133760102899 seconds.
+Preparing points, symmetries and 21 IBP's: 0.004478`4.102629082738984 seconds.
+16 new relations produced: 0.039931`5.0528551799498596 seconds.
 {1, 2}
-Preparing points, symmetries and 9 IBP's: 0.002758`3.8921392553358043 seconds.
+Preparing points, symmetries and 9 IBP's: 0.00182`3.711616381481048 seconds.
 IRREDUCIBLE INTEGRAL: {2, {1, 0, 1}}
-1 new relations produced: 0.00254`3.8563787101159113 seconds.
+1 new relations produced: 0.001743`3.6928423806059665 seconds.
 Sector complete
-SORTING THE LIST OF 5 INTEGRALS: 0.000023`1.813272829513563 seconds.
-Substituting 5 values: 0.001193`3.528185437166317 seconds.
-Total time: 0.079171`5.350111123995103 seconds
+SORTING THE LIST OF 5 INTEGRALS: 0.000015`1.6276362525516535 seconds.
+Substituting 5 values: 0.00084`3.375824279557855 seconds.
+Total time: 0.051924`5.166913134742324 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000014`1.5976730291742136 seconds.
-Substituting 3 values: 0.000374`3.0244165956964513 seconds.
-Total time: 0.001041`3.468995723006511 seconds
+SORTING THE LIST OF 3 INTEGRALS: 9.`1.4057875029352955*^-6 seconds.
+Substituting 3 values: 0.000284`2.9048633335430125 seconds.
+Total time: 0.000767`3.336340357444954 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 9 INTEGRALS: 0.000041`2.0643288502157087 seconds.
-Substituting 9 values: 0.001992`3.750834327583655 seconds.
-Total time: 0.003074`3.9392488566596993 seconds
+SORTING THE LIST OF 9 INTEGRALS: 0.000028`1.8987030248381904 seconds.
+Substituting 9 values: 0.001453`3.613810607793997 seconds.
+Total time: 0.002244`3.802567846080097 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000015`1.6276362525516577 seconds.
-Substituting 3 values: 0.000443`3.0979487197190423 seconds.
-Total time: 0.001068`3.4801162461885125 seconds
+SORTING THE LIST OF 3 INTEGRALS: 9.`1.4057875029352955*^-6 seconds.
+Substituting 3 values: 0.000382`3.0336083564076817 seconds.
+Total time: 0.000898`3.404821330163275 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 2 INTEGRALS: 9.`1.4057875029352978*^-6 seconds.
-Substituting 2 values: 0.000048`2.132786230871562 seconds.
-Total time: 0.000691`3.2910230408701713 seconds
+SORTING THE LIST OF 2 INTEGRALS: 7.`1.2966430335102281*^-6 seconds.
+Substituting 2 values: 0.000035`1.9956130378462489 seconds.
+Total time: 0.000465`3.1189979463859294 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 2 INTEGRALS: 9.`1.4057875029352978*^-6 seconds.
-Substituting 2 values: 0.000046`2.1143028251775493 seconds.
-Total time: 0.000591`3.223132474377226 seconds
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796213*^-6 seconds.
+Substituting 2 values: 0.000033`1.970058933373858 seconds.
+Total time: 0.000457`3.1114611935658236 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-Total time: 0.000478`3.1309728901080938 seconds
+Total time: 0.000359`3.0066394420742943 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 2 INTEGRALS: 9.`1.4057875029353*^-6 seconds.
-Substituting 2 values: 0.000047`2.1236428514316885 seconds.
-Total time: 0.000575`3.2112128381856055 seconds
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796213*^-6 seconds.
+Substituting 2 values: 0.000033`1.970058933373858 seconds.
+Total time: 0.000413`3.067495045152374 seconds
 EVALUATING {2, {1, 1, 1}}
 Working in sector 1/3: {2,{1,1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{0, 0}}
 {1, 1}
-Preparing points, symmetries and 13 IBP's: 0.0048`4.132786230871562 seconds.
-3 new relations produced: 0.009285`4.419326901571773 seconds.
+Preparing points, symmetries and 13 IBP's: 0.003191`3.9554717976894835 seconds.
+3 new relations produced: 0.006972`4.294902371933931 seconds.
 Sector complete
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 5 INTEGRALS: 0.000022`1.793967674318179 seconds.
-Substituting 5 values: 0.001692`3.67994535219898 seconds.
-Total time: 0.019915`4.750725304241322 seconds
+SORTING THE LIST OF 5 INTEGRALS: 0.000016`1.655664976151899 seconds.
+Substituting 5 values: 0.001605`3.657020030236862 seconds.
+Total time: 0.014801`4.621836052121364 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 6 INTEGRALS: 0.000031`1.9429066873302476 seconds.
-Substituting 6 values: 0.000827`3.3690505030485176 seconds.
-Total time: 0.001814`3.7101822762200496 seconds
+SORTING THE LIST OF 6 INTEGRALS: 0.000021`1.7737642882298925 seconds.
+Substituting 6 values: 0.00077`3.338035718668455 seconds.
+Total time: 0.001561`3.6449478965583926 seconds
+Working in sector 3/3: {2,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 1.`1.4515449934959739*^-5 seconds.
+Substituting 3 values: 0.000366`3.0150260788903838 seconds.
+Total time: 0.000871`3.391563148503636 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
 SORTING THE LIST OF 3 INTEGRALS: 0.000013`1.5654883458028093 seconds.
-Substituting 3 values: 0.000434`3.089034723008486 seconds.
-Total time: 0.001044`3.4702454921622166 seconds
+Substituting 3 values: 0.00033`2.9700589333738607 seconds.
+Total time: 0.000832`3.3716683197866972 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000014`1.5976730291742092 seconds.
-Substituting 3 values: 0.00051`3.1591151695939117 seconds.
-Total time: 0.001125`3.502697515943352 seconds
+SORTING THE LIST OF 11 INTEGRALS: 0.000073`2.314867853616429 seconds.
+Substituting 11 values: 0.001207`3.5332522635933197 seconds.
+Total time: 0.002153`3.7845890233194623 seconds
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 11 INTEGRALS: 0.000116`2.5160029827228896 seconds.
-Substituting 11 values: 0.001725`3.688334092905266 seconds.
-Total time: 0.003128`3.946811737883786 seconds
-Working in sector 3/3: {2,{1,-1,1}}
-Sector complete
-SORTING THE LIST OF 3 INTEGRALS: 0.000016`1.6556649761518978 seconds.
-Substituting 3 values: 0.000748`3.3254465913604347 seconds.
-Total time: 0.001542`3.6396293672109135 seconds
+SORTING THE LIST OF 3 INTEGRALS: 9.`1.4057875029352955*^-6 seconds.
+Substituting 3 values: 0.000411`3.0653868153720425 seconds.
+Total time: 0.000911`3.4110633704689715 seconds
 EVALUATING {2, {2, 1, 1}}
 Working in sector 1/3: {2,{1,1,1}}
 LAPORTA STARTED: 1 integrals for evaluation
 Maximal levels: {{1, 0}}
 {1, 1}
-Preparing points, symmetries and 9 IBP's: 0.003383`3.9808469912839537 seconds.
-3 new relations produced: 0.013116`4.5693464014933 seconds.
+Preparing points, symmetries and 9 IBP's: 0.002174`3.7888045332462488 seconds.
+3 new relations produced: 0.008862`4.399076739191567 seconds.
 Sector complete
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 9 INTEGRALS: 0.000072`2.3088774899272435 seconds.
-Substituting 9 values: 0.00731`4.315462370453834 seconds.
-Total time: 0.026244`4.870575022581237 seconds
+SORTING THE LIST OF 9 INTEGRALS: 0.000042`2.0747942838938713 seconds.
+Substituting 9 values: 0.0043`4.085013449075562 seconds.
+Total time: 0.016753`4.675637581990238 seconds
 Working in sector 1/3: {2,{1,1,1}}
 Sector complete
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 5 INTEGRALS: 0.000052`2.167548337130772 seconds.
-Substituting 5 values: 0.002245`3.802761338835315 seconds.
-Total time: 0.004503`4.105046940458908 seconds
+SORTING THE LIST OF 5 INTEGRALS: 0.000016`1.6556649761518978 seconds.
+Substituting 5 values: 0.001409`3.6004559866053314 seconds.
+Total time: 0.002552`3.8584256635450997 seconds
 Working in sector 1/3: {2,{1,1,1}}
 Sector complete
 Working in sector 2/3: {2,{-1,1,1}}
 Sector complete
 Working in sector 3/3: {2,{1,-1,1}}
 Sector complete
-SORTING THE LIST OF 4 INTEGRALS: 0.000021`1.7737642882298916 seconds.
-Substituting 4 values: 0.000785`3.3464146502412233 seconds.
-Total time: 0.001988`3.74996137355727 seconds
+SORTING THE LIST OF 4 INTEGRALS: 0.000014`1.5976730291742114 seconds.
+Substituting 4 values: 0.000663`3.273058521900744 seconds.
+Total time: 0.001576`3.6491012066495094 seconds

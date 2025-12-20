@@ -110,7 +110,7 @@ FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_Str
     logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]}]["StandardOutput"];
     (* logsave = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]}]["StandardOutput"]; *)
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"];
-  ];
+  ];s
 ]
 
 
