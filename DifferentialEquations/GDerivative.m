@@ -1,6 +1,7 @@
 ClearAll[GDerivative, GDerivativeG, GDerivative0];
 GDerivative[expr_, var_, family_, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process},  GDerivative[expr, var, family, p["loopmoms"], p["kinematics"], p["moms"]]]
 GDerivative[expr_, var_, family_, loopmoms_, kinematics_, moms_] := GDerivative0[expr, "var" -> var, "family" -> family,"loopmoms" -> loopmoms, "kinematics" -> kinematics, "moms" -> moms]
+
 SetAttributes[GDerivative0, Listable];
 Options[GDerivative0] = {"var" -> "var", "family" -> "family", "loopmoms" -> "loopmoms", "kinematics" -> "kinematics", "moms" -> "moms"};
 GDerivative0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
@@ -11,6 +12,7 @@ GDerivative0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] :=
   GlistD = GDerivativeG[#, var, family, loopmoms, kinematics, moms] & /@ Glist;
   coeD . Glist + coe . GlistD // ReduceSPDToG[#, family, loopmoms, kinematics, moms] & // CollectS[#, _G, Factor] &
   ]
+
 GDerivativeG[expr_G, var_, family_, loopmoms_, kinematics_, moms_] := 
  Module[{familyN, exprSPD, exprD, exprA, rules, coe, deno, Abbr}, 
   {familyN, exprSPD} = {expr[[1]], GToProps[expr, family] // PropsToSPD[#, SPD, moms] & // Times @@ #^-1 &};
@@ -21,7 +23,7 @@ GDerivativeG[expr_G, var_, family_, loopmoms_, kinematics_, moms_] :=
   (* deno = deno /. Dispatch@rules; *)
   deno = deno /. Abbr[x_]^y_ :> Sequence @@ ConstantArray[Abbr[x], y];
   deno = deno /. Dispatch@rules;
-  deno = CountPropsInFamily[#, family[[familyN]], kinematics] & /@ deno;
+  deno = CountPropsInFamily[#, family[[familyN]], kinematics, loopmoms] & /@ deno;
   deno = deno[[All, 2]]*(G[familyN, #] & /@ deno[[All, 1]]);
   coe . deno 
   ]

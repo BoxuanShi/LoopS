@@ -70,7 +70,7 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
     |>;
   templateS2 = TemplateApply[templateS, rulesS];
   FileTemplateApply[templateS2, FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]];
-  (*Run file*)
+  (*Run file - this is only for manual run IBP in terminal window, see FIRERunIBP*)
   stream = OpenWrite[FileNameJoin[{FIREWorkPath, "FIRERun" <> ToString[Length@loops] <> ".txt"}]];
   Do[
     If[
@@ -79,7 +79,8 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
       If[
         OptionValue["FIREUseMMA"],
         WriteString[stream, StringRiffle@{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}],";\n"}],
-        WriteString[stream, StringRiffle@{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]} <> ";\n"]
+        WriteString[stream, StringRiffle@{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}],";\n"}]
+        (* WriteString[stream, StringRiffle@{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> "save.m"}]} <> ";\n"] *)
       ],
       Break[]
     ]
@@ -99,16 +100,18 @@ FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_Str
   DeleteFile[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "run_log.txt"}]];
   On[DeleteFile::fdnfnd];
   (*run and save*)
-  If[OptionValue["FIREUseMMA"], 
+  If[OptionValue["FIREUseMMA"],
     logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]}]["StandardOutput"];
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"]
     ,
     logrun = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}], "-c", FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}]}]["StandardOutput"];
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "run_log.txt"}], logrun, "Text"];
-    logsave = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]}]["StandardOutput"];
+
+    logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]}]["StandardOutput"];
+    (* logsave = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]}]["StandardOutput"]; *)
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"];
-    ];
-  ]
+  ];
+]
 
 
 ClearAll[FIRELoadIBP]
@@ -117,7 +120,7 @@ FIRELoadIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProce
 FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}] := Module[{path},
   path = FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}];
   Get[path] /. d -> D
-  ]
+]
 
 
 ClearAll[FIREIBPReduction]
