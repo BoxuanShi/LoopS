@@ -36,7 +36,7 @@ loopSymmetryNoPS[props0_List, loopmoms_List, moms_, opt : OptionsPattern[]] /;
     OptRestrict[opt] := Module[
    	{i, props, nl, extmoms, ne, x, propshape, sgns, cycextedg, branches, reducycedg, branchpropstd, reduLB, fullLB, LBrules, propsnew, sgns2, canonicalProps, ruleList},
    	
-   	props = props0 // TogetherExpand;
+   	props = props0 // Collect[#, moms, TogetherExpand]&;
    	nl = Length@loopmoms;
    	
    	(*** find out external momenta ***)

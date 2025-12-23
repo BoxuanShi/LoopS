@@ -44,3 +44,7 @@ DoS[a_, b__List, word_String] := If[$KernelID === 0,
   Monitor[Do[a, b], Refresh[{word, b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], 
   Do[a, b]]
 SetAttributes[DoS, HoldAll]
+
+
+ClearAll[SymbolReplace]
+SymbolReplace[expr_, strpatt_, fun_] := expr /. x : _Symbol /; StringMatchQ[SymbolName[x], strpatt] :> getDo[fun[SymbolName[x]],_String, ToExpression]
