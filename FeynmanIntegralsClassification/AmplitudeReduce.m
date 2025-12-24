@@ -12,7 +12,7 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
     "List", Return[{{0}, {{0}}, {0}}],
     "ExpressionRules", Return[{0, {}}],
     _, Return[0]]
-    ];
+  ];
   (*separate Numerators and loop integrals*)
   {tpNumlist, tpDenolist} = SeparateFAD[amp, loops, moms];
   (*NumeratorReduction*)
@@ -22,7 +22,7 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
   PowerCounting0 = If[PowerCounting === (# &), (# &), (ExpandDirac[ExpandMomentum[FeynAmpDenominatorExplicit[#], moms]] &)];
   opttable = FilterOptions[{opt}, TableS];
   tpNumSPD = BlockCondition[loops === {}, {Monitor = (# &)}, TableS[
-    tp1 = tpNumlist[[i]] // PowerCounting0 // PowerCounting;
+    tp1 = tpNumlist[[i]] // PowerCounting0 // CollectS[#, DiracPattern | _FVD | _MTD, PowerCounting]&; (*to be consistent with Separate in NumeratorReduction*)
     tp1 = tp1 // NumeratorReduction[#, indices, operatorRules, loopmoms, moms, extmomsind, purePV, "NumeratorReductionForm" -> "ExpressionRules", "OperatorHead" -> OPERAT, "NumeratorReductionDispatch" -> False, Evaluate@optnum] &;
     tp1 = tp1 // PowerCounting
     , {i, Length@tpNumlist}, "reducing numerator structures with NumeratorReduction...", Evaluate@opttable]

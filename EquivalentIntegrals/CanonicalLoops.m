@@ -3,9 +3,10 @@ Options[CanonicalLoops] = {"DiscVariables" -> {}};
 CanonicalLoops[props0_List, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, CanonicalLoops[props0, loops, p["extmomsind"], p["kinematics"], Evaluate@opt]]
 CanonicalLoops[props0_List, loops_List, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, x, props, tp1x1, sqpart0, lipart0, sqpart, lipart, lipart2, signs, tp2x1, tp3, tp4, tp5, tp6, tp7, tp7x, tp7x2, tp7x3, tp8, tp9, pow1, pow2, momsind, DV, sortf},
   momsind = Join[loops, extmomsind];
-  props = props0(*//TogetherExpand*);
+  props = props0;
   (*for squared propagator, return loopSymmetryNoPS*)
-  If[AllTrue[props, #[[1]] === #[[2]] &], Return[loopSymmetryNoPS[props, loops, momsind]]];
+  If[AllTrue[props, #[[1]] === #[[2]] &], 
+  Return[loopSymmetryNoPS[props, loops, momsind]]];
   (*separate linear propagators*)
   {sqpart0, lipart0} = props // GatherBy[#, Length@Union@#[[1 ;; 2]] &] & // SortBy[#, Length@Union@#[[1, 1 ;; 2]] &] &;
   (*square propagator part*)

@@ -36,7 +36,7 @@ loopSymmetryNoPS[props0_List, loopmoms_List, moms_, opt : OptionsPattern[]] /;
     OptRestrict[opt] := Module[
    	{i, props, nl, extmoms, ne, x, propshape, sgns, cycextedg, branches, reducycedg, branchpropstd, reduLB, fullLB, LBrules, propsnew, sgns2, canonicalProps, ruleList},
    	
-   	props = props0 // Collect[#, moms, TogetherExpand]&;
+   	props = props0 // CollectFlat[#, moms, TogetherExpand]& // Expand;
    	nl = Length@loopmoms;
    	
    	(*** find out external momenta ***)
@@ -58,16 +58,7 @@ loopSymmetryNoPS[props0_List, loopmoms_List, moms_, opt : OptionsPattern[]] /;
     	];
    	
    	(*** Step 1: 
-   find a canonical form for each propagator and then classify propagators \
-into branches: 
-   		 sgns: a list of sign (+1 or -1), 
-   denotes the sign difference between props and their unique form;
-   		 cycextedg: a matrix satisfies sgn*props[[All,1]]=cycextedg.Join[
-   loopmoms,extmoms]; 
-   		 branches: {{i1,i2,...},{j1,j2,..},}, 
-   each list (a set of numbers) denotes a branch;
-   		 reducycedge: a sub-matrix of cycextedg, 
-   keep only information of loop momenta defining each branch ***)
+   find a canonical form for each propagator and then classify propagators into branches: sgns: a list of sign (+1 or -1), denotes the sign difference between props and their unique form; cycextedg: a matrix satisfies sgn*props[[All,1]]=cycextedg.Join[loopmoms,extmoms]; branches: {{i1,i2,...},{j1,j2,..},}, each list (a set of numbers) denotes a branch; reducycedge: a sub-matrix of cycextedg, keep only information of loop momenta defining each branch ***)
    	{sgns, cycextedg, branches, reducycedg} = 
     branchClassify[props, loopmoms, extmoms];
    	If[OptionValue["PrintLog"] == True,
@@ -80,59 +71,32 @@ into branches:
    mass propagators) special propagator ***)
    	(*** branchpropstd[[i]]: {i1} or {i1,i2}, 
    i1 (i2) is the propagator number ***)
-   	branchpropstd = 
-    sortInBranch[#, cycextedg[[#, -ne ;; -1]], propshape[[#]]] & /@ branches;
-   	(*** branchpropstd[[i]]: {i1,...,
-   i#branches} is a possible choice of special-propagator sets ***)
+   	branchpropstd = sortInBranch[#, cycextedg[[#, -ne ;; -1]], propshape[[#]]] & /@ branches;
+   	(*** branchpropstd[[i]]: {i1,...,i#branches} is a possible choice of special-propagator sets ***)
    	branchpropstd = Tuples[branchpropstd];
-   	If[OptionValue["PrintLog"] == True,
-    		Print["Step 2: possible choices of special propagator sets:\n", 
-     branchpropstd]
-    	];
-   	
-   	(*** the set of special propagators form a reduced vacuum diagram. 
-   Find all possible choices 
-   		 of loop bases (LB, where to insert loop momenta l1, ..., 
-   lL) in the reduced diagram ***)
-   	(*** reduLB[[i]]: {b1,...,bL}, 
-   bi means the bi'th branck, (not the b1'th propagator in the orginal \
-diagram). ***)
+   	If[OptionValue["PrintLog"] == True, Print["Step 2: possible choices of special propagator sets:\n", branchpropstd]];
+   	(*** the set of special propagators form a reduced vacuum diagram. Find all possible choices of loop bases (LB, where to insert loop momenta l1, ..., lL) in the reduced diagram ***)
+   	(*** reduLB[[i]]: {b1,...,bL}, bi means the bi'th branck, (not the b1'th propagator in the orginal diagram). ***)
    	reduLB = loopBasis[reducycedg];
-   	If[OptionValue["PrintLog"] == True,
-    		Print["{reducycedg,reduLB}=", {reducycedg, reduLB}]
-    	];
-   	
-   	(*** Step 3: 
-   find all equivalent propagator sets to insert pure loop momenta, 
-   with generic orientation and order ***)
+   	If[OptionValue["PrintLog"] == True, Print["{reducycedg,reduLB}=", {reducycedg, reduLB}]];
+
+   	(*** Step 3: find all equivalent propagator sets to insert pure loop momenta, with generic orientation and order ***)
    	(***fullLB[[i]]: {i1,i2,...,iL} ***)
    	fullLB = sortLoopBasis[branchpropstd, reduLB, cycextedg, propshape];
-   	If[OptionValue["PrintLog"] == True,
-    		Print["Step 3: propagator sets with generic orientation&order, fullLB=",
-      fullLB]
-    	];
-   	
-   	(*** Step 4: 
-   find all equivalent propagator sets to insert pure loop momenta, 
-   with full orientations but generic ordering ***)
+   	If[OptionValue["PrintLog"] == True, Print["Step 3: propagator sets with generic orientation&order, fullLB=", fullLB]];
+
+   	(*** Step 4: find all equivalent propagator sets to insert pure loop momenta, with full orientations but generic ordering ***)
    	(***fullLB[[i]]: {-i1,+i2,...,-iL} ***)
    	fullLB = sortOrientation[fullLB, cycextedg, propshape];
    	If[OptionValue["PrintLog"] == True,
-    		Print[
-     "Step 4: propagator sets with full orientation&order, LBrules=", \
-{Length@#, Short@#} &@fullLB]
-    	];
+    		Print["Step 4: propagator sets with full orientation&order, LBrules=", {Length@#, Short@#} &@fullLB]
+    ];
    	
-   	(*** Step 5: 
-   find all equivalent propagator sets to insert pure loop momenta, 
-   with full orders and orientations specified ***)
+   	(*** Step 5: find all equivalent propagator sets to insert pure loop momenta, with full orders and orientations specified ***)
    	(***fullLB[[i]]: {-i1,+i2,...,-iL} ***)
    	LBrules = sortPermutation[fullLB, cycextedg, propshape];
-   	If[OptionValue["PrintLog"] == True,
-    		Print[
-     "Step 5: propagator sets with full perumations but generic orientation, \
-fullLB=", {Length@#, #[[1 ;; Min[4, Length@#]]]} &@LBrules]
-    	];	
+   	If[OptionValue["PrintLog"] == True, Print["Step 5: propagator sets with full perumations but generic orientation, fullLB=", {Length@#, #[[1 ;; Min[4, Length@#]]]} &@LBrules]
+    ];	
    	
    	(*** calculate standard propagators results ***)
    	(*** standard form of propagators: {prop1, prop2,...}  ***)
@@ -148,7 +112,7 @@ fullLB=", {Length@#, #[[1 ;; Min[4, Length@#]]]} &@LBrules]
         			{sgns2[[i]]*propsnew[[i]], sgns2[[i]]*sgns[[i]]*propshape[[i, 1]], 
          propshape[[i, 2]], Sequence @@ props0[[i, 4 ;; -1]]}
         		], {i, Length@propsnew} 
-       	] // Expand // SortBy[#, LeafCount] &;
+       	] // Collect[#, moms, TogetherExpand] & // Expand // SortBy[#, LeafCount] &;
    		
    	(*If[OptionValue["AllTransRules"]===False,LBrules=LBrules[[1;;1]]];*)
    	
@@ -227,6 +191,7 @@ lbTransform[cycextedg_,loopbasis0_]:=Module[
 (*** x,y,z: use to distinguish 0, 1, -1 ***)
 findShortestUnique[choices0_]:=Module[
 	{choices,x,y,z,minlen},
+	(*** sort according to the later values ***)
 	choices=SortBy[choices0,{#[[2;;-2]],(x+y)*Abs@#[[-1]]//LeafCount,(x)*#[[-1]]//LeafCount,#[[-1]]}&];
 	
 	choices=SplitBy[choices,Last];

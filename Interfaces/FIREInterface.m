@@ -179,11 +179,12 @@ FIREReductionMMA[Fslist_List, loops_List, family_List, process_Association : Hol
 FIREReductionMMA[Fslist_List, loops_List, family_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]] := Module[{i, ibps},
   ibps = TableS[FIREIBPReduction[Fslist, {family[[i]], i}, loops, "FIREUseMMA" -> True, Evaluate@FilterOptions[{opt}, FIREIBPReduction]], {i, Length@family}, Evaluate@FilterOptions[{opt}, TableS]];
   FamilyMerge[Fslist, family, ibps, loops, extmomsind, kinematics, Evaluate@FilterOptions[{opt}, FamilyMerge]]
-  ]
+]
+
 ClearAll[FIREReductionCXX]
 Options[FIREReductionCXX] := CreateOptions[{}, {FIREIBPReduction, FamilyMerge, TableS}];
 FIREReductionCXX[Fslist_List, loops_List, family_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, FIREReductionCXX[Fslist, loops, family, p["extmomsind"], p["kinematics"], {FIREWorkPath[p["ProcessName"]], FIREFamilyName[loops]}, opt]]
 FIREReductionCXX[Fslist_List, loops_List, family_List, extmomsind_List, kinematics_List, {WorkPath_String, FamilyName_String}, opt : OptionsPattern[]] := Module[{i, ibps},
   ibps = TableS[FIREIBPReduction[Fslist, {family[[i]], i}, loops, "FIREUseMMA" -> False, Evaluate@FilterOptions[{opt}, FIREIBPReduction]], {i, Length@family}, Evaluate@FilterOptions[{opt}, TableS]];
   FamilyMerge[Fslist, family, ibps, loops, extmomsind, kinematics, Evaluate@FilterOptions[{opt}, FamilyMerge]]
-  ]
+]

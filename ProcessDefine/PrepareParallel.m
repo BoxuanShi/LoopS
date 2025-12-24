@@ -7,6 +7,7 @@ PrepareParallel[kernels0_Integer : 0, opt : OptionsPattern[]] := Module[{kernels
   Which[deltaKernel > 0, LaunchKernels[deltaKernel]]; 
     DistributeAssociation[Evaluate[ProcessName]];
     dir = Directory[];
+    (* DistributeDefinitions[dir, AlgebrasDefinition, ClearProcess]; *)
     DistributeDefinitions[dir];
     DistributeAssociation[LoopS];
     ParallelEvaluate[

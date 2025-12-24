@@ -37,6 +37,7 @@ Get[FileNameJoin[{$LoopSInstallPath, "LoopSCore.m"}]];
 With[{LoopS`Private`ins = $LoopSInstallPath, LoopS`Private`nbdd = $NotebookDirectory},
 Parallel`Protected`AddInitCode[Parallel`Client`HoldCompound[
       Block[{LoopS`Private`nbd = LoopS`Private`nbdd},
+      Get[FileNameJoin[{LoopS`Private`ins, "Config.m"}]];
       Get[FileNameJoin[{LoopS`Private`ins, "LoopSCore.m"}]]]
       ]]
 ];
