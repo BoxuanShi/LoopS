@@ -1,8 +1,10 @@
 ClearAll[AbbreviateOperators, AbbreviateOperators2];
 Options[AbbreviateOperators] = {"AbbreviateOperatorsName" -> OPs, "AbbreviateOperatorsHead" -> (#&)};
-AbbreviateOperators[expr_, opt : OptionsPattern[]] := Module[{tp1, res},
+AbbreviateOperators[expr_, opt : OptionsPattern[]] := Module[{tp1, rules, res},
     tp1 = OperatorCollect[expr];
-    res = expr /. Dispatch @ Thread[tp1 -> Array[OptionValue["AbbreviateOperatorsName"], Length @ tp1]];
+    rules = Thread[tp1 -> Array[OptionValue["AbbreviateOperatorsName"], Length @ tp1]];
+    rules = Reverse@SortBy[rules, LeafCount@First@# &];
+    res = expr /. Dispatch@rules;
     If[OperatorCollect[res] =!= {}, Print["AbbreviateOperators Failed!"]];
     {res, Thread[Array[OptionValue["AbbreviateOperatorsName"], Length @ tp1] -> (OptionValue["AbbreviateOperatorsHead"] /@ tp1)]}
     ]

@@ -140,6 +140,8 @@ DumpDistribute;
 DistributeAssociation;
 DistributeString;
 
+refinecolors
+
 (*DifferentialEquations*)
 GDerivative;
 SortMIByBlock;
@@ -435,3 +437,20 @@ LeadingPower;
 
 ShiftToRegionForm;
 RegionBasis;
+
+
+(*FeynArtsInterface*)
+CreateFeynAmpS;
+getEcharge;
+FCFAConvertS;
+findPaint;
+findPaint2;
+ArcToLine;
+PaintS;
+springEdge;
+
+
+
+MIformlistNLO;
+MIsollistNLO;
+\[Epsilon]order;

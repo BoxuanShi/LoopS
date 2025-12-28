@@ -5,13 +5,17 @@ NumeratorReduction::index = "The complete index should be -> `1`.";
 NumeratorReduction::maxit = "The max iteration `1` reached, the Lorentz indices may be not uniquely ordered.";
 NumeratorReduction::spinor = "Spinor still exist, the operatorRules is not complete. The outputs are still correct.";
 
-Options[NumeratorReduction] := CreateOptions[{"OperatorCollect" -> False, "OperatorReplace" -> True, "PVPatt" -> Automatic, "MaxIt" -> 10, "NumeratorReductionSimplify" :> SimplifyS, "NumeratorReductionForm" -> "Expression", "NumeratorReductionDispatch" -> True, "OperatorName" -> OPs, "OperatorHead" -> (# &)}, {CollectS}];
+Options[NumeratorReduction] := CreateOptions[{"operatorRules" -> None, "OperatorCollect" -> False, "OperatorReplace" -> True, "PVPatt" -> Automatic, "MaxIt" -> 10, "NumeratorReductionSimplify" :> SimplifyS, "NumeratorReductionForm" -> "Expression", "NumeratorReductionDispatch" -> True, "OperatorName" -> OPs, "OperatorHead" -> (# &)}, {CollectS}];
 
 NumeratorReduction[expr_, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, NumeratorReduction[expr, p["indices"], p["operatorRules"], p["loopmoms"], p["moms"], p["extmomsind"], p["purePV"], opt]]
 NumeratorReduction[expr_List, indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] := NumeratorReduction[#, indices, operatorRules0, loopmoms, moms, extmomsind, purePV, opt]& /@ expr;
 NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] := Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop, maxit = OptionValue["MaxIt"], itc = 0, TestFunction, operatorRules},
   
-  operatorRules = If[Head[operatorRules0] === Dispatch, operatorRules0, Dispatch@operatorRules0];
+  operatorRules = If[OptionValue["operatorRules"] === None, 
+    If[Head[operatorRules0] === Dispatch, operatorRules0, Dispatch@operatorRules0],
+    Dispatch@OptionValue["operatorRules"]
+  ];
+
   
   PVPatt = If[OptionValue["PVPatt"] == Automatic, (GSD[_] | FVD[_, _] | (SPD[_, PVmom_] /; ! MatchQ[PVmom, Alternatives @@ Join[loopmoms, extmomsind]])), OptionValue["PVPatt"]];
   patt = _Dot | _DiracTrace | (x : PVPatt /; ! FreeQ[x, Alternatives @@ loopmoms])(*PVPatt*);

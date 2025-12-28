@@ -32,8 +32,13 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
     |>;
   template2 = TemplateApply[template, rules];
   startscript = FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start.wl"}];
-  If[FileExistsQ[startfile <> ".start"] && Quiet[ToExpression[Import[startscript, "Text"], InputForm, Hold] === ToExpression[template2, InputForm, Hold]],
+  (* If[FileExistsQ[startfile <> ".start"] && Quiet[ToExpression[Import[startscript, "Text"], InputForm, Hold] === ToExpression[template2, InputForm, Hold]], *)
+  If[FileExistsQ[startfile <> ".start"] && ToExpression[Import[startscript, "Text"], InputForm, Hold] === ToExpression[template2, InputForm, Hold],
       Nothing,
+      Off[DeleteFile::fdnfnd];
+      DeleteFile[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".start"}]];
+      DeleteFile[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start_log.txt"}]];
+      On[DeleteFile::fdnfnd];
       FileTemplateApply[template2, startscript];
       log = RunProcess[{"wolframscript", "-file", startscript}]["StandardOutput"];
       Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start_log.txt"}], log, "Text"];
@@ -58,7 +63,7 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
     |>;
   templateC2 = TemplateApply[templateC, rulesC];
   FileTemplateApply[templateC2, FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".config"}]];
-  (*save file*)
+  (*save script*)
   templateS = FIRETemplate["Reduction"];
   rulesS = <|
     "FIRE" -> ToStringInput@$FIREInstallPath,
@@ -70,7 +75,7 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
     |>;
   templateS2 = TemplateApply[templateS, rulesS];
   FileTemplateApply[templateS2, FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]];
-  (*Run file - this is only for manual run IBP in terminal window, see FIRERunIBP*)
+  (*Run script - this is only for manual run IBP in terminal window, see FIRERunIBP*)
   stream = OpenWrite[FileNameJoin[{FIREWorkPath, "FIRERun" <> ToString[Length@loops] <> ".txt"}]];
   Do[
     If[

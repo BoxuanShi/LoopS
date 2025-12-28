@@ -13,30 +13,18 @@ PowerCounting[expr_, ord_, loopmoms_List, moms_List,
  PowerCounting0[expr, "ord" -> ord, "loopmoms" -> loopmoms, 
   "moms" -> moms, "kinematics" -> kinematics, opt]
 
-Options[PowerCounting0] := 
-  CreateOptions[{"ord" -> "ord", "loopmoms" -> "loopmoms", 
-    "moms" -> "moms", 
-    "kinematics" -> "kinematics"}, {PowerCounting}];
+Options[PowerCounting0] := CreateOptions[{"ord" -> "ord", "loopmoms" -> "loopmoms", "moms" -> "moms", "kinematics" -> "kinematics"}, {PowerCounting}];
 SetAttributes[PowerCounting0, Listable];
 
-PowerCounting0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := 
- Module[{powerfunc, tp1, ord, loopmoms, moms, kinematics, 
-   max}, {ord, loopmoms, moms, kinematics} = {OptionValue["ord"], 
-    OptionValue["loopmoms"], OptionValue["moms"], 
-    OptionValue["kinematics"]};
-  If[Length@ord === 3 && ord[[2]] =!= 0, 
-   Print["PowerCounting: only support expansion around 0."]];
+PowerCounting0[expr_, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{powerfunc, tp1, ord, loopmoms, moms, kinematics, max}, {ord, loopmoms, moms, kinematics} = {OptionValue["ord"], OptionValue["loopmoms"], OptionValue["moms"], OptionValue["kinematics"]};
+  If[Length@ord === 3 && ord[[2]] =!= 0, Print["PowerCounting: only support expansion around 0."]];
   If[Length@ord === 2, ord = Insert[ord, 0, {2}]];
-  tp1 = expr // FeynAmpDenominatorExplicit // 
-      ExpandMomentum[#, moms] & // ExpandDirac;
+  tp1 = expr // FeynAmpDenominatorExplicit // ExpandMomentum[#, moms] & // ExpandDirac;
   max = tp1 // Together // Exponent[#, ord[[1]], Min] &;
-  powerfunc = 
-   If[MatchQ[ord, {__, "Leading"}], 
-    Normal[Series[#, ReplacePart[ord, 3 -> max]]] &, 
-    Normal[Series[#, ord]] &];
-  If[OptionValue["PowerCountingPrintLeadingPower"], 
-   Print["The leading power is ", ord[[1]], "^", max]];
-  tp1 // powerfunc // SPDToFAD[#, loopmoms, kinematics] &]
+  powerfunc = If[MatchQ[ord, {__, "Leading"}], Normal[Series[#, ReplacePart[ord, 3 -> max]]] &, Normal[Series[#, ord]] &];
+  If[OptionValue["PowerCountingPrintLeadingPower"], Print["The leading power is ", ord[[1]], "^", max]]; 
+  tp1 // CollectFlat[#, DiracPattern| _FVD| _MTD, powerfunc] & // SPDToFAD[#, loopmoms, kinematics] &
+]
 
 LeadingPower[expr_, para_, process_String : "CurrentProcess"] := 
  LeadingPower[expr, para, ToExpression[process]]
