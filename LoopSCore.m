@@ -56,3 +56,7 @@ End[];
 
 
 EndPackage[];
+
+
+$Path = Union@Append[$Path, FileNameJoin[{$LoopSInstallPath,"Extra"}]];
+Get["ExtraLoad.m"];

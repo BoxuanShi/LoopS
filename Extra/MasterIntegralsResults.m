@@ -1,29 +1,15 @@
-ClearAll[refinecolors];
-refinecolors[expr_, pow_] := Module[{tp1, tp2, tp3}, 
-    tp1 = expr // TogetherExpand // ListS;
-    tp2 = Total /@ Outer[Exponent[#1, #2] &, tp1, {CA, CF, nf}];
-    tp3 = (pow - tp2)/2;
-    tp3 = (CA  (CA - 2  CF))^tp3;
-    tp1 . tp3 // Factor
-]
-
 
 MIformlistNLO = {
-   {{l1^2 - a1}, {l1}, {n, nb}, {n^2 -> 0, n nb -> 2, nb^2 -> 0}},
-   {{l1^2, (l1 + a1 p + a2 pp)^2}, {l1}, {p, pp}, {p^2 -> 0, 
-     p pp -> 1/2, pp^2 -> 0}},
-   {{l1^2, l1^2 + a1 l1 n + a2 l1 nb + a3}, {l1}, {n, nb}, {n^2 -> 0, 
-     n nb -> 2, nb^2 -> 0}},
-   {{l1^2, (l1 + a1 p + a2 pp)^2, (l1 + b1 p + b2 pp)^2}, {l1}, {p, 
-     pp}, {p^2 -> 0, p pp -> 1/2, pp^2 -> 0}}
+   {{l1^2 - a1}, {l1}, {n, nb}, {n^2 -> 0, n nb -> 2, nb^2 -> 0}}, 
+   {{l1^2, (l1 + a1 p + a2 pp)^2}, {l1}, {p, pp}, {p^2 -> 0, p pp -> 1/2, pp^2 -> 0}},
+   {{l1^2, l1^2 + a1 l1 n + a2 l1 nb + a3}, {l1}, {n, nb}, {n^2 -> 0, n nb -> 2, nb^2 -> 0}},
+   {{l1^2, (l1 + a1 p + a2 pp)^2, (l1 + b1 p + b2 pp)^2}, {l1}, {p, pp}, {p^2 -> 0, p pp -> 1/2, pp^2 -> 0}}
    };
 MIsollistNLO = {
    (*a1 (1/\[Epsilon]+1+(1+\[Pi]^2/12) \[Epsilon]+1/
    12 (12+\[Pi]^2-4 Zeta[3]) \[Epsilon]^2)+\[Epsilon]order[1,
    3]*\[Epsilon]^3,*)
-   a1/\[Epsilon] + (a1 - a1 Log[a1]) + 
-    1/12 a1 (12 + \[Pi]^2 - 12 Log[a1] + 
-       6 Log[a1]^2) \[Epsilon] + \[Epsilon]order[2]*\[Epsilon]^2,
+   a1/\[Epsilon] + (a1 - a1 Log[a1]) + 1/12 a1 (12 + \[Pi]^2 - 12 Log[a1] + 6 Log[a1]^2) \[Epsilon] + \[Epsilon]order[1,2]*\[Epsilon]^2,
    Module[{s1 = a1 a2}, 
     1/\[Epsilon] + (2 - Log[-s1]) + 
      1/12 \[Epsilon] (6 Log[-s1]^2 - 24 Log[-s1] - \[Pi]^2 + 
@@ -40,7 +26,7 @@ MIsollistNLO = {
            a3] (2 + (-1 + 1/s1) Log[1 - s1]) + ((48 + \[Pi]^2) s1 - 
          24 (-1 + s1) Log[1 - s1] + 6 (-1 + s1) Log[1 - s1]^2 - 
          12 (-1 + s1) PolyLog[2, s1/(-1 + s1)])/(
-        12 s1)) \[Epsilon] + \[Epsilon]order[2]*\[Epsilon]^2],
+        12 s1)) \[Epsilon] + \[Epsilon]order[3,2]*\[Epsilon]^2],
    Module[{s3, x, y},
     s3 = (a1 - b1) (a2 - b2); {x, y} = {a1/(a1 - b1), a2/(
       a2 - b2)}; -((
