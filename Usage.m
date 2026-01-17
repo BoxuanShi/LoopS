@@ -432,7 +432,9 @@ SeparateFAD;
 ToSFAD;
 
 PowerCounting;
+PowerCountingNumerator;
 PowerCountingPrintLeadingPower;
+PowerCountingNumeratorPrintLeadingPower;
 LeadingPower;
 
 ShiftToRegionForm;

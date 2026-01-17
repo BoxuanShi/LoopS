@@ -10,7 +10,7 @@ ClearAll[CanonicalOperatorRules]
 Options[CanonicalOperatorRules] := CreateOptions[{"Parallelization" -> False}, {NumeratorReduction, TableS}];
 CanonicalOperatorRules[operatorRules_List, process_String : "CurrentProcess", opt : OptionsPattern[]] /; OptRestrict[opt] := CanonicalOperatorRules[operatorRules, ToExpression[process], opt]
 CanonicalOperatorRules[operatorRules_List, process_Association, opt : OptionsPattern[]] /; OptRestrict[opt] := CanonicalOperatorRules[operatorRules, process["indices"], process["loopmoms"], process["moms"], process["extmomsind"], process["purePV"], opt]
-CanonicalOperatorRules[operatorRules_List, indices_List, loopmoms_List, moms_List, extmomsind_, purePV_String, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{operatorRules0, operatorRules2, OPERAT, opelist, opttable, optnum, tp0, tp1, tp1x, tp2, tp3, i, j},
+CanonicalOperatorRules[operatorRules_List, indices_List, loopmoms_List, moms_List, extmomsind_, purePV_String, opt : OptionsPattern[]] /; OptRestrict[opt] := Module[{operatorRules0, operatorRules2, OPERAT, opelist, opttable, optnum, tp0, tp1, tp1x, tp2, tp3, i, j, res},
   Block[{Monitor = (#&)},
     (*preprocessing*)
     operatorRules0 = Union @ Normal @ operatorRules /. Pattern -> (# &) ;
@@ -39,6 +39,8 @@ CanonicalOperatorRules[operatorRules_List, indices_List, loopmoms_List, moms_Lis
     (*reduce generated redundant operators*)
     tp3 = TableS[NumeratorReduction[tp2[[i]], indices, Dispatch@operatorRules2, loopmoms, moms, extmomsind, purePV, optnum], {i, Length@tp2}, Evaluate@opttable];
     (*return*)
-    Union@Thread[tp2 -> tp3]
+    res = Union@Thread[tp2 -> tp3];
+    res = Reverse@SortBy[res, LeafCount@First@# &];
+    res
   ]
 ]

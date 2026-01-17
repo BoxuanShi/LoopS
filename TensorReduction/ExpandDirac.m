@@ -6,18 +6,14 @@ DiracTraceExpand0[expr_DiracTrace] := Module[{i, tp1},
   tp1 = Table[Separate[tp1[[i]], _Dot | _GAD | _GSD], {i, Length@tp1}];
   tp1[[All, 2]] = Table[DiracTrace /@ tp1[[i, 2]], {i, Length@tp1}];
   Total[Dot @@@ tp1]
-  ]
+]
 
 
 ClearAll[ExpandMomentum]
 ExpandMomentum::usage = 
-  "ExpandMomentum[expr_,moms_:moms] factor out non-momentum parameter in \
-Momentum[a_*p,D]->a*Momentum[p,D] according to Momentum list \"moms\"";
-ExpandMomentum[expr_, process_String : "CurrentProcess"] := 
- ExpandMomentum[expr, ToExpression[process]]
-ExpandMomentum[expr_, process_Association] := 
- ExpandMomentum[expr, process["moms"]]
-
+  "ExpandMomentum[expr_,moms_:moms] factor out non-momentum parameter in Momentum[a_*p,D]->a*Momentum[p,D] according to Momentum list \"moms\" ";
+ExpandMomentum[expr_, process_String : "CurrentProcess"] := ExpandMomentum[expr, ToExpression[process]]
+ExpandMomentum[expr_, process_Association] := ExpandMomentum[expr, process["moms"]]
 ExpandMomentum[expr_, moms_List] := Module[{expsingleMom},
   
   If[moms === {}, Return[expr]];
@@ -39,6 +35,4 @@ ExpandMomentum[expr_, moms_List] := Module[{expsingleMom},
 
 
 ClearAll[ExpandDirac]
-ExpandDirac[expr_] := 
- expr // DiracGammaExpand // ExpandScalarProduct // DotSimplify(*//FCES*)// 
-  DiracTraceExpand
+ExpandDirac[expr_] := expr // DiracGammaExpand // ExpandScalarProduct // DotSimplify(*//FCES*)// DiracTraceExpand
