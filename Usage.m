@@ -1,3 +1,10 @@
+$FeynCalcInstallPath;
+$MultivariateApartInstallPath;
+$FIREInstallPath;
+$OPITeRInstallPath;
+$AMFlowInstallPath;
+$BladeInstallPath;
+
 (*BladeInterface*)
 BladeWorkPath;
 BladeFamilyName;
