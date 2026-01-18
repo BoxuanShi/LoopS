@@ -29,10 +29,12 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
 
     (*1. first step simplification*)
     (* tp1 = tp1 //ExpandDirac // CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify[# /. DiracTrace -> TR] & ] & // ExpandDirac (*//TimingS*); *)
-    tp1 = tp1 // ExpandDirac;
+    tp1 = tp1 // DiracGammaExpand // ExpandScalarProduct // DiracTraceExpand;
+    tp1 = tp1 /. HoldPattern[Dot[x___]] :> Dot @@ CollectS[{x}, _GSD | _GAD | _DiracGamma] // DotSimplify // FCES;
     tp1 = tp1 // Separate[#, DiracPattern | _FVD | _MTD] &;
     tp1[[2]] = TableS[ DiracSimplify[ tp1[[2, i]] /. DiracTrace -> TR ], {i, Length @ tp1[[2]]} ];
-    tp1 = Dot @@ tp1 // ExpandDirac (*//TimingS*);
+    (* tp1 = Dot @@ tp1 // ExpandDirac (*//TimingS*); *)
+    tp1 = Dot @@ tp1 (*//TimingS*);
 
     tp2 = tp1 // CollectS[#, _FAD | _SFAD, # &, FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &; , "NumeratorReduction: Preprocessing..."
   ];

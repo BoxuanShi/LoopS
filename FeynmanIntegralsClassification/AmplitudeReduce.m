@@ -22,9 +22,12 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
   PowerCounting0 = If[PowerCounting === (# &), (# &), (ExpandDirac[ExpandMomentum[FeynAmpDenominatorExplicit[#], moms]] &)];
   opttable = FilterOptions[{opt}, TableS];
   tpNumSPD = BlockCondition[loops === {}, {Monitor = (# &)}, TableS[
-    tp1 = tpNumlist[[i]] // PowerCounting0 // CollectS[#, DiracPattern | _FVD | _MTD, PowerCounting]&; (*to be consistent with Separate in NumeratorReduction*)
-    tp1 = tp1 // NumeratorReduction[#, indices, operatorRules, loopmoms, moms, extmomsind, purePV, "NumeratorReductionForm" -> "ExpressionRules", "OperatorHead" -> OPERAT, "NumeratorReductionDispatch" -> False, Evaluate@optnum] &;
-    tp1 = tp1 // PowerCounting
+    If[zeroSectorQ[tpDenolist[[i]], loops, kinematics],
+      {0, {}},
+      tp1 = tpNumlist[[i]] // PowerCounting0 // CollectS[#, DiracPattern | _FVD | _MTD, PowerCounting]&; (*to be consistent with Separate in NumeratorReduction*)
+      tp1 = tp1 // NumeratorReduction[#, indices, operatorRules, loopmoms, moms, extmomsind, purePV, "NumeratorReductionForm" -> "ExpressionRules", "OperatorHead" -> OPERAT, "NumeratorReductionDispatch" -> False, Evaluate@optnum] &;
+      tp1 = tp1 // PowerCounting
+    ]
     , {i, Length@tpNumlist}, "reducing numerator structures with NumeratorReduction...", Evaluate@opttable]
     ](*//TimingS*);
   (*option OperatorCollect*)
