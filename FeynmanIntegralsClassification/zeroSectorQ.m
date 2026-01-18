@@ -1,6 +1,7 @@
 ClearAll[zeroSectorQ]
 zeroSectorQ[pdlist0_, loops_List, process_String : "CurrentProcess"] := zeroSectorQ[pdlist0, loops, ToExpression[process]]
 zeroSectorQ[pdlist0_, loops_List, process_Association] := zeroSectorQ[pdlist0, loops, process["kinematics"]]
+zeroSectorQ[_, {}, SPRep_List] := False
 zeroSectorQ[pdlist0_List, loops_List, SPRep_List] := Module[{pdlist, i, pos, n = Length@pdlist0, G, x, k, xprod, eq, eqlist, mat, redmat},
 	(*pdlist=Cases[pdlist0,a_/;FreeQ[Denominator[a],Alternatives@@loops]];*)
 	pdlist = Union@Cases[pdlist0, a_ /; FreeQ[Denominator[a], Alternatives @@ loops]];
