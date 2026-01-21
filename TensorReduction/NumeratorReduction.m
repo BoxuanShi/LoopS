@@ -34,7 +34,7 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
     tp1 = tp1 // Separate[#, DiracPattern | _FVD | _MTD] &;
     tp1[[2]] = TableS[ DiracSimplify[ tp1[[2, i]] /. DiracTrace -> TR ], {i, Length @ tp1[[2]]} ];
     (* tp1 = Dot @@ tp1 // ExpandDirac (*//TimingS*); *)
-    tp1 = Dot @@ tp1 (*//TimingS*);
+    tp1 = Dot @@ tp1 // FCES(*//TimingS*);
 
     tp2 = tp1 // CollectS[#, _FAD | _SFAD, # &, FCES@ExpandMomentum@FeynAmpDenominatorExplicit@# &] &; , "NumeratorReduction: Preprocessing..."
   ];
