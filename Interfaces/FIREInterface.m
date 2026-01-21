@@ -53,8 +53,8 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
   rulesC = <|
     "compressor" -> OptionValue["FIREcompressor"],
     "fThreads" -> OptionValue["IBPKernels"],
-    "tThreads" -> Ceiling[OptionValue["IBPKernels"]/2],
-    "sThreads" -> Ceiling[OptionValue["IBPKernels"]/2],
+    "tThreads" -> Ceiling[OptionValue["IBPKernels"]],
+    "sThreads" -> Ceiling[OptionValue["IBPKernels"]],
     "variables" -> (ToString[Complement[Variables[{familyi, kinematics[[All, 2]]}], Join[loops, extmomsind]]] // StringTake[#, {2, -2}] &),
     "folder" -> PathName[FIREWorkPath],
     "familyName" -> (FIREFamilyName <> ToString[problem]),
