@@ -6,7 +6,7 @@ countProps[props_List, loops_List, kinematics_List] := Module[{i, inv, props2},
   props2 = GatherBy[props2, TogetherExpandDenominator[#[[1]]]/.kinematics&];
   props2 = {#[[1,1]],Total@#[[All,2]]}&/@props2;
   Transpose@props2
-  ]
+]
 
 
 ClearAll[EiknolPermutation]
@@ -17,7 +17,7 @@ EiknolPermutation[family_List, loops_List] := Module[{posL, permuL},
    permuL = {ConstantArray[1, Length@family]};
    ];
   permuL
-  ]
+]
 
 
 ClearAll[MatchFI];
@@ -93,4 +93,4 @@ MatchFI[target0_List, formlist_List, loops_List, kinematics_List, opt : OptionsP
 
   Message[MatchFI::missing, target0];
   MissMatch @@ target0
-  ]
+]

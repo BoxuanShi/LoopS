@@ -27,7 +27,7 @@ AMFlowSaveName;
 AMFlowThread;
 AMFlowReducer;
 
-(*BasicS*)
+(*BasicFunctions*)
 Protect[Global`\[Epsilon]];
 Protect[Global`eps];
 Protect[Global`j];

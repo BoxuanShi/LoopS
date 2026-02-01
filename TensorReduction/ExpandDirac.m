@@ -1,8 +1,8 @@
 ClearAll[DiracTraceExpand, DiracTraceExpand0]
-DiracTraceExpand[expr_] := getDo[FCES@expr, _DiracTrace, DiracTraceExpand0]
+DiracTraceExpand[expr_] := getDo[FCES @ expr, _DiracTrace, DiracTraceExpand0]
 DiracTraceExpand0[expr_DiracTrace] := Module[{i, tp1},
-  tp1 = FCES@DotSimplify@expr[[1]];
-  tp1 = ListS@TogetherExpand@tp1;
+  tp1 = FCES @ DotSimplify @ expr[[1]];
+  tp1 = ListS @ TogetherExpand @ tp1;
   tp1 = Table[Separate[tp1[[i]], _Dot | _GAD | _GSD], {i, Length@tp1}];
   tp1[[All, 2]] = Table[DiracTrace /@ tp1[[i, 2]], {i, Length@tp1}];
   Total[Dot @@@ tp1]

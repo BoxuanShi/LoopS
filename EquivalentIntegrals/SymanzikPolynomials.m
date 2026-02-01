@@ -15,4 +15,4 @@ SymanzikPolynomials[x_, gpds_List, loops_List, SPRep_List] := Module[{denominato
    If[U === 0, Return@{0, 0}];(*singular case*)
    F = Expand[B . Cancel[U*Inverse[A]] . B - U* C] /. Thread[(SPRep[[All, 1]] /. SP -> Times) -> SPRep[[All, 2]]];
    {U, F} // Expand
-   ];
+];

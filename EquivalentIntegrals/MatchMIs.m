@@ -10,4 +10,4 @@ MatchMIs[MIs_List, MIformlist_List, MIsollist_List, loops_List, family_List, kin
   Msols = MFrelease[MFs, MIsollist];
   Msols = TableS[Msols[[i]] // OptionValue["SimplifyMatchMIs"], {i, Length@Msols}, "Simplifying MIs result by option \"SimplifyMatchMIs\".", Evaluate@opttable];
   Thread[MIs -> Msols]
-  ]
+]

@@ -15,4 +15,4 @@ ApartFFS[deno_, loops_List, moms_, SPRep_List, opt : OptionsPattern[]] := Module
   tp3 = tp2 // Separate[#, _FAD | _SFAD] &;
   tp3[[1]] = OptionValue["ApartFFSSimplify"] /@ tp3[[1]];
   tp3
-  ]
+]
