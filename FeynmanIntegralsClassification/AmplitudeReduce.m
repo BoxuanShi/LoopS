@@ -26,7 +26,7 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
     If[zeroSectorQ[tpDenolist[[i]], loops, kinematics],
       {0, {}},
       tp1 = tpNumlist[[i]] // PowerCounting0 // CollectS[#, DiracPattern | _FVD | _MTD, PowerCounting]&; (*to be consistent with Separate in NumeratorReduction*)
-      tp1 = tp1 // NumeratorReduction[#, indices, operatorRules, loopmoms, moms, extmomsind, purePV, "NumeratorReductionForm" -> "ExpressionRules", "OperatorHead" -> OPERAT, "NumeratorReductionDispatch" -> False, Evaluate@optnum] &;
+      tp1 = tp1 // NumeratorReduction[#, indices, operatorRules, loopmoms, moms, extmomsind, purePV, "NumeratorReductionForm" -> "ExpressionRules", "OperatorHead" -> OPERAT, "NumeratorReductionDispatch" -> False, Evaluate@optnum] &
       (* tp1 = tp1 // PowerCounting *)
     ]
     , {i, Length@tpNumlist}, "reducing numerator structures with NumeratorReduction...", Evaluate@opttable]
@@ -36,7 +36,7 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
   (*DenominatorToG*)
   optFR = FilterOptions[{opt}, {DenominatorToG}];
   tp2 = TableS[DenominatorToG[tpNumSPD[[i, 1]], tpDenolist[[i]], loops, familyLS, moms, kinematics, "DenominatorToGForm" -> "List", Evaluate@optFR], {i, Length@tpNumSPD}, "reducing denominator structures with DenominatorToG...", Evaluate@opttable](*//TimingS*);
-  (*DropZeroByNumerics*)
+  (* DropZeroByNumerics *)
   If[OptionValue["DropZeroByNumerics"], tp2 = DropZeroByNumerics[tp2, Total[Dot @@@ tp2], _G]];
   (*option AmplitudeReduceForm*)
   ophead = OptionValue["OperatorHead"];
