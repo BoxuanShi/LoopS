@@ -8,7 +8,9 @@ NumeratorReduction::spinor = "Spinor still exist, the operatorRules is not compl
 Options[NumeratorReduction] := CreateOptions[{"operatorRules" -> None, "OperatorCollect" -> False, "OperatorReplace" -> True, "PVPatt" -> Automatic, "MaxIt" -> 10, "NumeratorReductionSimplify" :> SimplifyS, "NumeratorReductionForm" -> "Expression", "NumeratorReductionDispatch" -> True, "OperatorName" -> OPs, "OperatorHead" -> (# &)}, {CollectS}];
 
 NumeratorReduction[expr_, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, NumeratorReduction[expr, p["indices"], p["operatorRules"], p["loopmoms"], p["moms"], p["extmomsind"], p["purePV"], opt]]
+
 NumeratorReduction[expr_List, indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] := NumeratorReduction[#, indices, operatorRules0, loopmoms, moms, extmomsind, purePV, opt]& /@ expr;
+
 NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | operatorRules0_Dispatch, loopmoms_List, moms_List, extmomsind_List, purePV_String, opt : OptionsPattern[]] := Module[{PVPatt, num, dummyind, indices1x, indices2, patt, tp1, tp2, tp3, tp4, i, x, optloop, maxit = OptionValue["MaxIt"], itc = 0, TestFunction, operatorRules},
   
   operatorRules = If[OptionValue["operatorRules"] === None, 
@@ -108,6 +110,9 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
   x];*)(*to fix a bug when SPD[p1,
   p2] are not defined and appear in the denominators*)
   tp3 = tp3 // CollectS[#, _FVD | _MTD, # &, FCES@FCContract@# &] &;
+
+  (*only for tree-level*)
+  (* If[loops === {}, tp3 = tp3 // CollectS[#, _LCD[___] | _FVD | _MTD, #&, FCES[Contract[EpsEvaluate[#]]] & ] ] &; *)
   
   (*Abbreivate Spinors*)
   Monitor[

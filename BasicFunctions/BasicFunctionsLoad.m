@@ -27,7 +27,7 @@ Get["CollectFlat.m"];
 Get["ParallelTableS.m"];
 Get["groupByRationalRatios.m"];
 Get["GenerateSymmetryRules.m"];
-Get["ToStringHold.m"];
+Get["ToStringFunction.m"];
 Get["BlockCondition.m"];
 Get["CreateOptions.m"];
 Get["NotebookDirectoryS.m"];
