@@ -3,7 +3,14 @@ BeginPackage["LoopS`"];
 
 (*Paths*)
 $LoopSInstallPath = DirectoryName[$InputFileName];
-$NotebookDirectory = DirectoryName[NotebookFileName[]]
+$LoopSScriptDirectory := Module[{cmd, script},
+  cmd = Quiet@Check[$ScriptCommandLine, {}];
+  script = If[ListQ[cmd] && Length[cmd] > 0, First[cmd], ""];
+  If[StringQ[script] && FileExistsQ[script], DirectoryName[ExpandFileName[script]], Directory[]]
+];
+$NotebookDirectory = If[$FrontEnd === Null, $LoopSScriptDirectory,
+  Quiet@Check[DirectoryName[NotebookFileName[]], Directory[]]
+]
 
 
 $LoopSVersion="2025-12-20";
@@ -57,13 +64,13 @@ SetSharedVariable[
 (*self-consistence check*)
 If[$OperatingSystem==="Windows",
 
-    Print[Style["Warning: PV reduction with OPITeR is not supported on Windows in LoopS, which may result in slower performance. Please use Linux or macOS for optimal performance.", FontColor->Red]];
+    Print["Warning: PV reduction with OPITeR is not supported on Windows in LoopS, which may result in slower performance. Please use Linux or macOS for optimal performance."];
     SetOptions[GeneratePV, "UseOPITeR" -> False]
     ,
     
     If[GeneratePVOPITeR[{},{}]=== $Failed, 
-    Print[Style["OPITeR test failed! Please verify that OPITeR and FORM are correctly installed.", FontColor->Red]];
-    Print[Style["LoopS can be used without OPITeR, but the efficiency of Passarino–Veltman reduction will be significantly reduced in complex cases if OPITeR is not available.", FontColor->Red]];,
+    Print["OPITeR test failed! Please verify that OPITeR and FORM are correctly installed."];
+    Print["LoopS can be used without OPITeR, but the efficiency of Passarino-Veltman reduction will be significantly reduced in complex cases if OPITeR is not available."];,
     Print["OPITeR test passed."]
     ];
 ];

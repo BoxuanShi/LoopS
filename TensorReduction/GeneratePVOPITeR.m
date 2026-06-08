@@ -21,8 +21,9 @@ GeneratePVOPITeR[nLlist_List, extmomsind_List] /; (OrderedQ@Reverse@nLlist) :=Mo
   template = OPITeRTemplete[Union@loopsOPITeR, extOPITeR, exp, outfile];
   
   infile = FileNameJoin[{OPITeRWorkPath, "pvreducein" <> ToString[$KernelID] <> ".frm"}];
+  If[! DirectoryQ[OPITeRWorkPath], CreateDirectory[OPITeRWorkPath, CreateIntermediateDirectories -> True]];
   Export[infile, template, "Text"];
-  Run["form " <> infile];
+  RunProcess[{"form", infile}];
   
   If[! FileExistsQ[outfile], Return[$Failed]];
   

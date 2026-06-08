@@ -6,6 +6,14 @@
 An example notebook examples.nb is provided in the Examples directory.
 You can open this notebook to learn how to use LoopS step by step.
 
+The same setup can also be run from a terminal through WolframScript:
+
+```sh
+wolframscript -file Examples/Scripts/run-all.wl
+```
+
+Individual script examples are available in `Examples/Scripts/`.
+
 
 ## Dependencies
 
@@ -42,9 +50,10 @@ versions included here are redistributed under GPL-3.0.
 
 ## Usage Notes
 
-- LoopS relies on the current notebook directory (`NotebookDirectory[]`) for certain operations.
-  If your notebook has not been saved, `NotebookDirectory[]` will return `$Failed`, and some 
-  functions may not work as expected. Please **save your notebook before loading LoopS**.
+- In notebooks, LoopS uses the current notebook directory for generated files. Please save your
+  notebook before loading LoopS.
+- In terminal scripts, LoopS uses the script directory as the same base directory. When loaded with
+  `wolframscript -code`, it falls back to the current shell directory.
 
 
 ## Citation

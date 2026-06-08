@@ -1,6 +1,13 @@
 (*Paths*)
 $LoopSInstallPath = DirectoryName[$InputFileName];
-$NotebookDirectory = DirectoryName[NotebookFileName[]]
+$LoopSScriptDirectory := Module[{cmd, script},
+  cmd = Quiet@Check[$ScriptCommandLine, {}];
+  script = If[ListQ[cmd] && Length[cmd] > 0, First[cmd], ""];
+  If[StringQ[script] && FileExistsQ[script], DirectoryName[ExpandFileName[script]], Directory[]]
+];
+$NotebookDirectory = If[$FrontEnd === Null, $LoopSScriptDirectory,
+  Quiet@Check[DirectoryName[NotebookFileName[]], Directory[]]
+]
 
 
 (*LoopS*)

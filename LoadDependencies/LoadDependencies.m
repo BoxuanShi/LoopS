@@ -10,14 +10,13 @@ $MultivariateApartInstallPath = If[! FileExistsQ[$MultivariateApartInstallPath],
 
 
 FIREInstalledQ = If[! FileExistsQ[$FIREInstallPath], 
-  Print[Style["FIRE not found. Please set $FIREInstallPath as the path of FIRE's .m file. For example: \"/Users/balth/Downloads/MyLoopS/packages/fire/FIRE6/FIRE6.m\".", FontColor->Red]]; False, True];
+  Print["FIRE not found. Please set $FIREInstallPath as the path of FIRE's .m file. For example: \"/Users/balth/Downloads/MyLoopS/packages/fire/FIRE6/FIRE6.m\"."]; False, True];
 
 If[$OperatingSystem =!= "Windows",
   If[! FileExistsQ[$OPITeRInstallPath], 
-    Print[Style["OPITeR not found. OPIteR can be add by:", FontColor->Red]];
-    DeleteDirectory[DirectoryName @ $OPITeRInstallPath, DeleteContents -> True];
-    Print[Style["OPIteR can be add by: git clone https://bitbucket.org/jaegoode/opiter.git "<> ToString[DirectoryName @ $OPITeRInstallPath], FontColor->Red]];
-    Print[Style["Or set $OPITeRInstallPath as the path of OPITeR's example.frm directory.", FontColor->Red]]
+    Print["OPITeR not found. OPIteR can be added by:"];
+    Print["git clone https://bitbucket.org/jaegoode/opiter.git "<> ToString[DirectoryName @ $OPITeRInstallPath]];
+    Print["Or set $OPITeRInstallPath as the path of OPITeR's example.frm directory."]
     ]
 ];
 
@@ -43,4 +42,4 @@ If[FIREInstalledQ, ParallelNeedS["FIRE`", $FIREInstallPath]];
 
 
 (*check FeynCalc version*)
-If[!OrderedQ[{ToExpression@StringSplit["10.1.0", "."], ToExpression@StringSplit[$FeynCalcVersion, "."]}], Print[Style["It is recommended to use FeynCalc version 10.1.0 or higher, as lower versions may cause unknown bugs.", FontColor->Red]]];
+If[!OrderedQ[{ToExpression@StringSplit["10.1.0", "."], ToExpression@StringSplit[$FeynCalcVersion, "."]}], Print["It is recommended to use FeynCalc version 10.1.0 or higher, as lower versions may cause unknown bugs."]];
