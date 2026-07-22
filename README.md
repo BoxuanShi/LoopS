@@ -3,23 +3,55 @@
 
 ## Installation
 
-Install a release archive and load the package with:
+### Git installation (recommended)
+
+The default installation method is a Git checkout in Mathematica's user `Applications` directory.
+Clone LoopS together with its pinned FIRE and OPITeR dependencies:
+
+```sh
+cd /path/to/Mathematica/Applications
+git clone --recurse-submodules https://github.com/BoxuanShi/LoopS.git
+```
+
+The resulting package entry point should be located at
+`$UserBaseDirectory/Applications/LoopS/LoopS.m`. Load it in Mathematica with:
+
+```wl
+Needs["LoopS`"]
+```
+
+Existing Git installations can be updated with:
+
+```sh
+cd /path/to/Mathematica/Applications/LoopS
+git status
+git pull --ff-only
+git submodule sync --recursive
+git submodule update --init --recursive
+```
+
+Check `git status` before updating and preserve any local `Config.m` customizations. Restart the
+Mathematica kernel after an update so that no definitions from the previous version remain loaded.
+If LoopS was cloned without `--recurse-submodules`, initialize its pinned dependencies with:
+
+```sh
+git submodule update --init --recursive
+```
+
+### Paclet installation (alternative)
+
+As a supplementary installation method, users may install a release archive directly:
 
 ```wl
 PacletInstall["/path/to/LoopS-1.2.0.paclet"]
 Needs["LoopS`"]
 ```
 
-For development, place this repository in Mathematica's `Applications` directory and initialize
-its pinned dependencies before loading `LoopS`:
-
-```sh
-git submodule update --init --recursive
-```
-
-FIRE 7.1 and OPITeR are source submodules. Release Paclets remain self-contained for normal users:
-they include the tested FIRE Mathematica runtime and OPITeR source needed by LoopS. GitHub-generated
-source archives do not contain submodule files, so use a release Paclet or initialize a Git clone.
+Release Paclets are self-contained: they include the tested FIRE Mathematica runtime and OPITeR
+source needed by LoopS. Avoid keeping both a Paclet installation and a Git checkout under
+Mathematica's `Applications` directory, since the source checkout may take precedence during
+loading. GitHub-generated source archives do not contain submodule files; use a Git clone or a
+release Paclet instead.
 
 
 ## Usage
