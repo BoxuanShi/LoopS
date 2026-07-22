@@ -253,14 +253,17 @@ KiraPrepareIBP[
 ];
 
 ClearAll[KiraRunIBP];
-KiraRunIBP::usage = "KiraRunIBP runs a prepared Kira family project. It defaults to one worker process.";
+KiraRunIBP::usage = "KiraRunIBP runs a prepared Kira family project. Its internal worker count defaults to LoopSParallelKernels, matching the FIRE interface.";
 KiraRunIBP::executable = "Kira executable `1` could not be started.";
 KiraRunIBP::version = "Kira version check failed: `1`.";
 KiraRunIBP::failed = "Kira exited with status `1`. See `2`.";
 KiraRunIBP::missing = "Prepared Kira job `1` does not exist.";
 KiraRunIBP::parallel = "Kira parallelism `1` must be a positive integer.";
 
-Options[KiraRunIBP] = {"KiraExecutable" :> $KiraExecutable, "KiraParallel" -> 1};
+Options[KiraRunIBP] = {
+  "KiraExecutable" :> $KiraExecutable,
+  "KiraParallel" :> LoopSParallelKernels
+};
 
 KiraRunIBP[
   problem_Integer,

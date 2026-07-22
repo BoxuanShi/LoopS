@@ -53,6 +53,12 @@ VerificationTest[
 ]
 
 VerificationTest[
+  "KiraParallel" /. Options[KiraRunIBP],
+  LoopSParallelKernels,
+  TestID -> "kira-parallel-default-matches-fire"
+]
+
+VerificationTest[
   MatchQ[LoopS`Private`WolframScriptCommand[FileNameJoin[{testsDirectory, "run-tests.wl"}]], {_String ..}],
   True,
   TestID -> "native-kernel-script-command"

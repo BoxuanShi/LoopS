@@ -26,6 +26,8 @@ Notable changes to LoopS are documented in this file.
   compiled binaries, Fermat, build dependencies, and generated example output.
 - FIRE now follows the official 7.1 source through a pinned submodule; release Paclets continue to
   vendor the tested minimal Mathematica runtime so end users do not need Git submodules.
+- Kira's per-family worker count now defaults to `LoopSParallelKernels`, matching FIRE's internal
+  parallelism policy; validation continues to request one worker explicitly.
 - Headless scripts prefer the native Wolfram kernel when available, avoiding legacy launcher hangs
   on Apple Silicon.
 

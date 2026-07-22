@@ -78,7 +78,9 @@ LoopS also provides an interface to external **[Kira](https://gitlab.com/kira-py
 not bundled in the Paclet; set `$KiraExecutable` in `Config.m` or pass `"KiraExecutable"` to
 `KiraIBPReduction`. The interface defaults to `integral_ordering: 2`, which ranks irreducible
 scalar-product numerators as more complicated than dotted positive propagator powers and therefore
-prefers a positive-power master basis. Each family and ordering uses an isolated Kira state directory.
+prefers a positive-power master basis. Kira's per-family `--parallel` value defaults to
+`LoopSParallelKernels`, matching FIRE's internal parallelism policy; pass `"KiraParallel" -> 1` for
+the conservative single-worker mode. Each family and ordering uses an isolated Kira state directory.
 
 Additionally, some functions are modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
 
