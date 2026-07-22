@@ -1,0 +1,34 @@
+-1/18*(CF*(2*(5 + 3*L)*nf + 6*CF*(24 + 9*L - Pi^2) + 
+     CA*(-85 - 33*L + 3*Pi^2)))/(Nc*x*y) + 
+ (((CA - 2*CF)*CF)/(Nc*(x - y)^2) - ((CA - 2*CF)*CF)/(Nc*x*(x - y)^2) + 
+   (CF*(-CA + 2*CF))/(2*Nc*x^2*(x - y)) + (CF*(-CA + 2*CF))/(2*Nc*x^2*y))*
+  Log[1 - x] + ((CF*(-CA + 2*CF))/(Nc*(x - y)^2) + CF^2/(2*Nc*(-1 + x)*y) + 
+   (CF*(-11*CA + CF*(15 - 6*L) + 2*nf))/(6*Nc*x*y))*Log[x] + 
+ (((CA - 2*CF)*CF)/(2*Nc*(x - y)^2) + (CF*(-CA + 2*CF))/(2*Nc*x^2*(x - y)) + 
+   ((CA - 2*CF)*CF)/(Nc*x*(x - y)) + ((CA - 2*CF)*CF*(-1 + y))/
+    (Nc*(x - y)^3) + (CF*(-CA + 2*CF))/(2*Nc*x^2*y) + 
+   ((CA - 2*CF)*CF)/(Nc*x*y))*Log[1 - x]*Log[x] + 
+ (CF^2*Log[x]^2)/(2*Nc*x*y) + (((CA - 2*CF)*CF)/(Nc*(x - y)^2) - 
+   ((CA - 2*CF)*CF)/(Nc*x*(x - y)^2) + (CF*(-CA + 2*CF))/(2*Nc*x^2*(x - y)) + 
+   (CF*(-CA + 2*CF))/(2*Nc*x^2*y))*Log[1 - y] + 
+ ((CA - 2*CF)*CF*Log[1 - x]*Log[1 - y])/(Nc*x*y) + 
+ ((CF*(-CA + 2*CF))/(2*Nc*(x - y)^2) + ((CA - 2*CF)*CF)/(2*Nc*x^2*(x - y)) - 
+   ((CA - 2*CF)*CF)/(Nc*x*(x - y)) - ((CA - 2*CF)*CF*(-1 + y))/
+    (Nc*(x - y)^3) + ((CA - 2*CF)*CF)/(2*Nc*x^2*y) - 
+   ((CA - 2*CF)*CF)/(Nc*x*y))*Log[x]*Log[1 - y] + 
+ ((CF*(-CA + 2*CF))/(Nc*(x - y)^2) + CF^2/(2*Nc*x*(-1 + y)) + 
+   (CF*(-11*CA + CF*(15 - 6*L) + 2*nf))/(6*Nc*x*y))*Log[y] + 
+ (((CA - 2*CF)*CF)/(2*Nc*(x - y)^2) + (CF*(-CA + 2*CF))/(2*Nc*x^2*(x - y)) + 
+   ((CA - 2*CF)*CF)/(Nc*x*(x - y)) + ((CA - 2*CF)*CF*(-1 + y))/
+    (Nc*(x - y)^3) + (CF*(-CA + 2*CF))/(2*Nc*x^2*y))*Log[1 - x]*Log[y] + 
+ (CF^2*Log[x]*Log[y])/(Nc*x*y) + ((CF*(-CA + 2*CF))/(2*Nc*(x - y)^2) + 
+   ((CA - 2*CF)*CF)/(2*Nc*x^2*(x - y)) - ((CA - 2*CF)*CF)/(Nc*x*(x - y)) - 
+   ((CA - 2*CF)*CF*(-1 + y))/(Nc*(x - y)^3) + ((CA - 2*CF)*CF)/(2*Nc*x^2*y))*
+  Log[1 - y]*Log[y] + (CF^2*Log[y]^2)/(2*Nc*x*y) - 
+ ((CF*(-CA + 2*CF))/(Nc*(x - y)^2) + ((CA - 2*CF)*CF)/(Nc*x^2*(x - y)) - 
+   (2*(CA - 2*CF)*CF)/(Nc*x*(x - y)) - (2*(CA - 2*CF)*CF*(-1 + y))/
+    (Nc*(x - y)^3) + ((CA - 2*CF)*CF)/(Nc*x^2*y) - 
+   (2*(CA - 2*CF)*CF)/(Nc*x*y))*PolyLog[2, x] - 
+ (((CA - 2*CF)*CF)/(Nc*(x - y)^2) + (CF*(-CA + 2*CF))/(Nc*x^2*(x - y)) + 
+   (2*(CA - 2*CF)*CF)/(Nc*x*(x - y)) + (2*(CA - 2*CF)*CF*(-1 + y))/
+    (Nc*(x - y)^3) + (CF*(-CA + 2*CF))/(Nc*x^2*y))*PolyLog[2, y]

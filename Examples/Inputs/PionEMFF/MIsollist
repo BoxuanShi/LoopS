@@ -1,0 +1,8 @@
+{
+  Module[{s1 = a1 a2},
+    1/\[Epsilon] + (2 - Log[-s1]) + \[Epsilon]/12 (6 Log[-s1]^2 - 24 Log[-s1] - Pi^2 + 48) + epsorder[2]*\[Epsilon]^2],
+  Module[{s3, x, y},
+    s3 = (a1 - b1) (a2 - b2);
+    {x, y} = {a1/(a1 - b1), a2/(a2 - b2)};
+    -(PolyLog[2, x/y] + PolyLog[2, (1 - y)/(1 - x)] + PolyLog[2, ((1 - x) y)/(x (1 - y))] - PolyLog[2, y/x] - PolyLog[2, (1 - x)/(1 - y)] - PolyLog[2, (x (1 - y))/((1 - x) y)]) / ((x - y) (-s3)) + epsorder[1]*\[Epsilon]]
+}

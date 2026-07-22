@@ -40,7 +40,7 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
       DeleteFile[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start_log.txt"}]];
       On[DeleteFile::fdnfnd];
       FileTemplateApply[template2, startscript];
-      log = RunProcess[{"wolframscript", "-file", startscript}]["StandardOutput"];
+      log = RunProcess[WolframScriptCommand[startscript]]["StandardOutput"];
       Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start_log.txt"}], log, "Text"];
     ];
   (*target file*)
@@ -106,13 +106,13 @@ FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_Str
   On[DeleteFile::fdnfnd];
   (*run and save*)
   If[OptionValue["FIREUseMMA"],
-    logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]}]["StandardOutput"];
+    logsave = RunProcess[WolframScriptCommand[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]]]["StandardOutput"];
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"]
     ,
     logrun = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}], "-c", FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}]}]["StandardOutput"];
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "run_log.txt"}], logrun, "Text"];
 
-    logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]}]["StandardOutput"];
+    logsave = RunProcess[WolframScriptCommand[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]]]["StandardOutput"];
     (* logsave = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]}]["StandardOutput"]; *)
     Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"];
   ];

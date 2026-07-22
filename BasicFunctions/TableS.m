@@ -24,7 +24,7 @@ TableS[a_, b__List, word : Except[_Rule|_RuleDelayed, _String] : "", opt : Optio
     optPara = FilterOptions[{opt}, ParallelTableS];
     ParallelTableS[a, b, Evaluate[optPara]]
     ,
-    Monitor[Table[a, b], Refresh[DeleteCases[{word, b}, ""], UpdateInterval -> 0.25, TrackedSymbols -> {}]]
+    MonitorS[Table[a, b], Refresh[DeleteCases[{word, b}, ""], UpdateInterval -> 0.25, TrackedSymbols -> {}]]
     ]
    ,
    Table[a, b]
@@ -39,9 +39,9 @@ SetAttributes[TableS, HoldAll]
 
 
 ClearAll[DoS]
-DoS[a_, b__List] := If[$KernelID === 0, Monitor[Do[a, b], Refresh[{b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], Do[a, b]]
+DoS[a_, b__List] := If[$KernelID === 0, MonitorS[Do[a, b], Refresh[{b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], Do[a, b]]
 DoS[a_, b__List, word_String] := If[$KernelID === 0, 
-  Monitor[Do[a, b], Refresh[{word, b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]], 
+  MonitorS[Do[a, b], Refresh[{word, b}, UpdateInterval -> 0.25, TrackedSymbols -> {}]],
   Do[a, b]]
 SetAttributes[DoS, HoldAll]
 

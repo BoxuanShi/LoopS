@@ -3,17 +3,27 @@ BeginPackage["LoopS`"];
 
 (*Paths*)
 $LoopSInstallPath = DirectoryName[$InputFileName];
-$LoopSScriptDirectory := Module[{cmd, script},
+$LoopSScriptDirectory[] := Module[{cmd, kernelCmd, script, scriptPosition},
   cmd = Quiet@Check[$ScriptCommandLine, {}];
+  kernelCmd = Quiet@Check[$CommandLine, {}];
   script = If[ListQ[cmd] && Length[cmd] > 0, First[cmd], ""];
+  If[! StringQ[script] || ! FileExistsQ[script],
+    scriptPosition = If[ListQ[kernelCmd], FirstPosition[kernelCmd, "-script"], Missing["NotFound"]];
+    script = If[
+      MatchQ[scriptPosition, {_Integer}] && First[scriptPosition] < Length[kernelCmd],
+      kernelCmd[[First[scriptPosition] + 1]],
+      ""
+    ]
+  ];
   If[StringQ[script] && FileExistsQ[script], DirectoryName[ExpandFileName[script]], Directory[]]
 ];
-$NotebookDirectory = If[$FrontEnd === Null, $LoopSScriptDirectory,
+$LoopSBaseDirectory[] := If[$FrontEnd === Null, $LoopSScriptDirectory[],
   Quiet@Check[DirectoryName[NotebookFileName[]], Directory[]]
-]
+];
+$NotebookDirectory = $LoopSBaseDirectory[];
 
 
-$LoopSVersion="2025-12-20";
+$LoopSVersion="1.2.0";
 Print[Style["LoopS",FontFamily->"Arial",FontSize->14,FontColor->Black,Bold],
 Style[" - A Mathematica package for Feynman amplitudes reduction. By Bo-Xuan Shi (shibx@mail.nankai.edu.cn). 
 Version "<>$LoopSVersion<>".",FontFamily->"Arial",FontSize->14,FontColor->Black]
@@ -57,6 +67,7 @@ SetSharedVariable[
     $FeynCalcInstallPath, 
     $MultivariateApartInstallPath, 
     $FIREInstallPath, 
+    $KiraExecutable,
     $OPITeRInstallPath
     ];
 

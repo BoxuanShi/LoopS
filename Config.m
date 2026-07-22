@@ -11,6 +11,8 @@ $MultivariateApartInstallPath = FileNameJoin[{DirectoryName @ $InputFileName,
 $FIREInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
       "Dependencies", "fire", "FIRE7", "FIRE7.m"}];
 
+$KiraExecutable = "kira";
+
 $OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
       "Dependencies", "opiter", "opiter"}];
 

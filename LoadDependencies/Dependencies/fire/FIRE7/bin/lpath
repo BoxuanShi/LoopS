@@ -1,3 +1,0 @@
-#!/bin/bash
-LibCommand="export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)/usr/lib:$(pwd)/usr/lib64"
-eval ${LibCommand}

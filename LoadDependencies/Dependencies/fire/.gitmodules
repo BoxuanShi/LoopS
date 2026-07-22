@@ -1,9 +1,0 @@
-[submodule "FIRE7/extra/fuel"]
-	path = FIRE7/extra/fuel
-	url = https://gitlab.com/feynmanintegrals/fuel.git
-[submodule "FIRE7/extra/zstd"]
-	path = FIRE7/extra/zstd
-	url = https://github.com/facebook/zstd.git
-[submodule "FIRE7np"]
-	path = FIRE7np
-	url = git@gitlab.srcc.msu.ru:feynmanintegrals/fire_np.git

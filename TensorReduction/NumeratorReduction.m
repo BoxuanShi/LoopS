@@ -25,7 +25,7 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
   (*0. to fix a bug FCI@FAD[l + x p] -> Momentum[x p,D], 
   ExpandMomentum can restore Momentum[x p,D] -> x Momentum[p,D]*)
 
-  Monitor[
+  MonitorS[
     tp1 = FCES @ expr /. Dispatch @ {SPD[a_, b_] :> ExpandMomentum[SPD[a, b], moms], FVD[a_, b_] :> ExpandMomentum[FVD[a, b], moms]} // FCES;
     tp1 = tp1 // RefineSpinor;
 
@@ -50,7 +50,7 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
   
 
   (*3. PVReduce*)
-  Monitor[
+  MonitorS[
     optloop = FilterOptions[{opt}, loopRulesPV];
     tp3 =(*Monitor[*)Table[tp2[[i]] // loopRulesPV[#, loopmoms, extmomsind, optloop] & // DotSimplify // DiracTraceExpand (*// # /. DiracTrace -> TR &*) // PVReduce[#, loopmoms, purePV, extmomsind] &, {i, Length@tp2}] // FCES(*,
     "tp3 1"]*);
@@ -58,13 +58,13 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
   
   
   (*4. contract the indices from the PV reduction*)
-  Monitor[
+  MonitorS[
     tp3 = Total[tp3] // CollectS[#, DiracPattern | _FVD | _MTD, # &, DiracSimplify] & // FCES(*//TimingS*);
   , "NumeratorReduction: Contracting the indices from the PV reduction..."];
   
   
   (*5. canonical index*)
-  Monitor[
+  MonitorS[
     dummyind = getdummyindices[tp3];
     indices1x = If[indices === {}, Complement[getfullindices[tp3], dummyind]~Join~{"dummyindices"}, indices];
     indices2 = Module[{},tp3 = tp3 /. Thread[dummyind -> Array[LorInd, Length@dummyind]];
@@ -87,7 +87,7 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
     Return[tp3]
   ];
   
-  Monitor[
+  MonitorS[
     If[OptionValue["OperatorReplace"] === False || operatorRules === {},
       tp3 = FixedPoint[(*TimingS[*)(indicesOrder[#, itc++; indices2, {}](*]*)&), tp3, maxit, SameTest -> ((PolynomialCollect[#1, DiracPattern]) === (PolynomialCollect[#2, DiracPattern]) &)];
       (*tp3=tp3//CollectS[#,_Dot|_Spinor|_DiracTrace,#&,RenameDummyInd]&//
@@ -115,13 +115,13 @@ NumeratorReduction[expr : Except[_List], indices_List, operatorRules0_List | ope
   (* If[loops === {}, tp3 = tp3 // CollectS[#, _LCD[___] | _FVD | _MTD, #&, FCES[Contract[EpsEvaluate[#]]] & ] ] &; *)
   
   (*Abbreivate Spinors*)
-  Monitor[
+  MonitorS[
     {tp3, tp4} = AbbreviatePolynomials[tp3, OperatorPattern, "AbbreviatePolynomialsName" -> OptionValue["OperatorName"], "AbbreviatePolynomialsHead" -> OptionValue["OperatorHead"]];
   , {"NumeratorReduction: Abbreivating operators..."}];
   
   (*tpx10=tp3;*)
   (*make the further simplification more easier if we add this OperatorHead*)
-  tp3 = Monitor[CollectS[tp3, x : _SPD /; ! FreeQ[x, Alternatives @@ loopmoms], OptionValue["NumeratorReductionSimplify"]], "NumeratorReduction: Simplifying with the option \"NumeratorReductionSimplify\"..."](*//TimingS*);
+  tp3 = MonitorS[CollectS[tp3, x : _SPD /; ! FreeQ[x, Alternatives @@ loopmoms], OptionValue["NumeratorReductionSimplify"]], "NumeratorReduction: Simplifying with the option \"NumeratorReductionSimplify\"..."](*//TimingS*);
   (*although in the next step, we only concern about the SPD -> 
   deno to obtain scalar integrals, 
   we can still retain these structure for easier simplification...*)

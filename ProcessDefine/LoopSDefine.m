@@ -22,7 +22,7 @@ Once[
   DefinedProcess = {};
 ]
 
-LoopSWorkDirectory = PathName @ FileNameJoin[{ExpandFileName[$NotebookDirectory], "LoopSFile","Processes"}];
+LoopSWorkDirectory = PathName @ FileNameJoin[{ExpandFileName[$LoopSBaseDirectory[]], "LoopSFile", "Processes"}];
 SimplifyS = If[ToString[SimplifyS] === "SimplifyS", Factor, SimplifyS];
 DiracPattern =  _Dot | _DiracTrace | _Spinor | _GAD | _GSD | _DiracGamma;
 OperatorPattern = If[ToString@OperatorPattern === "OperatorPattern", DiracPattern, OperatorPattern];

@@ -1,5 +1,10 @@
-scriptDir = DirectoryName[ExpandFileName[First[$ScriptCommandLine]]];
-Get[FileNameJoin[{scriptDir, "..", "..", "LoopS.m"}]];
+scriptDir = DirectoryName[ExpandFileName@SelectFirst[
+  Join[If[ListQ[$ScriptCommandLine], $ScriptCommandLine, {}], {$InputFileName}],
+  StringQ[#] && FileExistsQ[#] &,
+  $Failed
+]];
+projectRoot = ParentDirectory[ParentDirectory[scriptDir]];
+Get[FileNameJoin[{projectRoot, "LoopS.m"}]];
 
 ZHR = CreateProcess[
   "ProcessName" -> "ZHR",

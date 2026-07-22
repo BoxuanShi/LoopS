@@ -13,7 +13,7 @@ ClearAll[FindTopSectors]
 Options[FindTopSectors] = {"FindTopSectorsMaxIt" -> 500};
 FindTopSectors[Glist_List, opt : OptionsPattern[]] := Module[{num, tp1, tp2, tp3, tp4, maxc},
   maxc = OptionValue["FindTopSectorsMaxIt"];
-  Monitor[
+  MonitorS[
    For[
     num = 1; tp4 = {}; tp1 = Glist // tosector // Union, tp1 =!= {} && num <= maxc, num++,
     tp2 = Total /@ tp1[[All, 2]] // Max;

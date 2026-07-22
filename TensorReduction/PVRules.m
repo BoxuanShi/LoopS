@@ -32,7 +32,7 @@ Module[{i, loopsIndex, loopsPV2, Indices2, loopRules, IndexRules, tpPVRules, nLl
     ];
     If[!sharedQ, Print["PV-Reduction " <> purePV <> "[" <> ToStringInput[nLlist] <> "]" <> " is not prepared. Calculating..."]];
     
-    Monitor[
+    MonitorS[
       tp1 = GeneratePV[nLlist, extmomsind, Evaluate@FilterOptions[{opt}, GeneratePV]];
       ToExpression[purePV, InputForm, 
         Function[x1, 

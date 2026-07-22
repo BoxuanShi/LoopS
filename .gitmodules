@@ -1,3 +1,6 @@
 [submodule "LoadDependencies/Dependencies/opiter"]
 	path = LoadDependencies/Dependencies/opiter
 	url = https://bitbucket.org/jaegoode/opiter.git
+[submodule "LoadDependencies/Dependencies/fire"]
+	path = LoadDependencies/Dependencies/fire
+	url = https://gitlab.srcc.msu.ru/feynmanintegrals/fire.git

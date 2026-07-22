@@ -1,0 +1,167 @@
+Intel MKL WARNING: Support of Intel(R) Streaming SIMD Extensions 4.2 (Intel(R) SSE4.2) enabled only processors has been deprecated. Intel oneAPI Math Kernel Library 2025.0 will require Intel(R) Advanced Vector Extensions (Intel(R) AVX) instructions.
+FIRE, version 7.0
+Initial data loaded
+EVALUATING {4, {-2, 1, 1}}
+Working in sector 2/3: {4,{-1,1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{0, 2}}
+{1, 1}
+Preparing points, symmetries and 21 IBP's: 0.005161`4.164278852565927 seconds.
+16 new relations produced: 0.100572`5.454022080199102 seconds.
+{1, 2}
+Preparing points, symmetries and 9 IBP's: 0.002072`3.767934744569169 seconds.
+IRREDUCIBLE INTEGRAL: {4, {0, 1, 1}}
+3 new relations produced: 0.019581`4.743379860911612 seconds.
+Sector complete
+SORTING THE LIST OF 21 INTEGRALS: 0.000137`2.5882655606523794 seconds.
+Substituting 21 values: 0.004405`4.095490906244042 seconds.
+Total time: 0.138612`5.593345823397939 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959759 seconds.
+Substituting 3 values: 0.000425`3.0799339235462826 seconds.
+Total time: 0.000962`3.434720065533786 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 9.`1.4057875029353*^-6 seconds.
+Substituting 3 values: 0.000433`3.088032889849336 seconds.
+Total time: 0.000876`3.3940490996640515 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.000015`1.6276362525516557 seconds.
+Substituting 3 values: 0.000662`3.272402982935675 seconds.
+Total time: 0.001412`3.601379690211756 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959759 seconds.
+Substituting 3 values: 0.000484`3.1363903551403856 seconds.
+Total time: 0.00103`3.4643822182011474 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.000011`1.4929376786541977 seconds.
+Substituting 3 values: 0.000441`3.095983582963809 seconds.
+Total time: 0.001073`3.4821447154619243 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+Total time: 0.000403`3.0568500396370806 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 6 INTEGRALS: 0.000019`1.7302985944488023 seconds.
+Substituting 6 values: 0.000651`3.2651259820641667 seconds.
+Total time: 0.001264`3.5532920674423414 seconds
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 1.`1.4515449934959717*^-5 seconds.
+Substituting 3 values: 0.000621`3.2446365936725554 seconds.
+Total time: 0.001089`3.488572873251748 seconds
+EVALUATING {4, {1, -2, 1}}
+Working in sector 3/3: {4,{1,-1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{0, 2}}
+{1, 1}
+Preparing points, symmetries and 21 IBP's: 0.005418`4.185383994193124 seconds.
+16 new relations produced: 0.059112`5.223220647046681 seconds.
+{1, 2}
+Preparing points, symmetries and 9 IBP's: 0.001922`3.7352983768285015 seconds.
+IRREDUCIBLE INTEGRAL: {4, {1, 0, 1}}
+1 new relations produced: 0.002899`3.9137932088509686 seconds.
+Sector complete
+SORTING THE LIST OF 5 INTEGRALS: 0.000018`1.706817498599279 seconds.
+Substituting 5 values: 0.001062`3.4776695102414252 seconds.
+Total time: 0.073909`5.320242319743933 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959717 seconds.
+Substituting 3 values: 0.000422`3.076857444457647 seconds.
+Total time: 0.000917`3.413914329165996 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959739 seconds.
+Substituting 3 values: 0.000473`3.126406134233782 seconds.
+Total time: 0.000937`3.4232845843837514 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.229696243879617*^-6 seconds.
+Substituting 2 values: 0.000031`1.9429066873302456 seconds.
+Total time: 0.000425`3.079933923546285 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+Total time: 0.000345`2.989364088569247 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 2 INTEGRALS: 6.`1.2296962438796213*^-6 seconds.
+Substituting 2 values: 0.000031`1.9429066873302434 seconds.
+Total time: 0.000393`3.0459375438713976 seconds
+EVALUATING {4, {1, 1, 1}}
+Working in sector 1/3: {4,{1,1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{0, 0}}
+{1, 1}
+Preparing points, symmetries and 13 IBP's: 0.003579`4.005306691885975 seconds.
+3 new relations produced: 0.008949`4.403319501577698 seconds.
+Sector complete
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 5 INTEGRALS: 0.000015`1.6276362525516535 seconds.
+Substituting 5 values: 0.00144`3.6099074855912225 seconds.
+Total time: 0.017606`4.697205691016235 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 8 INTEGRALS: 0.000063`2.2508855429495522 seconds.
+Substituting 8 values: 0.001415`3.60230143335628 seconds.
+Total time: 0.002428`3.8367936758991905 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959717 seconds.
+Substituting 3 values: 0.000454`3.1086008463530765 seconds.
+Total time: 0.001024`3.4618449501357826 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959739 seconds.
+Substituting 3 values: 0.000384`3.0358762178635015 seconds.
+Total time: 0.000889`3.4004467544661865 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 11 INTEGRALS: 0.000082`2.3653588458796877 seconds.
+Substituting 11 values: 0.001883`3.726395313512638 seconds.
+Total time: 0.002816`3.9011776439660473 seconds
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 3 INTEGRALS: 0.00001`1.4515449934959739 seconds.
+Substituting 3 values: 0.000488`3.1399648154986814 seconds.
+Total time: 0.00094`3.4246728470956738 seconds
+EVALUATING {4, {2, 1, 1}}
+Working in sector 1/3: {4,{1,1,1}}
+LAPORTA STARTED: 1 integrals for evaluation
+Maximal levels: {{1, 0}}
+{1, 1}
+Preparing points, symmetries and 9 IBP's: 0.002825`3.9025634456514307 seconds.
+3 new relations produced: 0.012891`4.5618316018995415 seconds.
+Sector complete
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 9 INTEGRALS: 0.000044`2.09499766998216 seconds.
+Substituting 9 values: 0.006598`4.2709573047053 seconds.
+Total time: 0.023806`4.828231422757891 seconds
+Working in sector 1/3: {4,{1,1,1}}
+Sector complete
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 5 INTEGRALS: 0.0000179999999999999`1.706817498599278 seconds.
+Substituting 5 values: 0.001652`3.669555036480334 seconds.
+Total time: 0.002643`3.8736421566276857 seconds
+Working in sector 1/3: {4,{1,1,1}}
+Sector complete
+Working in sector 2/3: {4,{-1,1,1}}
+Sector complete
+Working in sector 3/3: {4,{1,-1,1}}
+Sector complete
+SORTING THE LIST OF 4 INTEGRALS: 0.000012`1.5307262395435983 seconds.
+Substituting 4 values: 0.000735`3.317832332580168 seconds.
+Total time: 0.001499`3.6273466263442504 seconds

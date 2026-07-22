@@ -1,3 +1,0 @@
-(* ::Package:: *)
-
-<<RNL`LiteRed183`

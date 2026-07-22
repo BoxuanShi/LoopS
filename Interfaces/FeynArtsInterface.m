@@ -51,7 +51,7 @@ findPaint[insertedTop_, pos_Integer, shapeQ_ : True] :=
    tp1 = insertedTop[[num + 1]] // ToString // StringCases[#, "Particles == " ~~ _] & // Length;
    tp2 = tp2 + tp1];
   tp3 = tp1 - (tp2 - pos);
-  If[shapeQ, Monitor[insertedTop[[num]] // Shape, "Shape is performed in an individual window..."]];
+  If[shapeQ, MonitorS[insertedTop[[num]] // Shape, "Shape is performed in an individual window..."]];
   Head[insertedTop][insertedTop[[num]]] // Paint[#, 
      DisplayFunction -> (Put[Render[##1], "tpFAPrintName"] &)] &;
   tp4 = Flatten@List@(<< "tpFAPrintName")[[Ceiling[tp3/9], 1]];

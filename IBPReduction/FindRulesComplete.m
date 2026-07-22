@@ -114,8 +114,8 @@ findrules2[family_List, MI0_List, loops_List, rawibprules_List, kinematics_List,
     MI = MINext;
    
     sectors = MI // tosector;
-    rulesSec = Monitor[Dispatch@fr[family, sectors, loops, kinematics, extmomsind, Evaluate@optfr], "finding sector rules..."];
-    rulesOri = Monitor[Dispatch@fr[family, MI, loops, kinematics, extmomsind, Evaluate@optfr], "finding origin rules..."];
+    rulesSec = MonitorS[Dispatch@fr[family, sectors, loops, kinematics, extmomsind, Evaluate@optfr], "finding sector rules..."];
+    rulesOri = MonitorS[Dispatch@fr[family, MI, loops, kinematics, extmomsind, Evaluate@optfr], "finding origin rules..."];
 
     (*block print of findrules/FindRules*)
     seedsNew = TableS[Block[{Print = (# &)},
@@ -133,12 +133,12 @@ findrules2[family_List, MI0_List, loops_List, rawibprules_List, kinematics_List,
     , {num, Length@MI}, Evaluate@opttable] // Flatten // Union;
 
     seedsfull = {MI, seedsNew, seedsNew // ApplyIBPRules[#, ibpsystem] &} // getS[#, _G] &;
-    rulesCom = Monitor[Dispatch@fr[family, seedsfull, loops, kinematics, extmomsind, Evaluate@optfr], "finding complete rules..."];
+    rulesCom = MonitorS[Dispatch@fr[family, seedsfull, loops, kinematics, extmomsind, Evaluate@optfr], "finding complete rules..."];
 
 
     sol = sol /. rulesCom // ApplyIBPRules[#, ibpsystem] &;
     MINext2 = sol // getS[#, _G] &;
-    Monitor[
+    MonitorS[
       For[num2 = 1, MINext =!= MINext2 && num2 <= MaxIt, num2++,
         MINext = MINext2;
         sol = sol /. rulesCom // ApplyIBPRules[#, ibpsystem] &;

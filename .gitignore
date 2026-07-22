@@ -12,3 +12,17 @@ __MACOSX/
 
 # VS Code settings
 .vscode/
+
+# Local AI/agent project state
+.aether/
+.opencode/
+.claude/
+
+# Generated output from headless examples
+/LoopSFile/
+Examples/Scripts/LoopSFile/
+Examples/Notebook/LoopSFile/
+Tests/LoopSFile/
+
+# Local release candidates
+/dist/

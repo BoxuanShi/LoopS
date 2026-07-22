@@ -47,13 +47,13 @@ FamilyMerge[Fslist0_List, family_List, rawibprules_List, loops_List, extmomsind_
   (*find rules*)
   tp1 = Fslist // ApplyIBPRules[#, ibpsystem]&;
   Gs = tp1 // getS[#, _G]&;
-  GsRules = Monitor[FindRulesComplete[Gs, family, ibpsystem, loops, kinematics, extmomsind, Evaluate@FilterOptions[{opt}, FindRulesComplete]], "FamilyMerge: FindRulesComplete..."];
+  GsRules = MonitorS[FindRulesComplete[Gs, family, ibpsystem, loops, kinematics, extmomsind, Evaluate@FilterOptions[{opt}, FindRulesComplete]], "FamilyMerge: FindRulesComplete..."];
   tp2 = tp1 /. Dispatch@GsRules;
   rules1 = Union@Join[Thread[Fslist -> tp2], GsRules];
   (*change MI basis*)
   $FamilyMergerules2 = If[pref === {},
     rules1,
-    Monitor[
+    MonitorS[
     prefRed = (ApplyIBPRules[pref, ibpsystem] /. Dispatch@rules1);
     tpmi = prefRed // getS[#, _G]&;
     tpeqs = Thread[pref == prefRed];

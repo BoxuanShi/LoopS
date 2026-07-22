@@ -57,7 +57,7 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
     tp2,
 
     "ExpressionRules",
-    Monitor[
+    MonitorS[
     If[Length@tp2 === 1,
       {Dot @@ tp2[[1]] // OptionValue["AmplitudeReduceSimplify"], Dispatch[tpNumSPD[[1, 2]] /. Dispatch[OPERAT -> ophead]]}
       ,
@@ -69,7 +69,7 @@ AmplitudeReduce[amp_, loops_List, familyLS_List, indices_List, operatorRules : _
 
     (*default*)
     _,
-    Monitor[Table[tp2[[i, {1, 3}]] = tp2[[i, {1, 3}]] /. Dispatch@tpNumSPD[[i, 2]] /. Dispatch[OPERAT -> ophead], {i, Length@tp2}];
+    MonitorS[Table[tp2[[i, {1, 3}]] = tp2[[i, {1, 3}]] /. Dispatch@tpNumSPD[[i, 2]] /. Dispatch[OPERAT -> ophead], {i, Length@tp2}];
     OptionValue["AmplitudeReduceSimplify"]@Total[Dot @@@ tp2],"Simplifying with the option \"AmplitudeReduceSimplify\"..."]
   ]
 ]

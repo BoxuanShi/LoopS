@@ -53,7 +53,7 @@ DenominatorToG[nume_, deno_, loops_List, familyLS_List, moms_List, kinematics_Li
   
   (*option "DropZeroSectorQ"*)
   tp1 = If[OptionValue["DropZeroSectorQ"],
-    Monitor[tp1 // getDo[#, _G, If[zeroSectorQ[GToProps[#, family], loops, kinematics], 0, #] &] &, "Dropping zero integrals..."],
+    MonitorS[tp1 // getDo[#, _G, If[zeroSectorQ[GToProps[#, family], loops, kinematics], 0, #] &] &, "Dropping zero integrals..."],
     tp1];
   
   (*option "DenominatorToGSimplify"*)

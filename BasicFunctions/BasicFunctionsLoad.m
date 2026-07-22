@@ -7,6 +7,8 @@ Get["FormDo.m"];
 Get["DistributeToPolyND.m"];
 Get["ListS.m"];
 Get["getS.m"];
+Get["MonitorS.m"];
+Get["RunWolframScript.m"];
 Get["TableS.m"];
 Get["getImS.m"];
 Get["sameSetQ.m"];

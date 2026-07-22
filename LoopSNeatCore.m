@@ -3,6 +3,7 @@ If[$KernelID =!= 0,
 $LoopSInstallPath = DirectoryName[$InputFileName];
 $NotebookDirectory = LoopS`Private`nbd;
 ];
+$LoopSBaseDirectory[] := $NotebookDirectory;
 
 
 (*LoopSNeat2*)

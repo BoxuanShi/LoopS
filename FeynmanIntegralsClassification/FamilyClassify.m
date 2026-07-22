@@ -32,7 +32,7 @@ FamilyClassify[propslistlist_, loops_List, kinematics_List, extmomsind_List, mom
   familyLS = GenerateFamilyLS[OptionValue["UserDefinedFamily"], loops, moms, kinematics, Evaluate @ FilterOptions[{opt}, GenerateFamilyLS]];
   If[RDQ, familyLS[[2]] = DeleteCases[familyLS[[2]], x_ /; ! MemberQ[tp5, x[[1]]], {2}]];
   
-  Block[{Print = # &}, Monitor[
+  Block[{Print = # &}, MonitorS[
     For[num = 1, num <= Length@tp4, num++, 
       If[FindfamilyG[tp4[[num]], familyLS, loops, moms, kinematics, "FindfamilyGFailedReturn" -> Return[False], "FindfamilyGMode" -> "FamilyExistQ", Evaluate@FilterOptions[{opt}, FindfamilyG]] === False, 
         AppendTo[familyLS[[1]], CompleteProps[(sortfamily[#, loops] &)@tp4[[num]], loops, extmomsind, Evaluate@FilterOptions[{opt}, CompleteProps]]];

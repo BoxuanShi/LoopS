@@ -6,6 +6,7 @@ If[$KernelID =!= 0,
 $LoopSInstallPath = DirectoryName[$InputFileName];
 $NotebookDirectory = LoopS`Private`nbd;
 ];
+$LoopSBaseDirectory[] := $NotebookDirectory;
 
 
 $ContextPath = Prepend[$ContextPath, "Global`"];

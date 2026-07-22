@@ -1,6 +1,7 @@
 $FeynCalcInstallPath;
 $MultivariateApartInstallPath;
 $FIREInstallPath;
+$KiraExecutable;
 $OPITeRInstallPath;
 $AMFlowInstallPath;
 $BladeInstallPath;
@@ -306,6 +307,20 @@ FIREReductionMMA;
 (* FIRERunCXX; *)
 
 FIRETemplate;
+
+(*KiraInterface*)
+KiraWorkPath;
+KiraFamilyName;
+KiraPrepareIBP;
+KiraRunIBP;
+KiraLoadIBP;
+KiraIBPReduction;
+KiraReduction;
+KiraIntegralOrdering;
+KiraKinematicDimensions;
+KiraPreferredMasters;
+KiraExecutable;
+KiraParallel;
 
 GenerateEiknolFamilies;
 

@@ -10,13 +10,15 @@ $MultivariateApartInstallPath = If[! FileExistsQ[$MultivariateApartInstallPath],
 
 
 FIREInstalledQ = If[! FileExistsQ[$FIREInstallPath], 
-  Print["FIRE not found. Please set $FIREInstallPath as the path of FIRE's .m file. For example: \"/Users/balth/Downloads/MyLoopS/packages/fire/FIRE6/FIRE6.m\"."]; False, True];
+  Print["FIRE not found. Set $FIREInstallPath to FIRE7.m. For a LoopS source checkout, initialize dependencies with: git submodule update --init --recursive"];
+  False,
+  True
+];
 
 If[$OperatingSystem =!= "Windows",
   If[! FileExistsQ[$OPITeRInstallPath], 
-    Print["OPITeR not found. OPIteR can be added by:"];
-    Print["git clone https://bitbucket.org/jaegoode/opiter.git "<> ToString[DirectoryName @ $OPITeRInstallPath]];
-    Print["Or set $OPITeRInstallPath as the path of OPITeR's example.frm directory."]
+    Print["OPITeR not found. For a LoopS source checkout, run: git submodule update --init --recursive"];
+    Print["Or set $OPITeRInstallPath to OPITeR's opiter directory."]
     ]
 ];
 
@@ -31,8 +33,12 @@ Print["FeynCalc is loaded by ", $FeynCalcInstallPath];
 Get[$MultivariateApartInstallPath];
 Print["MultivariateApart is loaded by ", $MultivariateApartInstallPath];
 
-If[FIREInstalledQ, Get[$FIREInstallPath]];
-Print["FIRE is loaded by ", $FIREInstallPath];
+If[
+  FIREInstalledQ,
+  Get[$FIREInstallPath];
+  Print["FIRE is loaded by ", $FIREInstallPath],
+  Print["FIRE was not loaded. FIRE-dependent functions remain unavailable."]
+];
 
 
 ParallelNeedS["FeynCalc`", $FeynCalcInstallPath];
