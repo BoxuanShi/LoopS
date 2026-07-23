@@ -4,6 +4,12 @@ Notable changes to LoopS are documented in this file.
 
 ## Unreleased
 
+### Changed
+
+- FIRE, Kira, BLADE, and AMFlow now use a consistent per-family working-directory layout so that
+  generated configurations, scripts, logs, caches, databases, and results from different families
+  cannot collide. Existing flat FIRE and BLADE result files remain readable.
+
 ## 1.2.0 - 2026-07-23
 
 ### Added

@@ -1,6 +1,7 @@
-ClearAll[BladeWorkPath, BladeFamilyName];
+ClearAll[BladeWorkPath, BladeFamilyName, BladeRunDirectory];
 BladeWorkPath[ProcessName_String] := FileNameJoin[{LoopSWorkDirectory, ProcessName, "IBPReduction" , "Blade"}];
 BladeFamilyName[loops_List] := Module[{str}, str = StringJoin @@ Table["N", {i, Length@loops}]; "family" <> str <> "LO"]
+BladeRunDirectory[workPath_String, familyName_String, problem_Integer] := FileNameJoin[{workPath, familyName <> ToString[problem]}]
 
 
 ClearAll[BladePrepareIBP];Protect[BL];
@@ -12,7 +13,7 @@ BladePrepareIBP::usage = "BladePrepareIBP[Fslist_List, {familyi_List, problem_In
 Depending options: {FindCompleteGList}";
 Options[BladePrepareIBP] := CreateOptions[{"IBPKernels" :> LoopSParallelKernels, "BLnumeric" -> {}, "ExtraIntDerivDen" -> {}, "ExtraIntDerivPara" -> {}}, {FindCompleteGList}];
 BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, BladePrepareIBP[Fslist, {familyi, problem}, loops, p["extmomsind"], p["kinematics"], {BladeWorkPath[p["ProcessName"]], BladeFamilyName[loops]}, Evaluate@opt]]
-BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {BladeWorkPath_String, BladeFamilyName_String}, opt : OptionsPattern[]] := Module[{i, x, Fslist2, FlistFamily, stream, templateS, rulesS, templateS2, toBLform, targets, topsector},
+BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {BladeWorkPath_String, BladeFamilyName_String}, opt : OptionsPattern[]] := Module[{x, Fslist2, stream, templateS, rulesS, templateS2, toBLform, targets, topsector, runDirectory, familyName},
   (*check install*)
   If[
     If[$BladeInstallPath === "Blade`",
@@ -21,23 +22,25 @@ BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmom
     Print["Blade is not avaliable."]; Abort[]
   ];
   (*toBLform*)
-  toBLform[expr_] := expr /. G[a_, b_] :> BL[BladeFamilyName <> ToString[problem], b];
+  familyName = BladeFamilyName <> ToString[problem];
+  runDirectory = BladeRunDirectory[BladeWorkPath, BladeFamilyName, problem];
+  toBLform[expr_] := expr /. G[a_, b_] :> BL[familyName, b];
   (*create directories*)
   Off[CreateDirectory::eexist];
-  CreateDirectoryS@BladeWorkPath;
-  CreateDirectoryS@FileNameJoin[{BladeWorkPath, "temp"}];
+  CreateDirectoryS@runDirectory;
+  CreateDirectoryS@FileNameJoin[{runDirectory, "temp"}];
   On[CreateDirectory::eexist];
   (*target file*)
   Fslist2 = DeleteCases[Fslist, x_ /; x[[1]] =!= problem];
   topsector = FindTopSectors@Fslist2 // toBLform;
   targets = FindCompleteGList[Fslist2, ReplacePart[ConstantArray[{}, problem], -1 -> familyi], loops, kinematics, Evaluate@FilterOptions[{opt}, FindCompleteGList]] // toBLform;
-  Export[FileNameJoin[{BladeWorkPath, BladeFamilyName <> ToString[problem] <> ".m"}], targets];
+  Export[FileNameJoin[{runDirectory, familyName <> ".m"}], targets];
   (*save file*)
   templateS = BladeTemplate;
   rulesS = <|
     "Blade" -> ToStringInput@$BladeInstallPath,
     "threads" -> ToStringInput@OptionValue["IBPKernels"],
-    "familyname" -> ToStringInput@(BladeFamilyName <> ToString[problem]),
+    "familyname" -> ToStringInput@familyName,
     "problem" -> ToStringInput@problem,
     "loop" -> ToStringInput@loops,
     "leg" -> ToStringInput@extmomsind,
@@ -46,19 +49,15 @@ BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmom
     "topsector" -> ToStringInput@topsector,
     "targets" -> ToStringInput@(targets // toBLform),
     "numeric" -> ToStringInput@OptionValue["BLnumeric"],
-    "save" -> ToStringInput@FileNameJoin[{BladeWorkPath, BladeFamilyName <> ToString[problem] <> "save.m"}],
+    "save" -> ToStringInput@FileNameJoin[{runDirectory, familyName <> "save.m"}],
     "ExtraIntDerivDen" -> ToStringInput@OptionValue["ExtraIntDerivDen"],
     "ExtraIntDerivPara" -> ToStringInput@OptionValue["ExtraIntDerivPara"]
     |>;
   templateS2 = TemplateApply[templateS, rulesS];
-  FileTemplateApply[templateS2, FileNameJoin[{BladeWorkPath, "temp", BladeFamilyName <> ToString[problem] <> ".wl"}]];
+  FileTemplateApply[templateS2, FileNameJoin[{runDirectory, "temp", familyName <> ".wl"}]];
   (*Run file*)
-  stream = OpenWrite[FileNameJoin[{BladeWorkPath, "BladeRun" <> ToString[Length@loops] <> ".txt"}]];
-  Do[
-    If[FileExistsQ[FileNameJoin[{BladeWorkPath, "temp", BladeFamilyName <> ToString[i] <> ".wl"}]], 
-      WriteString[stream, "wolframscript -file " <> FileNameJoin[{BladeWorkPath, "temp", BladeFamilyName <> ToString[i] <> ".wl"}] <> ";\n"],
-      Break[]]
-    , {i, Infinity}];
+  stream = OpenWrite[FileNameJoin[{runDirectory, "BladeRun.txt"}]];
+  WriteString[stream, StringRiffle[WolframScriptCommand[FileNameJoin[{runDirectory, "temp", familyName <> ".wl"}]], " "] <> ";\n"];
   Close[stream];
   ]
 
@@ -66,18 +65,24 @@ BladePrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmom
 ClearAll[BladeRunIBP]
 BladeRunIBP::usage = "BladeRunIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}, opt:OptionsPattern[]].";
 BladeRunIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProcess, opt:OptionsPattern[]] := Module[{p=ReleaseHold@process}, BladeRunIBP[problem, loops, {BladeWorkPath[p["ProcessName"]], BladeFamilyName[loops]}, Evaluate@opt]]
-BladeRunIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}, opt:OptionsPattern[]] := Module[{logsave},
+BladeRunIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}, opt:OptionsPattern[]] := Module[{logsave, runDirectory, familyName, script},
+  familyName = BladeFamilyName <> ToString[problem];
+  runDirectory = BladeRunDirectory[BladeWorkPath, BladeFamilyName, problem];
+  script = FileNameJoin[{runDirectory, "temp", familyName <> ".wl"}];
   (*save*)
-  logsave = RunProcess[{"wolframscript", "-file", FileNameJoin[{BladeWorkPath, "temp", BladeFamilyName <> ToString[problem] <> ".wl"}]}]["StandardOutput"];
-  Export[FileNameJoin[{BladeWorkPath, "temp", BladeFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"];
+  logsave = RunProcess[WolframScriptCommand[script], ProcessDirectory -> runDirectory]["StandardOutput"];
+  Export[FileNameJoin[{runDirectory, "temp", familyName <> "save_log.txt"}], logsave, "Text"];
   ]
 
 
 ClearAll[BladeLoadIBP]
 BladeLoadIBP::usage = "BladeLoadIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}]";
 BladeLoadIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, BladeLoadIBP[problem, loops, {BladeWorkPath[p["ProcessName"]], BladeFamilyName[loops]}]]
-BladeLoadIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}] := Module[{path},
-  path = FileNameJoin[{BladeWorkPath, BladeFamilyName <> ToString[problem] <> "save.m"}];
+BladeLoadIBP[problem_Integer, loops_List, {BladeWorkPath_String, BladeFamilyName_String}] := Module[{path, legacyPath, familyName},
+  familyName = BladeFamilyName <> ToString[problem];
+  path = FileNameJoin[{BladeRunDirectory[BladeWorkPath, BladeFamilyName, problem], familyName <> "save.m"}];
+  legacyPath = FileNameJoin[{BladeWorkPath, familyName <> "save.m"}];
+  If[! FileExistsQ[path] && FileExistsQ[legacyPath], path = legacyPath];
   Get[path]
   ]
 

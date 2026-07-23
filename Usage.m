@@ -9,6 +9,7 @@ $BladeInstallPath;
 (*BladeInterface*)
 BladeWorkPath;
 BladeFamilyName;
+BladeRunDirectory;
 BladePrepareIBP;
 BL;
 BladeRunIBP;
@@ -25,6 +26,7 @@ AMFlowCalcG;
 AMFTemplate;
 AMFlowWorkPath;
 AMFlowSaveName;
+AMFlowRunDirectory;
 AMFlowThread;
 AMFlowReducer;
 
@@ -311,6 +313,7 @@ FIRETemplate;
 (*KiraInterface*)
 KiraWorkPath;
 KiraFamilyName;
+KiraRunDirectory;
 KiraPrepareIBP;
 KiraRunIBP;
 KiraLoadIBP;
@@ -355,6 +358,7 @@ ProcessPath;
 PVPath;
 FIREWorkPath;
 FIREFamilyName;
+FIRERunDirectory;
 LoopSWorkDirectory;
 OPITeRWorkPath;
 

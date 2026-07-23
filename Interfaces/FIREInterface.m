@@ -1,6 +1,7 @@
-ClearAll[FIREWorkPath, FIREFamilyName];
+ClearAll[FIREWorkPath, FIREFamilyName, FIRERunDirectory];
 FIREWorkPath[ProcessName_String] := FileNameJoin[{LoopSWorkDirectory, ProcessName, "IBPReduction" , "FIRE"}];
 FIREFamilyName[loops_List] := Module[{str}, str = StringJoin @@ Table["N", {i, Length@loops}]; "family" <> str <> "LO"]
+FIRERunDirectory[workPath_String, familyName_String, problem_Integer] := FileNameJoin[{workPath, familyName <> ToString[problem]}]
 
 
 ClearAll[FIREPrepareIBP];
@@ -11,17 +12,19 @@ FIREPrepareIBP::usage = "FIREPrepareIBP[Fslist_List, {familyi_List, problem_Inte
 Depending options: {FindCompleteGList}";
 Options[FIREPrepareIBP] := CreateOptions[{"FIREcompressor" -> "none", "IBPKernels" :> LoopSParallelKernels, "FIREUseMMA" -> False}, {FindCompleteGList}];
 FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, process_Association : Hold@CurrentProcess, opt : OptionsPattern[]] := Module[{p=ReleaseHold@process}, FIREPrepareIBP[Fslist, {familyi, problem}, loops, p["extmomsind"], p["kinematics"], {FIREWorkPath[p["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]]
-FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := Module[{i, x, Fslist2, FlistFamily, stream, startfile, template, rules, template2, startscript, templateC, rulesC, templateC2, templateS, rulesS, templateS2, log},
+FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmomsind_List, kinematics_List, {FIREWorkPath_String, FIREFamilyName_String}, opt : OptionsPattern[]] := Module[{x, Fslist2, FlistFamily, stream, startfile, template, rules, template2, startscript, templateC, rulesC, templateC2, templateS, rulesS, templateS2, log, runDirectory, familyName},
   (*check install*)
   If[!FileExistsQ[$FIREInstallPath] || !StringMatchQ[FileNameTake@$FIREInstallPath, "FIRE" ~~ __ ~~ ".m"], Print["$FIREInstallPath is wrong."]; Abort[]];
+  familyName = FIREFamilyName <> ToString[problem];
+  runDirectory = FIRERunDirectory[FIREWorkPath, FIREFamilyName, problem];
   (*create directories*)
   Off[CreateDirectory::eexist];
-  CreateDirectoryS@FIREWorkPath;
-  CreateDirectoryS@FileNameJoin[{FIREWorkPath, "temp"}];
+  CreateDirectoryS@runDirectory;
+  CreateDirectoryS@FileNameJoin[{runDirectory, "temp"}];
   On[CreateDirectory::eexist];
   (*start file*)
   template = FIRETemplate["Start"];
-  startfile = FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}];
+  startfile = FileNameJoin[{runDirectory, familyName}];
   rules = <|
     "FIRE" -> ToStringInput@$FIREInstallPath,
     "Internal" -> ToStringInput@loops,
@@ -31,23 +34,23 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
     "family" -> ToStringInput@startfile
     |>;
   template2 = TemplateApply[template, rules];
-  startscript = FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start.wl"}];
+  startscript = FileNameJoin[{runDirectory, "temp", familyName <> "start.wl"}];
   (* If[FileExistsQ[startfile <> ".start"] && Quiet[ToExpression[Import[startscript, "Text"], InputForm, Hold] === ToExpression[template2, InputForm, Hold]], *)
   If[FileExistsQ[startfile <> ".start"] && ToExpression[Import[startscript, "Text"], InputForm, Hold] === ToExpression[template2, InputForm, Hold],
       Nothing,
       Off[DeleteFile::fdnfnd];
-      DeleteFile[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".start"}]];
-      DeleteFile[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start_log.txt"}]];
+      DeleteFile[FileNameJoin[{runDirectory, familyName <> ".start"}]];
+      DeleteFile[FileNameJoin[{runDirectory, "temp", familyName <> "start_log.txt"}]];
       On[DeleteFile::fdnfnd];
       FileTemplateApply[template2, startscript];
-      log = RunProcess[WolframScriptCommand[startscript]]["StandardOutput"];
-      Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "start_log.txt"}], log, "Text"];
+      log = RunProcess[WolframScriptCommand[startscript], ProcessDirectory -> runDirectory]["StandardOutput"];
+      Export[FileNameJoin[{runDirectory, "temp", familyName <> "start_log.txt"}], log, "Text"];
     ];
   (*target file*)
   Fslist2 = DeleteCases[Fslist, x_ /; x[[1]] =!= problem];
   FlistFamily = FindCompleteGList[Fslist2, ReplacePart[ConstantArray[{}, problem], -1 -> familyi], loops, kinematics, Evaluate@FilterOptions[{opt}, FindCompleteGList]];
   FlistFamily = FlistFamily /. G -> List;
-  Export[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".m"}], FlistFamily];
+  Export[FileNameJoin[{runDirectory, familyName <> ".m"}], FlistFamily];
   (*config file*)
   templateC = FIRETemplate["Config"];
   rulesC = <|
@@ -56,40 +59,31 @@ FIREPrepareIBP[Fslist_List, {familyi_List, problem_Integer}, loops_List, extmoms
     "tThreads" -> Ceiling[OptionValue["IBPKernels"]],
     "sThreads" -> Ceiling[OptionValue["IBPKernels"]],
     "variables" -> (ToString[Complement[Variables[{familyi, kinematics[[All, 2]]}], Join[loops, extmomsind]]] // StringTake[#, {2, -2}] &),
-    "folder" -> PathName[FIREWorkPath],
-    "familyName" -> (FIREFamilyName <> ToString[problem]),
+    "folder" -> PathName[runDirectory],
+    "familyName" -> familyName,
     "problem" -> problem,
-    "output" -> FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}]
+    "output" -> FileNameJoin[{runDirectory, familyName <> ".tables"}]
     |>;
   templateC2 = TemplateApply[templateC, rulesC];
-  FileTemplateApply[templateC2, FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".config"}]];
+  FileTemplateApply[templateC2, FileNameJoin[{runDirectory, familyName <> ".config"}]];
   (*save script*)
   templateS = FIRETemplate["Reduction"];
   rulesS = <|
     "FIRE" -> ToStringInput@$FIREInstallPath,
-    "start" -> ToStringInput@FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}],
+    "start" -> ToStringInput@FileNameJoin[{runDirectory, familyName}],
     "problem" -> ToStringInput@problem,
-    "tables" -> ToStringInput@If[OptionValue["FIREUseMMA"], None, FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}]],
-    "target" -> ToStringInput@FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".m"}],
-    "save" -> ToStringInput@FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]
+    "tables" -> ToStringInput@If[OptionValue["FIREUseMMA"], None, FileNameJoin[{runDirectory, familyName <> ".tables"}]],
+    "target" -> ToStringInput@FileNameJoin[{runDirectory, familyName <> ".m"}],
+    "save" -> ToStringInput@FileNameJoin[{runDirectory, familyName <> "save.m"}]
     |>;
   templateS2 = TemplateApply[templateS, rulesS];
-  FileTemplateApply[templateS2, FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]];
+  FileTemplateApply[templateS2, FileNameJoin[{runDirectory, "temp", familyName <> "save.wl"}]];
   (*Run script - this is only for manual run IBP in terminal window, see FIRERunIBP*)
-  stream = OpenWrite[FileNameJoin[{FIREWorkPath, "FIRERun" <> ToString[Length@loops] <> ".txt"}]];
-  Do[
-    If[
-      FileExistsQ[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> ".config"}]], 
-      WriteString[stream, FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}] <> " -c " <> FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i]}] <> ";\n"];
-      If[
-        OptionValue["FIREUseMMA"],
-        WriteString[stream, StringRiffle@{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}],";\n"}],
-        WriteString[stream, StringRiffle@{"wolframscript", "-file", FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[i] <> "save.wl"}],";\n"}]
-        (* WriteString[stream, StringRiffle@{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[i] <> "save.m"}]} <> ";\n"] *)
-      ],
-      Break[]
-    ]
-    , {i, Infinity}];
+  stream = OpenWrite[FileNameJoin[{runDirectory, "FIRERun.txt"}]];
+  If[! OptionValue["FIREUseMMA"],
+    WriteString[stream, FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}] <> " -c " <> FileNameJoin[{runDirectory, familyName}] <> ";\n"]
+  ];
+  WriteString[stream, StringRiffle[WolframScriptCommand[FileNameJoin[{runDirectory, "temp", familyName <> "save.wl"}]], " "] <> ";\n"];
   Close[stream];
 ]
 
@@ -99,22 +93,24 @@ FIRERunIBP::usage = "FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_Strin
 \"FIREUseMMA\": (True|False) : False : use Mathematica or CXX to perform reduction.";
 Options[FIRERunIBP] = {"FIREUseMMA" -> False};
 FIRERunIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProcess, opt:OptionsPattern[]] := Module[{p=ReleaseHold@process}, FIRERunIBP[problem, loops, {FIREWorkPath[p["ProcessName"]], FIREFamilyName[loops]}, Evaluate@opt]]
-FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}, opt:OptionsPattern[]] := Module[{logrun, logsave},
+FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}, opt:OptionsPattern[]] := Module[{logrun, logsave, runDirectory, familyName, saveScript},
+  familyName = FIREFamilyName <> ToString[problem];
+  runDirectory = FIRERunDirectory[FIREWorkPath, FIREFamilyName, problem];
+  saveScript = FileNameJoin[{runDirectory, "temp", familyName <> "save.wl"}];
   Off[DeleteFile::fdnfnd];
-  DeleteFile[FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]];
-  DeleteFile[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "run_log.txt"}]];
+  DeleteFile[FileNameJoin[{runDirectory, familyName <> "save.m"}]];
+  DeleteFile[FileNameJoin[{runDirectory, "temp", familyName <> "run_log.txt"}]];
   On[DeleteFile::fdnfnd];
   (*run and save*)
   If[OptionValue["FIREUseMMA"],
-    logsave = RunProcess[WolframScriptCommand[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]]]["StandardOutput"];
-    Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"]
+    logsave = RunProcess[WolframScriptCommand[saveScript], ProcessDirectory -> runDirectory]["StandardOutput"];
+    Export[FileNameJoin[{runDirectory, "temp", familyName <> "save_log.txt"}], logsave, "Text"]
     ,
-    logrun = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}], "-c", FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem]}]}]["StandardOutput"];
-    Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "run_log.txt"}], logrun, "Text"];
+    logrun = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", StringTake[FileNameTake[$FIREInstallPath], {1, -3}]}], "-c", FileNameJoin[{runDirectory, familyName}]}, ProcessDirectory -> runDirectory]["StandardOutput"];
+    Export[FileNameJoin[{runDirectory, "temp", familyName <> "run_log.txt"}], logrun, "Text"];
 
-    logsave = RunProcess[WolframScriptCommand[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save.wl"}]]]["StandardOutput"];
-    (* logsave = RunProcess[{FileNameJoin[{DirectoryName@$FIREInstallPath, "bin", "tables2rules"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> ".tables"}], FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}]}]["StandardOutput"]; *)
-    Export[FileNameJoin[{FIREWorkPath, "temp", FIREFamilyName <> ToString[problem] <> "save_log.txt"}], logsave, "Text"];
+    logsave = RunProcess[WolframScriptCommand[saveScript], ProcessDirectory -> runDirectory]["StandardOutput"];
+    Export[FileNameJoin[{runDirectory, "temp", familyName <> "save_log.txt"}], logsave, "Text"];
   ];
 ]
 
@@ -122,8 +118,11 @@ FIRERunIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_Str
 ClearAll[FIRELoadIBP]
 FIRELoadIBP::usage = "FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}]";
 FIRELoadIBP[problem_Integer, loops_List, process_Association : Hold@CurrentProcess] := Module[{p=ReleaseHold@process}, FIRELoadIBP[problem, loops, {FIREWorkPath[p["ProcessName"]], FIREFamilyName[loops]}]]
-FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}] := Module[{path},
-  path = FileNameJoin[{FIREWorkPath, FIREFamilyName <> ToString[problem] <> "save.m"}];
+FIRELoadIBP[problem_Integer, loops_List, {FIREWorkPath_String, FIREFamilyName_String}] := Module[{path, legacyPath, familyName},
+  familyName = FIREFamilyName <> ToString[problem];
+  path = FileNameJoin[{FIRERunDirectory[FIREWorkPath, FIREFamilyName, problem], familyName <> "save.m"}];
+  legacyPath = FileNameJoin[{FIREWorkPath, familyName <> "save.m"}];
+  If[! FileExistsQ[path] && FileExistsQ[legacyPath], path = legacyPath];
   Get[path] /. d -> D
 ]
 

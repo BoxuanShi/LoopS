@@ -69,6 +69,14 @@ Individual script examples are available in `Examples/Scripts/` and load LoopS f
 tree, so they can validate an unpacked release candidate without using another installed copy.
 Input amplitudes are stored in `Examples/Inputs/`, while verified reference outputs for script tests are stored in `Examples/References/`.
 
+External-reducer state is isolated by integral family. FIRE, Kira, and BLADE place each family's
+configuration, scripts, logs, databases, and results below a distinct
+`IBPReduction/<Reducer>/<family-name><number>/` directory. AMFlow likewise uses one
+`AMFlow/<family-name><number>/` directory per family so its scripts, results, logs, and default
+cache do not collide with another family. `FIRERunDirectory`, `KiraRunDirectory`,
+`BladeRunDirectory`, and `AMFlowRunDirectory` expose the resolved locations. Existing flat FIRE or
+BLADE results remain readable, but new runs are written only to the isolated layout.
+
 
 ## Testing
 

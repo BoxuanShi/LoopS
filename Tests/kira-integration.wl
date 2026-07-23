@@ -41,6 +41,17 @@ fireRules = FIREIBPReduction[
   {fireRoot, familyName}, "FIREUseMMA" -> True
 ];
 AssertKiraTest[MatchQ[fireRules, {(_Rule | _RuleDelayed) ...}], "FIRE did not return rules"];
+fireRunDirectory = FIRERunDirectory[fireRoot, familyName, 1];
+AssertKiraTest[
+  And @@ (FileExistsQ /@ {
+    FileNameJoin[{fireRunDirectory, familyName <> "1.start"}],
+    FileNameJoin[{fireRunDirectory, familyName <> "1.m"}],
+    FileNameJoin[{fireRunDirectory, familyName <> "1.config"}],
+    FileNameJoin[{fireRunDirectory, familyName <> "1save.m"}],
+    FileNameJoin[{fireRunDirectory, "temp", familyName <> "1save.wl"}]
+  }),
+  "FIRE family files were not isolated in " <> fireRunDirectory
+];
 
 Print["Running Kira with integral_ordering=2 and one worker..."];
 kiraRules = KiraIBPReduction[
@@ -70,7 +81,7 @@ AssertKiraTest[
 ];
 
 mastersFile = FileNameJoin[{
-  kiraRoot, familyName <> "1", "results", familyName <> "1", "masters.final"
+  KiraRunDirectory[kiraRoot, familyName, 1], "results", familyName <> "1", "masters.final"
 }];
 AssertKiraTest[FileExistsQ[mastersFile], "Kira masters.final file is missing"];
 masterLines = Select[
@@ -80,7 +91,8 @@ masterLines = Select[
 
 Print["Kira executable: ", kiraExecutable];
 Print["Kira version: ", kiraVersion];
-Print["Kira working directory: ", FileNameJoin[{kiraRoot, familyName <> "1"}]];
+Print["FIRE working directory: ", fireRunDirectory];
+Print["Kira working directory: ", KiraRunDirectory[kiraRoot, familyName, 1]];
 Print["Kira command: ", kiraExecutable, " job.yaml --parallel=1"];
 Print["Kira masters reported: ", Length[masterLines], "; LoopS target masters: ", Length[kiraMasters]];
 Print["FIRE/Kira master basis: ", InputForm[kiraMasters]];

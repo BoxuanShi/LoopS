@@ -41,9 +41,28 @@ VerificationTest[
 ]
 
 VerificationTest[
-  Length[DownValues[#]] > 0 & /@ {CreateProcess, AmplitudeReduce, GeneratePV, KiraIBPReduction},
-  {True, True, True, True},
+  Length[DownValues[#]] > 0 & /@ {
+    CreateProcess, AmplitudeReduce, GeneratePV, KiraIBPReduction,
+    FIRERunDirectory, KiraRunDirectory, BladeRunDirectory, AMFlowRunDirectory
+  },
+  {True, True, True, True, True, True, True, True},
   TestID -> "core-symbols-loaded"
+]
+
+VerificationTest[
+  {
+    FIRERunDirectory["root", "familyNLO", 2],
+    KiraRunDirectory["root", "familyNLO", 2],
+    BladeRunDirectory["root", "familyNLO", 2],
+    AMFlowRunDirectory["root", "AMFfamilyNLO", 2]
+  },
+  {
+    FileNameJoin[{"root", "familyNLO2"}],
+    FileNameJoin[{"root", "familyNLO2"}],
+    FileNameJoin[{"root", "familyNLO2"}],
+    FileNameJoin[{"root", "AMFfamilyNLOS2"}]
+  },
+  TestID -> "family-run-directories"
 ]
 
 VerificationTest[

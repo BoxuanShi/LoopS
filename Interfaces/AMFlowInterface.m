@@ -5,7 +5,7 @@ AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, loops_List,
 
 AMFlowCalcG[target_List, {Numeric_, goal_Integer, epsorder_Integer}, loops_List, family_List, process_Association, opt : OptionsPattern[]] := AMFlowCalcG[target, {Numeric, goal, epsorder}, loops, family, AMFlowWorkPath[process["ProcessName"]], AMFlowSaveName[loops], process["extmomsind"], process["kinematics"], opt]
 
-AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer}, loops_List, family_List, WorkPath_String, SaveName_String, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, target, Numeric, solve, NThread, familyname, save, output, varsneed, res},
+AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer}, loops_List, family_List, WorkPath_String, SaveName_String, extmomsind_List, kinematics_List, opt : OptionsPattern[]] := Module[{i, target, Numeric, solve, NThread, familyname, runDirectory, save, output, varsneed, res},
   (*check avalible.*)
   If[
     If[$AMFlowInstallPath === "AMFlow`",
@@ -14,14 +14,13 @@ AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer}, loops_Lis
     Print["AMFlow is not avaliable."]; Abort[]
   ];
 
-  (*create workdirectory*)
-  CreateDirectoryS[WorkPath];
-
   (*filenames*)
   familyname = (SaveName <> "S" <> ToString[#]) & /@ (Range @ Length @ family);
-  save = FileNameJoin[{WorkPath, #}] & /@ familyname;
+  runDirectory = AMFlowRunDirectory[WorkPath, SaveName, #] & /@ Range[Length@family];
+  CreateDirectoryS /@ runDirectory;
+  save = MapThread[FileNameJoin[{#1, #2}] &, {runDirectory, familyname}];
   output = (# <> ".wl") & /@ save;
-  Print["logs are saved in ", WorkPath, "."];
+  Print["Family files and logs are saved in separate directories under ", WorkPath, "."];
   Do[If[ValueQ @ Evaluate @ ToExpression[familyname[[i]]], Print[familyname[[i]], " is already defined. Please clear it firstly."]; Abort[]];, {i, Length @ family}];
 
   (*AMFlow input*)
@@ -66,7 +65,7 @@ AMFlowCalcG[target0_List, {Numeric0_, goal_Integer, epsorder_Integer}, loops_Lis
       |>,
       output[[i]]
       ];
-    Export[FileNameJoin[{WorkPath, "log" <> ToString[i] <> ".txt"}], RunProcess[{"wolframscript", "-file", output[[i]]}]["StandardOutput"] // StringSplit[#, "\n"] &, "Text"];
+    Export[FileNameJoin[{runDirectory[[i]], "log.txt"}], RunProcess[WolframScriptCommand[output[[i]]], ProcessDirectory -> runDirectory[[i]]]["StandardOutput"] // StringSplit[#, "\n"] &, "Text"];
     , 
     None], {i, Length @ family}];
 
@@ -107,8 +106,9 @@ amfConventionTrans[rules0_List, loops_, amforder_Integer] := Module[{tp1, tp2, r
   Thread[rules[[All, 1]] -> tp2] // jToG]
 
 
-ClearAll[AMFlowWorkPath, AMFlowSaveName]
+ClearAll[AMFlowWorkPath, AMFlowSaveName, AMFlowRunDirectory]
 AMFlowWorkPath[ProcessName_String] := FileNameJoin[{LoopSWorkDirectory, ProcessName, "AMFlow"}]
 AMFlowSaveName[loops_List] := Module[{str, i}, 
 str = StringJoin @@ Table["N", {i, Length[loops]}];
 "AMFfamily" <> str <> "LO"]
+AMFlowRunDirectory[workPath_String, saveName_String, problem_Integer] := FileNameJoin[{workPath, saveName <> "S" <> ToString[problem]}]
