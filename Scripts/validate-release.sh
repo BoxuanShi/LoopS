@@ -56,6 +56,8 @@ fi
 
 validation_root_raw=$(mktemp -d "${TMPDIR:-/tmp}/LoopS-validation.XXXXXX")
 validation_root=$(CDPATH= cd -- "$validation_root_raw" && pwd -P)
+validation_work_directory="$validation_root/work"
+mkdir "$validation_work_directory"
 trap 'rm -rf -- "$validation_root"' EXIT HUP INT TERM
 
 LOOPS_ARCHIVE="$archive" LOOPS_VALIDATION_ROOT="$validation_root" LOOPS_VERSION="$version" run_wolfram_code \
@@ -76,8 +78,8 @@ fi
 
 echo "Validated SHA-256: $actual_checksum"
 echo "Verifying Paclet directory loading from the extracted candidate..."
-LOOPS_CANDIDATE_ROOT="$candidate_root" LOOPS_VERSION="$version" run_wolfram_code \
-  'root = Environment["LOOPS_CANDIDATE_ROOT"]; PacletDirectoryLoad[root]; Needs["LoopS`"] ; If[ToExpression["LoopS`$LoopSVersion"] === Environment["LOOPS_VERSION"], Exit[0], Exit[1]]'
+LOOPS_CANDIDATE_ROOT="$candidate_root" LOOPS_VALIDATION_WORK_DIRECTORY="$validation_work_directory" LOOPS_VERSION="$version" run_wolfram_code \
+  'root = Environment["LOOPS_CANDIDATE_ROOT"]; SetDirectory[Environment["LOOPS_VALIDATION_WORK_DIRECTORY"]]; PacletDirectoryLoad[root]; Needs["LoopS`"] ; If[ToExpression["LoopS`$LoopSVersion"] === Environment["LOOPS_VERSION"], Exit[0], Exit[1]]'
 
 echo "Running fast tests from the extracted candidate..."
 run_wolfram_file "$candidate_root/Tests/run-tests.wl"

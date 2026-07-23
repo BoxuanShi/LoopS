@@ -10,6 +10,11 @@ Notable changes to LoopS are documented in this file.
   generated configurations, scripts, logs, caches, databases, and results from different families
   cannot collide. Existing flat FIRE and BLADE result files remain readable.
 
+### Fixed
+
+- Paclet validation now performs its initial package-load check from a temporary working directory
+  instead of generating `LoopSFile` in the source-tree root.
+
 ## 1.2.0 - 2026-07-23
 
 ### Added
