@@ -98,11 +98,14 @@ headless tests are kept under their corresponding `LoopSFile/` directories and a
 Kira is an optional external reducer. Its real integration test can be run with:
 
 ```sh
-LOOPS_KIRA_EXECUTABLE=/path/to/kira wolframscript -file Tests/kira-integration.wl
+LOOPS_KIRA_EXECUTABLE=/path/to/kira \
+LOOPS_KIRA_FERMAT_EXECUTABLE=/path/to/fer64 \
+  wolframscript -file Tests/kira-integration.wl
 ```
 
 The test reduces the same one-loop family with FIRE and Kira, then checks the master basis and all
-requested reduction rules symbolically.
+requested reduction rules symbolically. `LOOPS_KIRA_FERMAT_EXECUTABLE` is optional when Kira can
+already find Fermat through `FERMATPATH` or `PATH`.
 
 
 ## Dependencies
@@ -116,7 +119,10 @@ The release Paclet bundles the following third-party modules or interfaces:
 
 LoopS also provides an interface to external **[Kira](https://gitlab.com/kira-pyred/kira)**. Kira is
 not bundled in the Paclet; set `$KiraExecutable` in `Config.m` or pass `"KiraExecutable"` to
-`KiraIBPReduction`. The interface defaults to `integral_ordering: 2`, which ranks irreducible
+`KiraIBPReduction`. `$KiraFermatExecutable` defaults to `Automatic`, allowing Kira to find Fermat
+through `FERMATPATH` or `PATH`. Set it in `Config.m`, or pass
+`"KiraFermatExecutable" -> "/absolute/path/to/fer64"`, to have LoopS provide `FERMATPATH` only to
+the Kira child process. The interface defaults to `integral_ordering: 2`, which ranks irreducible
 scalar-product numerators as more complicated than dotted positive propagator powers and therefore
 prefers a positive-power master basis. Kira's per-family `--parallel` value defaults to
 `LoopSParallelKernels`, matching FIRE's internal parallelism policy; pass `"KiraParallel" -> 1` for

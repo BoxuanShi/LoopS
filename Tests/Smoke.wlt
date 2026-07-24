@@ -78,6 +78,13 @@ VerificationTest[
 ]
 
 VerificationTest[
+  ("KiraFermatExecutable" /. Options[#]) & /@
+    {KiraRunIBP, KiraIBPReduction, KiraReduction},
+  {Automatic, Automatic, Automatic},
+  TestID -> "kira-fermat-executable-default-propagates"
+]
+
+VerificationTest[
   MatchQ[LoopS`Private`WolframScriptCommand[FileNameJoin[{testsDirectory, "run-tests.wl"}]], {_String ..}],
   True,
   TestID -> "native-kernel-script-command"

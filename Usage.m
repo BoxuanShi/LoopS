@@ -2,6 +2,7 @@ $FeynCalcInstallPath;
 $MultivariateApartInstallPath;
 $FIREInstallPath;
 $KiraExecutable;
+$KiraFermatExecutable;
 $OPITeRInstallPath;
 $AMFlowInstallPath;
 $BladeInstallPath;
@@ -323,6 +324,7 @@ KiraIntegralOrdering;
 KiraKinematicDimensions;
 KiraPreferredMasters;
 KiraExecutable;
+KiraFermatExecutable;
 KiraParallel;
 
 GenerateEiknolFamilies;

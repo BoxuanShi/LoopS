@@ -4,6 +4,12 @@ Notable changes to LoopS are documented in this file.
 
 ## Unreleased
 
+### Added
+
+- The Kira interface accepts `"KiraFermatExecutable"` and passes an explicit Fermat path to the Kira
+  child process through `FERMATPATH`, while preserving Kira's automatic environment lookup by
+  default.
+
 ### Changed
 
 - FIRE, Kira, BLADE, and AMFlow now use a consistent per-family working-directory layout so that

@@ -12,6 +12,7 @@ $FIREInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependenci
       "Dependencies", "fire", "FIRE7", "FIRE7.m"}];
 
 $KiraExecutable = "kira";
+$KiraFermatExecutable = Automatic;
 
 $OPITeRInstallPath = FileNameJoin[{DirectoryName @ $InputFileName, "LoadDependencies",
       "Dependencies", "opiter", "opiter"}];

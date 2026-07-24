@@ -259,9 +259,11 @@ KiraRunIBP::version = "Kira version check failed: `1`.";
 KiraRunIBP::failed = "Kira exited with status `1`. See `2`.";
 KiraRunIBP::missing = "Prepared Kira job `1` does not exist.";
 KiraRunIBP::parallel = "Kira parallelism `1` must be a positive integer.";
+KiraRunIBP::fermat = "Kira Fermat executable `1` must be Automatic or a nonempty path to an existing file.";
 
 Options[KiraRunIBP] = {
   "KiraExecutable" :> $KiraExecutable,
+  "KiraFermatExecutable" :> $KiraFermatExecutable,
   "KiraParallel" :> LoopSParallelKernels
 };
 
@@ -282,20 +284,46 @@ KiraRunIBP[
   loops_List,
   {workPath_String, familyName_String},
   opt : OptionsPattern[]
-] := Module[{runDirectory, jobFile, executable, parallel, versionResult, result, logFile, command},
+] := Module[
+  {runDirectory, jobFile, executable, fermatExecutable, processEnvironment,
+   parallel, versionResult, result, logFile, command},
   runDirectory = KiraRunDirectory[workPath, familyName, problem];
   jobFile = FileNameJoin[{runDirectory, "job.yaml"}];
   If[! FileExistsQ[jobFile], Message[KiraRunIBP::missing, jobFile]; Return[$Failed]];
 
   executable = OptionValue["KiraExecutable"];
+  fermatExecutable = OptionValue["KiraFermatExecutable"];
   parallel = OptionValue["KiraParallel"];
   If[! IntegerQ[parallel] || parallel < 1,
     Message[KiraRunIBP::parallel, parallel]; Return[$Failed]
   ];
   If[! StringQ[executable], Message[KiraRunIBP::executable, executable]; Return[$Failed]];
+  If[
+    ! (fermatExecutable === Automatic ||
+        StringQ[fermatExecutable] && StringTrim[fermatExecutable] =!= ""),
+    Message[KiraRunIBP::fermat, fermatExecutable]; Return[$Failed]
+  ];
+  If[StringQ[fermatExecutable],
+    fermatExecutable = ExpandFileName[fermatExecutable];
+    If[! FileExistsQ[fermatExecutable] || DirectoryQ[fermatExecutable],
+      Message[KiraRunIBP::fermat, fermatExecutable]; Return[$Failed]
+    ]
+  ];
+  processEnvironment = If[
+    fermatExecutable === Automatic,
+    Inherited,
+    Append[
+      DeleteCases[GetEnvironment[], HoldPattern["FERMATPATH" -> _]],
+      "FERMATPATH" -> fermatExecutable
+    ]
+  ];
 
   versionResult = Quiet@Check[
-    RunProcess[{executable, "--version"}, ProcessDirectory -> runDirectory],
+    RunProcess[
+      {executable, "--version"},
+      ProcessDirectory -> runDirectory,
+      ProcessEnvironment -> processEnvironment
+    ],
     $Failed
   ];
   If[versionResult === $Failed,
@@ -309,13 +337,20 @@ KiraRunIBP[
   ];
 
   command = {executable, "job.yaml", "--parallel=" <> ToString[parallel]};
-  result = RunProcess[command, ProcessDirectory -> runDirectory];
+  result = RunProcess[
+    command,
+    ProcessDirectory -> runDirectory,
+    ProcessEnvironment -> processEnvironment
+  ];
   logFile = FileNameJoin[{runDirectory, "LoopS-kira.log"}];
   Export[
     logFile,
     StringJoin[
       "Executable: ", executable, "\n",
       "Version: ", StringTrim[versionResult["StandardOutput"] <> versionResult["StandardError"]], "\n",
+      "Fermat executable: ",
+        If[fermatExecutable === Automatic, "Automatic (Kira searches FERMATPATH and PATH)",
+          fermatExecutable], "\n",
       "Working directory: ", runDirectory, "\n",
       "Command: ", StringRiffle[command, " "], "\n\n",
       result["StandardOutput"],

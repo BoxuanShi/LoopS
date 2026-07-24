@@ -68,6 +68,7 @@ SetSharedVariable[
     $MultivariateApartInstallPath, 
     $FIREInstallPath, 
     $KiraExecutable,
+    $KiraFermatExecutable,
     $OPITeRInstallPath
     ];
 

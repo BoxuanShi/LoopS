@@ -15,6 +15,10 @@ kiraExecutable = Environment["LOOPS_KIRA_EXECUTABLE"];
 If[! StringQ[kiraExecutable] || StringTrim[kiraExecutable] === "",
   kiraExecutable = $KiraExecutable
 ];
+kiraFermatExecutable = Environment["LOOPS_KIRA_FERMAT_EXECUTABLE"];
+If[! StringQ[kiraFermatExecutable] || StringTrim[kiraFermatExecutable] === "",
+  kiraFermatExecutable = Automatic
+];
 
 testRoot = FileNameJoin[{testsDirectory, "LoopSFile", "KiraIntegration"}];
 If[! DirectoryQ[testRoot], CreateDirectory[testRoot, CreateIntermediateDirectories -> True]];
@@ -58,6 +62,7 @@ kiraRules = KiraIBPReduction[
   targets, {family, 1}, {l}, {p}, kinematics,
   {kiraRoot, familyName},
   "KiraExecutable" -> kiraExecutable,
+  "KiraFermatExecutable" -> kiraFermatExecutable,
   "KiraParallel" -> 1,
   "KiraKinematicDimensions" -> {s -> 2}
 ];
@@ -88,8 +93,25 @@ masterLines = Select[
   StringTrim[First[StringSplit[#, "#"]]] & /@ Import[mastersFile, "Lines"],
   # =!= "" &
 ];
+kiraLogFile = FileNameJoin[{KiraRunDirectory[kiraRoot, familyName, 1], "LoopS-kira.log"}];
+AssertKiraTest[FileExistsQ[kiraLogFile], "Kira execution log is missing"];
+kiraLog = Import[kiraLogFile, "Text"];
+If[StringQ[kiraFermatExecutable],
+  AssertKiraTest[
+    StringContainsQ[
+      kiraLog,
+      "Fermat executable: " <> ExpandFileName[kiraFermatExecutable]
+    ],
+    "LoopS did not record the explicit Fermat executable"
+  ];
+  AssertKiraTest[
+    StringCount[kiraLog, ExpandFileName[kiraFermatExecutable]] >= 2,
+    "Kira did not receive the explicit Fermat executable through FERMATPATH"
+  ]
+];
 
 Print["Kira executable: ", kiraExecutable];
+Print["Kira Fermat executable: ", kiraFermatExecutable];
 Print["Kira version: ", kiraVersion];
 Print["FIRE working directory: ", fireRunDirectory];
 Print["Kira working directory: ", KiraRunDirectory[kiraRoot, familyName, 1]];
