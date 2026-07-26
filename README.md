@@ -126,7 +126,11 @@ the Kira child process. The interface defaults to `integral_ordering: 2`, which 
 scalar-product numerators as more complicated than dotted positive propagator powers and therefore
 prefers a positive-power master basis. Kira's per-family `--parallel` value defaults to
 `LoopSParallelKernels`, matching FIRE's internal parallelism policy; pass `"KiraParallel" -> 1` for
-the conservative single-worker mode. Each family and ordering uses an isolated Kira state directory.
+the conservative single-worker mode. LoopS derives Kira's maximal `top_level_sectors` from the
+requested targets with `FindTopSectors`; auxiliary propagators that occur only with zero or negative
+powers are not incorrectly promoted to positive lines. The targets added by `FindCompleteGList`
+remain in Kira's mandatory list and determine the generated `r` and `s` bounds. Each family and
+ordering uses an isolated Kira state directory.
 
 Additionally, some functions are modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
 

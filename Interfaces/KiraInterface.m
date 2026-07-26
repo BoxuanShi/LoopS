@@ -5,7 +5,8 @@ KiraRunDirectory[workPath_String, familyName_String, problem_Integer] :=
   FileNameJoin[{workPath, familyName <> ToString[problem]}];
 
 ClearAll[KiraExpressionString, KiraYamlQuote, KiraWriteInput, KiraScalarProductEntry,
-  KiraDimension, KiraIntegralString, KiraIntegralToG, KiraFirstStringDifference];
+  KiraDimension, KiraIntegralString, KiraIntegralToG, KiraFirstStringDifference,
+  KiraSectorString];
 
 KiraExpressionString[expr_] := ToString[expr, InputForm, PageWidth -> Infinity];
 KiraYamlQuote[expr_] := Module[{text},
@@ -58,6 +59,9 @@ KiraDimension[symbol_Symbol, specification_] := Module[{association},
 KiraIntegralString[familyName_String, indices_List] :=
   familyName <> "[" <> StringRiffle[ToString[#, InputForm] & /@ indices, ","] <> "]";
 
+KiraSectorString[indices_List] :=
+  "b" <> StringJoin[If[# > 0, "1", "0"] & /@ indices];
+
 KiraIntegralToG[expr_, familySymbol_Symbol, problem_Integer] :=
   MapAll[If[Head[#] === familySymbol, G[problem, List @@ #], #] &, expr];
 
@@ -100,7 +104,7 @@ KiraPrepareIBP[
 ] := Module[
   {targets, completeTargets, indices, topologyName, runDirectory, configDirectory,
    ordering, preferredMasters, dimensions, symbols, invariants, invariantLines,
-   scalarEntries, scalarLines, propagatorLines, topSector, maxR, maxS,
+   scalarEntries, scalarLines, propagatorLines, topSectors, maxR, maxS,
    integralFamiliesYaml, kinematicsYaml, jobYaml, targetText, loopSTargetText,
    preferredText, preferredLine, inputFiles, result, existing, differencePosition},
 
@@ -124,6 +128,13 @@ KiraPrepareIBP[
   ];
   completeTargets = DeleteDuplicates[completeTargets];
   indices = completeTargets[[All, 2]];
+  (* Family entries outside a maximal target sector are auxiliary propagators/ISPs,
+     so they must not be turned into positive lines merely because they are listed. *)
+  topSectors = KiraSectorString /@
+    FindTopSectors[
+      targets,
+      Evaluate@FilterOptions[{opt}, FindTopSectors]
+    ][[All, 2]];
 
   topologyName = familyName <> ToString[problem];
   runDirectory = KiraRunDirectory[workPath, familyName, problem];
@@ -132,7 +143,6 @@ KiraPrepareIBP[
     CreateDirectory[configDirectory, CreateIntermediateDirectories -> True]
   ];
 
-  topSector = "b" <> StringRepeat["1", Length[familyi]];
   maxR = Max[Total[Map[Max[#, 0] &, #]] & /@ indices];
   maxS = Max[Total[Map[-Min[#, 0] &, #]] & /@ indices];
 
@@ -166,7 +176,7 @@ KiraPrepareIBP[
     "integralfamilies:\n",
     "  - name: ", KiraYamlQuote[topologyName], "\n",
     "    loop_momenta: [", StringRiffle[KiraExpressionString /@ loops, ","], "]\n",
-    "    top_level_sectors: [", KiraYamlQuote[topSector], "]\n",
+    "    top_level_sectors: [", StringRiffle[KiraYamlQuote /@ topSectors, ", "], "]\n",
     "    propagators:\n", StringRiffle[propagatorLines, "\n"], "\n"
   ];
 
@@ -202,7 +212,8 @@ KiraPrepareIBP[
     "jobs:\n",
     "  - reduce_sectors:\n",
     "      reduce:\n",
-    "        - {topologies: [", topologyName, "], sectors: [", KiraYamlQuote[topSector],
+    "        - {topologies: [", topologyName, "], sectors: [",
+      StringRiffle[KiraYamlQuote /@ topSectors, ", "],
       "], r: ", ToString[maxR], ", s: ", ToString[maxS], "}\n",
     "      select_integrals:\n",
     "        select_mandatory_list:\n",
@@ -247,6 +258,7 @@ KiraPrepareIBP[
     "RunDirectory" -> runDirectory,
     "Topology" -> topologyName,
     "Targets" -> completeTargets,
+    "TopLevelSectors" -> topSectors,
     "IntegralOrdering" -> ordering,
     "Bounds" -> <|"r" -> maxR, "s" -> maxS|>
   |>

@@ -85,6 +85,86 @@ VerificationTest[
 ]
 
 VerificationTest[
+  Sort[
+    LoopS`Private`KiraSectorString /@
+      FindTopSectors[{
+        G[1, {1, 1, 0}],
+        G[1, {1, 0, 1}],
+        G[1, {1, 0, 0}],
+        G[1, {2, 1, 0}]
+      }][[All, 2]]
+  ],
+  {"b101", "b110"},
+  TestID -> "kira-preserves-incomparable-top-sectors"
+]
+
+VerificationTest[
+  Module[
+    {testRoot, family, targets, prepared, integralFamiliesYaml, jobYaml, result},
+    testRoot = FileNameJoin[{
+      $TemporaryDirectory, "LoopS-kira-sector-" <> CreateUUID[]
+    }];
+    family = {
+      (l2 n)/2 + (l2 nb)/2,
+      -l1 n + nq - w1,
+      -l1 nb - l2 nb + w2,
+      -l1 nb - nbk + w2,
+      l1^2,
+      l2^2,
+      (l1 + l2)^2
+    };
+    targets = {
+      G[152, {1, 1, 1, -1, 1, 1, 0}],
+      G[152, {1, 1, 1, 0, 1, 1, 0}]
+    };
+    result = Quiet@Check[
+      prepared = KiraPrepareIBP[
+        targets, {family, 152}, {l1, l2}, {n, nb},
+        {n^2 -> 0, nb^2 -> 0, n nb -> 2},
+        {testRoot, "familyNNLO"},
+        "KiraKinematicDimensions" -> {nq -> 1, nbk -> 1, w1 -> 1, w2 -> 1},
+        "DropZeroSectorQ" -> False
+      ];
+      integralFamiliesYaml = Import[
+        FileNameJoin[{
+          prepared["RunDirectory"], "config", "integralfamilies.yaml"
+        }],
+        "Text"
+      ];
+      jobYaml = Import[
+        FileNameJoin[{prepared["RunDirectory"], "job.yaml"}],
+        "Text"
+      ];
+      {
+        prepared["TopLevelSectors"],
+        prepared["Bounds"],
+        StringContainsQ[
+          integralFamiliesYaml,
+          "top_level_sectors: [\"b1110110\"]"
+        ],
+        StringContainsQ[
+          jobYaml,
+          "sectors: [\"b1110110\"], r: 6, s: 1"
+        ],
+        prepared["Bounds"]["r"] >=
+          Max[StringCount[#, "1"] & /@ prepared["TopLevelSectors"]]
+      },
+      $Failed
+    ];
+    If[DirectoryQ[testRoot], DeleteDirectory[testRoot, DeleteContents -> True]];
+    result
+  ],
+  {
+    {"b1110110"},
+    <|"r" -> 6, "s" -> 1|>,
+    True,
+    True,
+    True
+  },
+  TestID -> "kira-top-sector-follows-targets"
+]
+
+VerificationTest[
   MatchQ[LoopS`Private`WolframScriptCommand[FileNameJoin[{testsDirectory, "run-tests.wl"}]], {_String ..}],
   True,
   TestID -> "native-kernel-script-command"
