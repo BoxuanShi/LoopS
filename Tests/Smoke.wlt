@@ -35,12 +35,6 @@ VerificationTest[
 ]
 
 VerificationTest[
-  Get[FileNameJoin[{projectRoot, "PacletInfo.wl"}]]["Version"],
-  $LoopSVersion,
-  TestID -> "paclet-version-matches-package"
-]
-
-VerificationTest[
   Length[DownValues[#]] > 0 & /@ {
     CreateProcess, AmplitudeReduce, GeneratePV, KiraIBPReduction,
     FIRERunDirectory, KiraRunDirectory, BladeRunDirectory, AMFlowRunDirectory

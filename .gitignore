@@ -18,11 +18,8 @@ __MACOSX/
 .opencode/
 .claude/
 
-# Generated output from headless examples
-/LoopSFile/
-Examples/Scripts/LoopSFile/
-Examples/Notebook/LoopSFile/
-Tests/LoopSFile/
+# Generated LoopS runtime state
+LoopSFile/
 
-# Local release candidates
-/dist/
+# Reducer logs accidentally emitted from the repository root
+/kira.log

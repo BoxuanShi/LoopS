@@ -3,8 +3,6 @@
 
 ## Installation
 
-### Git installation (recommended)
-
 The default installation method is a Git checkout in Mathematica's user `Applications` directory.
 Clone LoopS together with its pinned FIRE and OPITeR dependencies:
 
@@ -38,20 +36,8 @@ If LoopS was cloned without `--recurse-submodules`, initialize its pinned depend
 git submodule update --init --recursive
 ```
 
-### Paclet installation (alternative)
-
-As a supplementary installation method, users may install a release archive directly:
-
-```wl
-PacletInstall["/path/to/LoopS-1.2.0.paclet"]
-Needs["LoopS`"]
-```
-
-Release Paclets are self-contained: they include the tested FIRE Mathematica runtime and OPITeR
-source needed by LoopS. Avoid keeping both a Paclet installation and a Git checkout under
-Mathematica's `Applications` directory, since the source checkout may take precedence during
-loading. GitHub-generated source archives do not contain submodule files; use a Git clone or a
-release Paclet instead.
+GitHub-generated source archives do not contain submodule files. Use a Git clone with initialized
+submodules rather than downloading an automatically generated source archive.
 
 
 ## Usage
@@ -66,7 +52,7 @@ wolframscript -file Examples/Scripts/run-all.wl
 ```
 
 Individual script examples are available in `Examples/Scripts/` and load LoopS from the same source
-tree, so they can validate an unpacked release candidate without using another installed copy.
+tree, so they validate the current checkout without using another installed copy.
 Input amplitudes are stored in `Examples/Inputs/`, while verified reference outputs for script tests are stored in `Examples/References/`.
 
 External-reducer state is isolated by integral family. FIRE, Kira, and BLADE place each family's
@@ -110,15 +96,15 @@ already find Fermat through `FERMATPATH` or `PATH`.
 
 ## Dependencies
 
-The release Paclet bundles the following third-party modules or interfaces:
+The Git checkout uses the following third-party modules or interfaces:
 
 - **[FeynCalc](https://github.com/FeynCalc/feyncalc)**
 - The Mathematica components of **[FIRE 7](https://gitlab.srcc.msu.ru/feynmanintegrals/fire)**
 - **[MultivariateApart](https://gitlab.msu.edu/vmante/multivariateapart)**
 - **[OPITeR](https://bitbucket.org/jaegoode/opiter/src/main/)** (included as a Git submodule)
 
-LoopS also provides an interface to external **[Kira](https://gitlab.com/kira-pyred/kira)**. Kira is
-not bundled in the Paclet; set `$KiraExecutable` in `Config.m` or pass `"KiraExecutable"` to
+LoopS also provides an interface to external **[Kira](https://gitlab.com/kira-pyred/kira)**. The
+Kira executable is not included in this repository; set `$KiraExecutable` in `Config.m` or pass `"KiraExecutable"` to
 `KiraIBPReduction`. `$KiraFermatExecutable` defaults to `Automatic`, allowing Kira to find Fermat
 through `FERMATPATH` or `PATH`. Set it in `Config.m`, or pass
 `"KiraFermatExecutable" -> "/absolute/path/to/fer64"`, to have LoopS provide `FERMATPATH` only to
@@ -134,9 +120,9 @@ ordering uses an isolated Kira state directory.
 
 Additionally, some functions are modified from the **[CalcLoop](https://gitlab.com/multiloop-pku/calcloop)** package, which is licensed under the MIT License.
 
-The release Paclet does not include FIRE's compiled binaries, Fermat, build dependencies, or
+The repository does not include FIRE's compiled binaries, Fermat, build dependencies, or
 third-party `extra/` tree. See `THIRD_PARTY_NOTICES.md` for component versions, upstream links, and
-the license notices shipped with each bundled component.
+the applicable license notices.
 
 
 **Note:** 
@@ -145,7 +131,7 @@ the license notices shipped with each bundled component.
   packages (e.g., FeynCalc, FIRE, MultivariateApart, OPITeR) are installed on your system.
 - Git source downloads may not include FIRE or OPITeR submodule contents. LoopS reports the missing
   optional component without downloading code at runtime.
-- This release supports **Mathematica 14.0 or later** and is tested on Mathematica 14.0.
+- LoopS supports **Mathematica 14.0 or later** and is tested on Mathematica 14.0.
 - **[FORM](https://www.nikhef.nl/~form/)** (Source code also available on [GitHub](https://github.com/form-dev/form)): Required for OPITeR. Please install FORM separately if you intend to use OPITeR features.
 
 LoopS can be used without OPITeR, but the efficiency of Passarino–Veltman reduction will be significantly reduced in complex cases if OPITeR is not available.

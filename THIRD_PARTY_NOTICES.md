@@ -1,7 +1,7 @@
 # Third-Party Notices
 
-LoopS is distributed under GPL-3.0. The release archive also contains the following third-party
-software. Each component retains its own copyright and license notices.
+LoopS is distributed under GPL-3.0 and uses the following third-party software. Each component
+retains its own copyright and license notices.
 
 ## FeynCalc
 
@@ -33,7 +33,7 @@ software. Each component retains its own copyright and license notices.
 - License notices: `FIRE7.m` and `Reconstruction.m` state GPL version 2; the accompanying README
   states GPL version 3 or, at the user's option, a later version. These upstream notices are
   preserved verbatim and are not replaced by the LoopS license.
-- The release archive does not include FIRE's compiled binaries, Fermat, build dependencies,
+- The LoopS repository does not include FIRE's compiled binaries, Fermat, build dependencies,
   benchmarks, or third-party `extra/` tree.
 
 ## CalcLoop-derived code

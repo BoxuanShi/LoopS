@@ -1,2 +1,0 @@
-/Users/balth/Library/Mathematica/Applications/LoopS/LoadDependencies/Dependencies/fire/FIRE7/bin/FIRE7 -c /Users/balth/Library/Mathematica/Applications/LoopS/Examples/Notebook/LoopSFile/Processes/ZHR/IBPReduction/FIRE/familyNLO1;
-wolframscript -file /Users/balth/Library/Mathematica/Applications/LoopS/Examples/Notebook/LoopSFile/Processes/ZHR/IBPReduction/FIRE/temp/familyNLO1save.wl ;
